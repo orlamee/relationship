@@ -10,6 +10,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tablines";
 import PersonalDetails from "@/components/dashboardparts/personaldetails";
+import KYC from "@/components/dashboardparts/kyc";
+import Nextofkin from "@/components/dashboardparts/nextofkin";
 
 
 export default function UserManagementDetails() {
@@ -56,9 +58,10 @@ export default function UserManagementDetails() {
                 <PersonalDetails/>
               </TabsContent>
               <TabsContent value="kyc">
+                <KYC/>
               </TabsContent>
-              <TabsContent value="kyc"></TabsContent>
               <TabsContent value="nextofkin">
+                <Nextofkin/>
               </TabsContent>
               <TabsContent value="referrals">
               </TabsContent>

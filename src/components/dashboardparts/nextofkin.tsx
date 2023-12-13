@@ -1,11 +1,10 @@
 "use client";
-import Image from "next/image";
-import info from "../../assets/info.svg";
+
 import { useState } from "react";
 import Modal from "../modal";
 import { XCircleIcon } from "lucide-react";
 
-export default function PersonalDetails() {
+export default function Nextofkin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   function openModal() {
     setIsModalOpen(true);
@@ -16,31 +15,20 @@ export default function PersonalDetails() {
   return (
     <div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
       <div className="grid grid-cols-3 gap-10 justify-between">
-        <div className="flex items-center">
-          <Image src={info} alt="information" />
-          <div className="ms-4">
-            <h6 className="text-[#21003D] font-[500] leading-[20px] mb-3 text-[15px]">
-              Ajayi Michael Oluwadarasimi
-            </h6>
-            <p className="text-[#8807F7] font-[500] leading-[12px] text-[12px]">
-              &lt;Ajayi/&gt;
-            </p>
-          </div>
-        </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
           <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
-            Email
+            First Name
           </h4>
           <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-            AjayiMichael@gmail.com
+            Ajayi
           </h6>
         </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
           <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
-            Date of Birth
+            Last Name
           </h4>
           <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-            10/11/2023
+            Michael
           </h6>
         </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -53,6 +41,14 @@ export default function PersonalDetails() {
         </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
           <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
+            Email
+          </h4>
+          <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
+            AjayiMichael@gmail.com
+          </h6>
+        </div>
+        <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
+          <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
             Address
           </h4>
           <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
@@ -61,10 +57,10 @@ export default function PersonalDetails() {
         </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
           <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
-            Date Joined
+            Relationship
           </h4>
           <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-            10/11/2023
+            Brother
           </h6>
         </div>
         <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -75,22 +71,7 @@ export default function PersonalDetails() {
             Male
           </h6>
         </div>
-        <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
-          <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
-            BVN
-          </h4>
-          <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-            22167542341
-          </h6>
-        </div>
-        <div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
-          <h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
-            Field Officer
-          </h4>
-          <h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-            John Doe
-          </h6>
-        </div>
+        
       </div>
       <div className="text-end mt-4">
         <button
@@ -105,7 +86,7 @@ export default function PersonalDetails() {
           <div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
             <div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
               <h1 className="text-[14px] font-[500] leading-[18px]">
-                Edit User Details
+                Edit Next of Kin Details
               </h1>
               <XCircleIcon
                 className="text-[#9CA3AF] cursor-pointer w-[18px]"
@@ -183,11 +164,11 @@ export default function PersonalDetails() {
                   <label
                     className="block mb-2 text-[12px] font-[500] text-[#21003D]"
                   >
-                    BVN
+                    Relationship
                   </label>
                   <input
-                    type="number"
-                    placeholder="23456789"
+                    type="text"
+                    placeholder="Cousin"
                     className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                   />
                 </div>
@@ -200,18 +181,6 @@ export default function PersonalDetails() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Allen Ikeja, Lagos, Nigeria"
-                  className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                />
-              </div>
-              <div className="mb-6">
-                <label
-                  className="block mb-2 text-[12px] font-[500] text-[#21003D]"
-                >
-                  Upload Utility Bill
-                </label>
-                <input
-                  type="file"
                   placeholder="Allen Ikeja, Lagos, Nigeria"
                   className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
