@@ -18,10 +18,52 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #fafafa;
+  height: 100%;
+}
+
+/* .bg-pattern {
+  background: url("../assets/bg-patern.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+} */
+
+.bg-login {
+  background-image: url("../assets/loginbg.svg");
+}
+
+@font-face {
+  font-family: founder;
+  src: url("../fonts/FoundersGrotesk-Medium.otf");
+}
+
+@media (min-width: 992px) {
+  .otp-form {
+    width: 65px !important;
+    height: 63px;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0 32px 0 0;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .otp-form {
+    width: 40px !important;
+    height: 40px;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0 3px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
 }
