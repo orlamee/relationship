@@ -2,6 +2,14 @@
 import NavBar from "@/components/navbar";
 import React from "react";
 import Image from "next/image";
+import Datatable from "@/components/tables/datatable";
+import { dashboardColumns, dashboardData, dashboardNotFundedData } from "@/components/dummydata";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tablines";
 
 function Dashboard() {
   return (
@@ -11,8 +19,12 @@ function Dashboard() {
           <h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
             Dashboard
           </h1>
-          <h1 className="mx-3 text-[24px] text-[#21003D] leading-[33px] font-[500]">-</h1>
-          <h1 className="text-[14px] text-[#21003D] leading-[33px] mt-1 font-[500]">Oshodi Branch</h1>
+          <h1 className="mx-3 text-[24px] text-[#21003D] leading-[33px] font-[500]">
+            -
+          </h1>
+          <h1 className="text-[14px] text-[#21003D] leading-[33px] mt-1 font-[500]">
+            Oshodi Branch
+          </h1>
         </div>
       </NavBar>
       <main className="px-4 lg:px-8 mt-[50px]">
@@ -132,6 +144,29 @@ function Dashboard() {
                 0
               </h5>
             </div>
+          </div>
+        </div>
+        <div className="bg-[#FFFFFF] rounded-[10px] p-10 mb-9 relative">
+          <h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
+            All Users
+          </h1>
+          <div className="mt-10">
+            <Tabs defaultValue="funded">
+              <TabsList>
+                <TabsTrigger value="funded">
+                  Funded
+                </TabsTrigger>
+                <TabsTrigger value="not_funded">
+                  Not Funded
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="funded">
+                <Datatable data={dashboardData} columns={dashboardColumns} />
+              </TabsContent>
+              <TabsContent value="not_funded">
+                <Datatable data={dashboardNotFundedData} columns={dashboardColumns} />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>
