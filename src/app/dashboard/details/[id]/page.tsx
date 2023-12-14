@@ -14,7 +14,7 @@ import KYC from "@/components/dashboardparts/kyc";
 import Nextofkin from "@/components/dashboardparts/nextofkin";
 import Activities from "@/components/dashboardparts/activities";
 import Banks from "@/components/dashboardparts/banks";
-
+import Verification from "@/components/dashboardparts/verification";
 
 export default function UserManagementDetails() {
   return (
@@ -57,19 +57,22 @@ export default function UserManagementDetails() {
                 <TabsTrigger value="verification">Verification</TabsTrigger>
               </TabsList>
               <TabsContent value="details">
-                <PersonalDetails/>
+                <PersonalDetails />
               </TabsContent>
               <TabsContent value="kyc">
-                <KYC/>
+                <KYC />
               </TabsContent>
               <TabsContent value="nextofkin">
-                <Nextofkin/>
+                <Nextofkin />
               </TabsContent>
               <TabsContent value="activities">
-                <Activities/>
+                <Activities />
               </TabsContent>
               <TabsContent value="bank">
-                <Banks/>
+                <Banks />
+              </TabsContent>
+              <TabsContent value="verification">
+                <Verification />
               </TabsContent>
             </Tabs>
           </div>
