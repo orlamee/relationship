@@ -12,6 +12,8 @@ import {
 import PersonalDetails from "@/components/dashboardparts/personaldetails";
 import KYC from "@/components/dashboardparts/kyc";
 import Nextofkin from "@/components/dashboardparts/nextofkin";
+import Activities from "@/components/dashboardparts/activities";
+import Banks from "@/components/dashboardparts/banks";
 
 
 export default function UserManagementDetails() {
@@ -63,9 +65,11 @@ export default function UserManagementDetails() {
               <TabsContent value="nextofkin">
                 <Nextofkin/>
               </TabsContent>
-              <TabsContent value="referrals">
-              </TabsContent>
               <TabsContent value="activities">
+                <Activities/>
+              </TabsContent>
+              <TabsContent value="bank">
+                <Banks/>
               </TabsContent>
             </Tabs>
           </div>

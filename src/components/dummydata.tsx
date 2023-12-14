@@ -13,9 +13,12 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import user from "../assets/user_img.svg";
+import topup from "../assets/topup.svg";
+import widthdraw from "../assets/withdrawal.svg";
 import Link from "next/link";
 import { Checkbox } from "./ui/checkbox";
 import Status from "./badges/status";
+import TransferStatus from "./badges/transfer";
 
 // Dashboard
 export type dashboardDataType = {
@@ -306,4 +309,194 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
       );
     },
   },
+];
+
+//Activities
+export type activitiesDataType = {
+  id: string;
+  badge: string;
+  description: string;
+  date: string;
+  amount: string;
+  source: string;
+  status: string;
+};
+
+export const activitiesData: activitiesDataType[] = [
+  {
+    id: "1",
+    badge: topup,
+    description: "Top up",
+    date: "10/11/94",
+    amount: "₦150,000",
+    source: "DIB",
+    status: "successful",
+  },
+  {
+    id: "2",
+    badge: widthdraw,
+    description: "Withdrawal",
+    date: "10/11/94",
+    amount: "₦150,000",
+    source: "DIB",
+    status: "pending",
+  },
+  {
+    id: "2",
+    badge: widthdraw,
+    description: "Withdrawal",
+    date: "10/11/94",
+    amount: "₦150,000",
+    source: "DIB",
+    status: "failed",
+  },
+  {
+    id: "2",
+    badge: widthdraw,
+    description: "Withdrawal",
+    date: "10/11/94",
+    amount: "₦150,000",
+    source: "DIB",
+    status: "reversed",
+  },
+
+];
+
+export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400]"
+        >
+          Description <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <div className="flex items-center">
+            <Image
+              src={data.badge}
+              width={30}
+              height={30}
+              alt="user"
+              className="rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+                {data.description}
+              </h1>
+            </div>
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+
+  {
+    accessorKey: "amount",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Amount
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "source",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Source
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="flex items-center">
+          {data.status === "successful" && (
+            <TransferStatus type="successful" text={data.status} />
+          )}
+          {data.status === "pending" && (
+            <TransferStatus type="pending" text={data.status} />
+          )}
+          {data.status === "reversed" && (
+            <TransferStatus type="reversed" text={data.status} />
+          )}
+          {data.status === "failed" && (
+            <TransferStatus type="failed" text={data.status} />
+          )}
+        </div>
+      );
+    },
+  },
+  
 ];
