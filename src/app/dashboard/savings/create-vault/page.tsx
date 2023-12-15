@@ -96,7 +96,7 @@ export default function CreateVault() {
                       N30,000 -N999,999
                     </p>
                   </div>
-                  <div className="flex items-center justify-between gap-x-4 mt-6">
+                  <div className="flex items-center justify-between gap-x-2 mt-6">
                     <div className="w-3/4">
                       <p className="text-[#9CA3AF] text-[11px] font-[500] leading-[24px]">
                         If you want to save above N1,000,000 switch your plan to
