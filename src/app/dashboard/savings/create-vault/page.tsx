@@ -18,15 +18,21 @@ export default function CreateVault() {
   const totalSteps = 5;
   const progressBarWidth = (activeStep / totalSteps) * 100 + "%";
 
-  const [selectedButton, setSelectedButton] = useState('');
+  const [selectedButton, setSelectedButton] = useState("");
   const [showWeeklyContent, setShowWeeklyContent] = useState(false);
+  const [showMonthlyContent, setShowMonthlyContent] = useState(false);
 
   const selectButton = (btnId: string) => {
     setSelectedButton(btnId);
-    if (btnId === 'weeklyBtn') {
+    if (btnId === "weeklyBtn") {
       setShowWeeklyContent(true);
+      setShowMonthlyContent(false);
+    } else if (btnId === "monthlyBtn") {
+      setShowWeeklyContent(false);
+      setShowMonthlyContent(true);
     } else {
       setShowWeeklyContent(false);
+      setShowMonthlyContent(false);
     }
   };
   return (
@@ -150,11 +156,11 @@ export default function CreateVault() {
                     <div className="w-1/3">
                       <button
                         className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
-                          selectedButton === 'dailyBtn'
-                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
-                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                          selectedButton === "dailyBtn"
+                            ? "bg-[#F9F5FF] text-[#000] border-[#240552]"
+                            : "bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]"
                         } w-full`}
-                        onClick={() => selectButton('dailyBtn')}
+                        onClick={() => selectButton("dailyBtn")}
                       >
                         Daily
                       </button>
@@ -162,11 +168,11 @@ export default function CreateVault() {
                     <div className="w-1/3">
                       <button
                         className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
-                          selectedButton === 'weeklyBtn'
-                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
-                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                          selectedButton === "weeklyBtn"
+                            ? "bg-[#F9F5FF] text-[#000] border-[#240552]"
+                            : "bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]"
                         } w-full`}
-                        onClick={() => selectButton('weeklyBtn')}
+                        onClick={() => selectButton("weeklyBtn")}
                       >
                         Weekly
                       </button>
@@ -174,11 +180,11 @@ export default function CreateVault() {
                     <div className="w-1/3">
                       <button
                         className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
-                          selectedButton === 'monthlyBtn'
-                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
-                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                          selectedButton === "monthlyBtn"
+                            ? "bg-[#F9F5FF] text-[#000] border-[#240552]"
+                            : "bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]"
                         } w-full`}
-                        onClick={() => selectButton('monthlyBtn')}
+                        onClick={() => selectButton("monthlyBtn")}
                       >
                         Monthly
                       </button>
@@ -188,11 +194,11 @@ export default function CreateVault() {
                     <div className="w-1/3">
                       <button
                         className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
-                          selectedButton === 'manualBtn'
-                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
-                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                          selectedButton === "manualBtn"
+                            ? "bg-[#F9F5FF] text-[#000] border-[#240552]"
+                            : "bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]"
                         } w-full`}
-                        onClick={() => selectButton('manualBtn')}
+                        onClick={() => selectButton("manualBtn")}
                       >
                         Anytime/Manual
                       </button>
@@ -200,9 +206,62 @@ export default function CreateVault() {
                   </div>
                   {showWeeklyContent && (
                     <div className="mt-10">
-                      <h2 className="text-center text-[#240552] font-[500] text-[30px] font-[founder] leading-[41px]">What Day Of The Week</h2>
+                      <h2 className="text-center text-[#240552] font-[500] text-[30px] font-[founder] leading-[41px]">
+                        What Day Of The Week
+                      </h2>
                       <h6 className="text-center text-[#9CA3AF] text-[14px] leading-[20px] font-[500]">
                         How much is your overall target?
+                      </h6>
+                      <div className="flex items-center gap-x-4 justify-between mt-10">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Tuesdays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Wednesdays
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-x-4 justify-between mt-4">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Thursdays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Fridays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Saturdays
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-x-4 justify-center mt-4">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Sundays
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {showMonthlyContent && (
+                    <div className="mt-10">
+                      <h2 className="text-center text-[#240552] font-[500] text-[30px] font-[founder] leading-[41px]">
+                        What Day Of The Month
+                      </h2>
+                      <h6 className="text-center text-[#9CA3AF] text-[14px] leading-[20px] font-[500]">
+                        Choose what day of the month that works for you
                       </h6>
                       <div className="flex items-center gap-x-4 justify-between mt-10">
                         <div className="w-1/3">
