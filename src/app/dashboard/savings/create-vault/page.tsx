@@ -18,6 +18,17 @@ export default function CreateVault() {
   const totalSteps = 5;
   const progressBarWidth = (activeStep / totalSteps) * 100 + "%";
 
+  const [selectedButton, setSelectedButton] = useState('');
+  const [showWeeklyContent, setShowWeeklyContent] = useState(false);
+
+  const selectButton = (btnId: string) => {
+    setSelectedButton(btnId);
+    if (btnId === 'weeklyBtn') {
+      setShowWeeklyContent(true);
+    } else {
+      setShowWeeklyContent(false);
+    }
+  };
   return (
     <section>
       <NavBar>
@@ -33,7 +44,7 @@ export default function CreateVault() {
           </h1>
         </div>
       </NavBar>
-      <main className="flex items-center justify-center h-[88vh]">
+      <main className="flex items-center justify-center h-[88vh] bg-white">
         <div className="md:w-1/2">
           <div className="p-9  border border-[#4400A9] rounded-[4px] container-gradient">
             <div className="w-2/3 mx-auto bg-[#E5E7EB] rounded-full h-1.5 dark:bg-gray-700 mb-9">
@@ -134,8 +145,108 @@ export default function CreateVault() {
                     />
                   </button>
                 </div>
-                <div className="mt-3">
-                  
+                <div className="mt-10">
+                  <div className="flex items-center gap-x-4 justify-between">
+                    <div className="w-1/3">
+                      <button
+                        className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
+                          selectedButton === 'dailyBtn'
+                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
+                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                        } w-full`}
+                        onClick={() => selectButton('dailyBtn')}
+                      >
+                        Daily
+                      </button>
+                    </div>
+                    <div className="w-1/3">
+                      <button
+                        className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
+                          selectedButton === 'weeklyBtn'
+                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
+                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                        } w-full`}
+                        onClick={() => selectButton('weeklyBtn')}
+                      >
+                        Weekly
+                      </button>
+                    </div>
+                    <div className="w-1/3">
+                      <button
+                        className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
+                          selectedButton === 'monthlyBtn'
+                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
+                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                        } w-full`}
+                        onClick={() => selectButton('monthlyBtn')}
+                      >
+                        Monthly
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-x-4 justify-center mt-4">
+                    <div className="w-1/3">
+                      <button
+                        className={`px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] ${
+                          selectedButton === 'manualBtn'
+                            ? 'bg-[#F9F5FF] text-[#000] border-[#240552]'
+                            : 'bg-[#F9FAFB] text-[#9CA3AF] border-[#F9FAFB]'
+                        } w-full`}
+                        onClick={() => selectButton('manualBtn')}
+                      >
+                        Anytime/Manual
+                      </button>
+                    </div>
+                  </div>
+                  {showWeeklyContent && (
+                    <div className="mt-10">
+                      <h2 className="text-center text-[#240552] font-[500] text-[30px] font-[founder] leading-[41px]">What Day Of The Week</h2>
+                      <h6 className="text-center text-[#9CA3AF] text-[14px] leading-[20px] font-[500]">
+                        How much is your overall target?
+                      </h6>
+                      <div className="flex items-center gap-x-4 justify-between mt-10">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-x-4 justify-between mt-4">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-x-4 justify-center mt-4">
+                        <div className="w-1/3">
+                          <button className="px-6 py-3 text-[#9CA3AF] border border-[#F9FAFB] text-[14px] leading-[22px] font-[500] rounded-[4px] bg-[#F9FAFB] w-full">
+                            Mondays
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <button
                     className="px-6 py-4 mt-12 text-white text-[12px] leading-[22px] font-[500] rounded-[8px] bg-[#240552] w-full"
                     onClick={handleNext}
