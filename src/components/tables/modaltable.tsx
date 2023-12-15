@@ -90,7 +90,7 @@ function ModalTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="h-[75px] text-black font-bold cursor-pointer"
+                  className="h-[75px] text-black font-[400] text-[12px] cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

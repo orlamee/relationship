@@ -271,11 +271,13 @@ function Savings() {
                 <ModalTable data={planData} columns={planColumns}/>
               </div>
               <div className="text-end">
-                <button
-                  className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
-                >
-                  Proceed
-                </button>
+                <Link href={'/dashboard/savings/create-vault'}>
+                  <button
+                    className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
+                  >
+                    Proceed
+                  </button>
+                </Link>
               </div>
             </div>
           </Modal>
