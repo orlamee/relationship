@@ -1,9 +1,14 @@
 "use client";
 import NavBar from "@/components/navbar";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Datatable from "@/components/tables/datatable";
-import { dashboardColumns, dashboardData, dashboardNotFundedData } from "@/components/dummydata";
+import {
+  planColumns,
+  planData,
+  savingColumns,
+  savingData,
+} from "@/components/dummydata";
 import {
   Tabs,
   TabsContent,
@@ -16,12 +21,22 @@ import savedib from "../../../assets/save-dib.svg";
 import profile from "../../../assets/profile-2user.svg";
 import minivault from "../../../assets/mini-vault.svg";
 import minidreams from "../../../assets/mini-dreams.svg";
-import minigrit from "../../../assets/mini-grit.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import Link from "next/link";
+import Modal from "@/components/modal";
+import { XCircleIcon } from "lucide-react";
+import ModalTable from "@/components/tables/modaltable";
 
 function Savings() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
   return (
     <section>
       <NavBar>
@@ -38,7 +53,7 @@ function Savings() {
         </div>
       </NavBar>
       <main className="px-4 lg:px-8 mt-[50px]">
-      <div className="bg-[#FFFFFF] rounded-[10px] p-10 mb-9">
+        <div className="bg-[#FFFFFF] rounded-[10px] p-10 mb-9">
           <h1 className="text-[20px] font-[500] leading-[20px] text-[#21003D]">
             Statistics
           </h1>
@@ -199,17 +214,72 @@ function Savings() {
                     </div>
                   </div>
                 </SwiperSlide>
-                
               </Swiper>
             </div>
           </div>
         </div>
         <div className="bg-[#FFFFFF] rounded-[10px] p-10 mb-9 relative">
           <h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
-            All Users
+            Savings Plan
           </h1>
-          
+          <div className="mt-10">
+            <Tabs defaultValue="vault">
+              <div className="flex items-center justify-between">
+                <TabsList>
+                  <TabsTrigger value="vault">
+                    Vault
+                  </TabsTrigger>
+                  <TabsTrigger value="vault_extra">
+                    Vault Extra
+                  </TabsTrigger>
+                  <TabsTrigger value="vault_premium">
+                    Vault Premium
+                  </TabsTrigger>
+                </TabsList>
+                <button
+                  className="rounded-[6px] bg-[#240552] text-white px-7 py-4 text-[12px] font-[500] leading-[20px]"
+                  onClick={openModal}
+                >
+                  Create Savings Plan +{" "}
+                </button>
+              </div>
+              <TabsContent value="vault">
+                <Datatable data={savingData} columns={savingColumns} />
+              </TabsContent>
+              <TabsContent value="vault_extra">
+                <Datatable data={savingData} columns={savingColumns} />
+              </TabsContent>
+              <TabsContent value="vault_premium">
+                <Datatable data={savingData} columns={savingColumns} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
+        {isModalOpen && (
+          <Modal>
+            <div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
+              <div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
+                <h1 className="text-[14px] font-[500] leading-[18px]">
+                  Select a User
+                </h1>
+                <XCircleIcon
+                  className="text-[#9CA3AF] cursor-pointer w-[18px]"
+                  onClick={closeModal}
+                />
+              </div>
+              <div className="my-6 relative">
+                <ModalTable data={planData} columns={planColumns}/>
+              </div>
+              <div className="text-end">
+                <button
+                  className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
+                >
+                  Proceed
+                </button>
+              </div>
+            </div>
+          </Modal>
+        )}
       </main>
     </section>
   );

@@ -500,3 +500,335 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
   },
   
 ];
+
+//Savings
+export type savingDataType = {
+  id: string;
+  profile_img: string;
+  officer_img: string;
+  name: string;
+  officer: string;
+  kodhex: string;
+  email: string;
+  balance: string;
+  account_number: string;
+  account_name: string;
+};
+
+export const savingData: savingDataType[] = [
+  {
+    id: "1",
+    profile_img: user,
+    name: "Ajayi Michael",
+    officer_img: user,
+    officer: "Ajayi Michael",
+    kodhex: "<Ajayi/>",
+    email: "john@example.com",
+    balance: "150,000",
+    account_name: "Ardillatech",
+    account_number: "234567890",
+  },
+];
+
+
+export const savingColumns: ColumnDef<savingDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400]"
+        >
+          Users <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <div className="flex items-center">
+            <Image
+              src={data.profile_img}
+              width={30}
+              height={30}
+              alt="user"
+              className="rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+                {data.name}
+              </h1>
+            </div>
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "kodhex",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Kodhex
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "officer",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <div className="flex items-center">
+            <Image
+              src={data.officer_img}
+              width={30}
+              height={30}
+              alt="user"
+              className="rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+                {data.officer}
+              </h1>
+            </div>
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "account_name",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Account Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "account_number",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Account Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "balance",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Balance
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+];
+
+//Savings plan
+export type planDataType = {
+  id: string;
+  profile_img: string;
+  name: string;
+  balance: string;
+  account_number: string;
+  account_name: string;
+};
+
+export const planData: planDataType[] = [
+  {
+    id: "1",
+    profile_img: user,
+    name: "Ajayi Michael",
+    balance: "150,000",
+    account_name: "Ardillatech",
+    account_number: "234567890",
+  },
+  {
+    id: "2",
+    profile_img: user,
+    name: "Shallipopi",
+    balance: "150,000",
+    account_name: "Ardillatech",
+    account_number: "234567890",
+  },
+];
+
+export const planColumns: ColumnDef<planDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Name <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <div className="flex items-center">
+            <Image
+              src={data.profile_img}
+              width={30}
+              height={30}
+              alt="user"
+              className="rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+                {data.name}
+              </h1>
+            </div>
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "account_name",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Account Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "account_number",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Account Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "balance",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Account Balance
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+];

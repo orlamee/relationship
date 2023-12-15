@@ -37,14 +37,14 @@ function Sidebar() {
           />
           <Sidebaritem
             title="User Management"
-            link="/dashboard/savings"
+            link=""
             icon={
               <Icon
                 icon="heroicons:users"
                 className="text-[#21003D] text-[24px]"
               />
             }
-            isActive={pathname === "/dashboard/savings"}
+            isActive={pathname === ""}
           />
           <Sidebaritem
             title="Member"
@@ -100,14 +100,14 @@ function Sidebar() {
           />
           <Sidebaritem
             title="Aditall"
-            link="/dashboard/savings"
+            link=""
             icon={
               <Icon
                 icon="heroicons:users"
                 className="text-[#21003D] text-[24px]"
               />
             }
-            isActive={pathname === "/dashboard/savings"}
+            isActive={pathname === ""}
           />
           <Sidebaritem
             title="Product"
