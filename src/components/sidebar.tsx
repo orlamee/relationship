@@ -35,17 +35,54 @@ function Sidebar() {
             }
             isActive={pathname === "/dashboard"}
           />
-          <Sidebaritem
+          {/* <Sidebaritem
             title="User Management"
-            link=""
+            link="/dashboard/user-management"
             icon={
               <Icon
                 icon="heroicons:users"
                 className="text-[#21003D] text-[24px]"
               />
             }
-            isActive={pathname === ""}
-          />
+            isActive={pathname === "/dashboard/user-management"}
+          /> */}
+          <Accordion type="single" collapsible className="w-full outline-none">
+            <AccordionItem value="item-1" className="border-b-0">
+              <AccordionTrigger className="text-[#9CA3AF] text-[12px] font-[500] hover:bg-[#F9FAFB] py-4 px-6 hover:no-underline">
+                <div className="flex gap-4">
+                  <Icon
+                    icon="heroicons:users"
+                    className="text-[#21003D] text-[24px]"
+                  />
+                  <p>User Management</p>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Link
+                  href={"/dashboard/user-management"}
+                  className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500] hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
+                    pathname === "/dashboard/user-management" ||
+                    pathname.startsWith("/dashboard/user-management")
+                      ? "bg-[#F9FAFB] text-[#21003D]"
+                      : "text-[#a9b1bc]"
+                  }`}
+                >
+                  Create Profile
+                </Link>
+                <Link
+                  href={"/dashboard/nuban"}
+                  className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500]  hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
+                    pathname === "/dashboard/nuban" ||
+                    pathname.startsWith("/dashboard/nuban")
+                      ? "bg-[#F9FAFB] text-[#21003D]"
+                      : "text-[#a9b1bc]"
+                  }`}
+                >
+                  Nuban
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           <Sidebaritem
             title="Member"
             link="/dashboard/members"
@@ -111,14 +148,14 @@ function Sidebar() {
           />
           <Sidebaritem
             title="Product"
-            link="/dashboard/savings-rank"
+            link="/dashboard/products"
             icon={
               <Icon
                 icon="la:shopping-bag"
                 className="text-[#21003D] text-[24px]"
               />
             }
-            isActive={pathname === "/dashboard/savings-ranks"}
+            isActive={pathname === "/dashboard/products"}
           />
           <Sidebaritem
             title="Schedule"

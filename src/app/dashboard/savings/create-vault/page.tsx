@@ -35,6 +35,27 @@ export default function CreateVault() {
       setShowMonthlyContent(false);
     }
   };
+
+  const [inputType, setInputType] = useState("text");
+
+  const [inputTypeDate, setInputTypeDate] = useState("text");
+
+  const handleFocus = () => {
+    setInputType("date");
+  };
+
+  const handleBlurDate = () => {
+    setInputTypeDate("time");
+  };
+
+  const handleDate = () => {
+    setInputTypeDate("time");
+  };
+
+  const handleBlur = () => {
+    setInputType("text");
+  };
+
   return (
     <section>
       <NavBar>
@@ -312,6 +333,61 @@ export default function CreateVault() {
                   >
                     Continue
                   </button>
+                </div>
+              </div>
+            )}
+            {activeStep === 3 && (
+              <div className="">
+                <div className="w-2/3 mx-auto my-9">
+                  <h2 className="text-center text-[#240552] font-[500] text-[30px] font-[founder] leading-[41px]">
+                    Choose Period
+                  </h2>
+                  <h6 className="text-center text-[#9CA3AF] text-[14px] leading-[20px] font-[500]">
+                    Tell us how long you wish to save for
+                  </h6>
+                  <div className="mt-[-49px]">
+                    <button onClick={handleBack}>
+                      <Icon
+                        icon="icon-park-outline:left-c"
+                        className="text-[27px] text-[#240552]"
+                      />
+                    </button>
+                  </div>
+                  <div className="mt-12">
+                    <div className="mb-6">
+                      <input
+                        type={inputType}
+                        placeholder="Select Start Date"
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        className="bg-[#fff] border border-[#240552] text-[#240552] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <input
+                        type={inputType}
+                        placeholder="Select Payback Date"
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        className="bg-[#fff] border border-[#240552] text-[#240552] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <input
+                        type={inputTypeDate}
+                        placeholder="Select Time"
+                        onFocus={handleDate}
+                        onBlur={handleBlurDate}
+                        className="bg-[#fff] border border-[#240552] text-[#240552] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      />
+                    </div>
+                    <button
+                      className="px-6 py-4 mt-6 text-white text-[12px] leading-[22px] font-[500] rounded-[8px] bg-[#240552] w-full"
+                      onClick={handleNext}
+                    >
+                      Continue
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
