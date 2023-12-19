@@ -1,9 +1,29 @@
 "use client";
 import NavBar from "@/components/navbar";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { dashboardColumns, dashboardData, dashboardNotFundedData, generatelistColumns, generatelistData, planColumns, planData } from "@/components/dummydata";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tablines";
+import Datatable from "@/components/tables/datatable";
+import Modal from "@/components/modal";
+import { XCircleIcon } from "lucide-react";
+import ModalTable from "@/components/tables/modaltable";
+import Link from "next/link";
+
 
 function Nuban() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
   return (
     <section>
       <NavBar>
@@ -24,25 +44,67 @@ function Nuban() {
           <h3 className="text-[#21003D] text-[20px] leading-[20px] font-[500]">
             Statistics
           </h3>
-          <div className="mt-9 grid lg:grid-cols-2 grid-cols-1 gap-10">
+          <div className="mt-9 grid lg:grid-cols-3 grid-cols-1 gap-10">
             <div className="bg-[#FFF9F0] rounded-[6px] p-6">
               <div className="flex items-center">
                 <svg
-                  width="22"
-                  height="23"
-                  viewBox="0 0 22 23"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 13 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="me-3"
                 >
                   <path
-                    d="M8.15323 4.908C9.42023 2.636 10.0532 1.5 11.0002 1.5C11.9472 1.5 12.5802 2.636 13.8472 4.908L14.1752 5.496C14.5352 6.142 14.7152 6.465 14.9952 6.678C15.2752 6.891 15.6252 6.97 16.3252 7.128L16.9612 7.272C19.4212 7.829 20.6502 8.107 20.9432 9.048C21.2352 9.988 20.3972 10.969 18.7202 12.93L18.2862 13.437C17.8102 13.994 17.5712 14.273 17.4642 14.617C17.3572 14.962 17.3932 15.334 17.4652 16.077L17.5312 16.754C17.7842 19.371 17.9112 20.679 17.1452 21.26C16.3792 21.842 15.2272 21.311 12.9252 20.251L12.3282 19.977C11.6742 19.675 11.3472 19.525 11.0002 19.525C10.6532 19.525 10.3262 19.675 9.67223 19.977L9.07623 20.251C6.77323 21.311 5.62124 21.841 4.85624 21.261C4.08924 20.679 4.21623 19.371 4.46923 16.754L4.53523 16.078C4.60723 15.334 4.64323 14.962 4.53523 14.618C4.42923 14.273 4.19024 13.994 3.71424 13.438L3.28024 12.93C1.60324 10.97 0.765235 9.989 1.05723 9.048C1.35024 8.107 2.58024 7.828 5.04024 7.272L5.67624 7.128C6.37524 6.97 6.72424 6.891 7.00524 6.678C7.28524 6.465 7.46523 6.142 7.82523 5.496L8.15323 4.908Z"
-                    stroke="#F59E0B"
-                    stroke-width="1.5"
+                    d="M5.0793 6.56C5.0643 6.56 5.0543 6.56 5.0393 6.56C5.0143 6.555 4.9793 6.555 4.9493 6.56C3.4993 6.515 2.4043 5.375 2.4043 3.97C2.4043 2.54 3.5693 1.375 4.9993 1.375C6.4293 1.375 7.5943 2.54 7.5943 3.97C7.5893 5.375 6.4893 6.515 5.0943 6.56C5.0893 6.56 5.0843 6.56 5.0793 6.56ZM4.9993 2.125C3.9843 2.125 3.1543 2.955 3.1543 3.97C3.1543 4.97 3.9343 5.775 4.9293 5.81C4.9593 5.805 5.0243 5.805 5.0893 5.81C6.0693 5.765 6.8393 4.96 6.8443 3.97C6.8443 2.955 6.0143 2.125 4.9993 2.125Z"
+                    fill="black"
+                  />
+                  <path
+                    d="M8.7692 6.625C8.7542 6.625 8.7392 6.625 8.7242 6.62C8.5192 6.64 8.3092 6.495 8.2892 6.29C8.2692 6.085 8.3942 5.9 8.5992 5.875C8.6592 5.87 8.7242 5.87 8.7792 5.87C9.5092 5.83 10.0792 5.23 10.0792 4.495C10.0792 3.735 9.4642 3.12 8.7042 3.12C8.4992 3.125 8.3292 2.955 8.3292 2.75C8.3292 2.545 8.4992 2.375 8.7042 2.375C9.8742 2.375 10.8292 3.33 10.8292 4.5C10.8292 5.65 9.9292 6.58 8.7842 6.625C8.7792 6.625 8.7742 6.625 8.7692 6.625Z"
+                    fill="black"
+                  />
+                  <path
+                    d="M5.08578 12.025C4.10578 12.025 3.12078 11.775 2.37578 11.275C1.68078 10.815 1.30078 10.185 1.30078 9.5C1.30078 8.815 1.68078 8.18 2.37578 7.715C3.87578 6.72 6.30578 6.72 7.79578 7.715C8.48578 8.175 8.87078 8.805 8.87078 9.49C8.87078 10.175 8.49078 10.81 7.79578 11.275C7.04578 11.775 6.06578 12.025 5.08578 12.025ZM2.79078 8.345C2.31078 8.665 2.05078 9.075 2.05078 9.505C2.05078 9.93 2.31578 10.34 2.79078 10.655C4.03578 11.49 6.13578 11.49 7.38078 10.655C7.86078 10.335 8.12078 9.925 8.12078 9.495C8.12078 9.07 7.85578 8.66 7.38078 8.345C6.13578 7.515 4.03578 7.515 2.79078 8.345Z"
+                    fill="black"
+                  />
+                  <path
+                    d="M9.66911 11.125C9.49411 11.125 9.33911 11.005 9.30411 10.825C9.26411 10.62 9.39411 10.425 9.59411 10.38C9.90911 10.315 10.1991 10.19 10.4241 10.015C10.7091 9.80001 10.8641 9.53001 10.8641 9.24501C10.8641 8.96001 10.7091 8.69001 10.4291 8.48001C10.2091 8.31001 9.93411 8.19001 9.60911 8.11501C9.40911 8.07001 9.27911 7.87001 9.32411 7.66501C9.36911 7.46501 9.56911 7.33501 9.77411 7.38001C10.2041 7.47501 10.5791 7.64501 10.8841 7.88001C11.3491 8.23001 11.6141 8.72501 11.6141 9.24501C11.6141 9.76501 11.3441 10.26 10.8791 10.615C10.5691 10.855 10.1791 11.03 9.74911 11.115C9.71911 11.125 9.69411 11.125 9.66911 11.125Z"
+                    fill="black"
                   />
                 </svg>
                 <h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
-                  Plans Created
+                  Total Users
+                </h5>
+              </div>
+              <h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
+                0
+              </h5>
+            </div>
+            <div className="bg-[#F6FDF9] rounded-[6px] p-6">
+              <div className="flex items-center">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="me-3"
+                >
+                  <path
+                    d="M6.06219 6.76523C6.05219 6.76523 6.03719 6.76523 6.02719 6.76523C6.01219 6.76523 5.99219 6.76523 5.97719 6.76523C4.84219 6.73023 3.99219 5.84523 3.99219 4.75523C3.99219 3.64523 4.89719 2.74023 6.00719 2.74023C7.11719 2.74023 8.02219 3.64523 8.02219 4.75523C8.01719 5.85023 7.16219 6.73023 6.07719 6.76523C6.06719 6.76523 6.06719 6.76523 6.06219 6.76523ZM6.00219 3.48523C5.30219 3.48523 4.73719 4.05523 4.73719 4.75023C4.73719 5.43523 5.27219 5.99023 5.95219 6.01523C5.96719 6.01023 6.01719 6.01023 6.06719 6.01523C6.73719 5.98023 7.26219 5.43023 7.26719 4.75023C7.26719 4.05523 6.70219 3.48523 6.00219 3.48523Z"
+                    fill="#22C55E"
+                  />
+                  <path
+                    d="M5.9965 11.3752C4.6515 11.3752 3.3665 10.8752 2.3715 9.96516C2.2815 9.88516 2.2415 9.76516 2.2515 9.65016C2.3165 9.05516 2.6865 8.50016 3.3015 8.09016C4.7915 7.10016 7.2065 7.10016 8.6915 8.09016C9.3065 8.50516 9.6765 9.05516 9.7415 9.65016C9.7565 9.77016 9.7115 9.88516 9.6215 9.96516C8.6265 10.8752 7.3415 11.3752 5.9965 11.3752ZM3.0365 9.55016C3.8665 10.2452 4.9115 10.6252 5.9965 10.6252C7.0815 10.6252 8.1265 10.2452 8.9565 9.55016C8.8665 9.24516 8.6265 8.95016 8.2715 8.71016C7.0415 7.89016 4.9565 7.89016 3.7165 8.71016C3.3615 8.95016 3.1265 9.24516 3.0365 9.55016Z"
+                    fill="#22C55E"
+                  />
+                  <path
+                    d="M6 11.375C3.035 11.375 0.625 8.965 0.625 6C0.625 3.035 3.035 0.625 6 0.625C8.965 0.625 11.375 3.035 11.375 6C11.375 8.965 8.965 11.375 6 11.375ZM6 1.375C3.45 1.375 1.375 3.45 1.375 6C1.375 8.55 3.45 10.625 6 10.625C8.55 10.625 10.625 8.55 10.625 6C10.625 3.45 8.55 1.375 6 1.375Z"
+                    fill="#22C55E"
+                  />
+                </svg>
+                <h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
+                  Accounts Credited
                 </h5>
               </div>
               <h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
@@ -100,8 +162,60 @@ function Nuban() {
           <h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
             All Users
           </h1>
-          <div className="mt-10"></div>
+          <div className="mt-10">
+            <Tabs defaultValue="funded">
+              <div className="flex items-center justify-between">
+                <TabsList>
+                  <TabsTrigger value="funded">
+                    Complete
+                  </TabsTrigger>
+                  <TabsTrigger value="not_funded">
+                    Not Completed
+                  </TabsTrigger>
+                </TabsList>
+                <button
+                  className="rounded-[6px] bg-[#240552] text-white px-7 py-4 text-[12px] font-[500] leading-[20px]"
+                  // onClick={openModal}
+                >
+                  Generate List
+                </button>
+              </div>
+              <TabsContent value="funded">
+                <Datatable data={dashboardData} columns={dashboardColumns} />
+              </TabsContent>
+              <TabsContent value="not_funded">
+                <Datatable data={dashboardNotFundedData} columns={dashboardColumns} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
+        {isModalOpen && (
+          <Modal>
+            <div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
+              <div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
+                <h1 className="text-[14px] font-[500] leading-[18px]">
+                  Select Field Officer
+                </h1>
+                <XCircleIcon
+                  className="text-[#9CA3AF] cursor-pointer w-[18px]"
+                  onClick={closeModal}
+                />
+              </div>
+              <div className="my-6 relative">
+                <ModalTable data={generatelistData} columns={generatelistColumns}/>
+              </div>
+              <div className="text-end">
+                <Link href={'/dashboard/savings/create-vault'}>
+                  <button
+                    className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
+                  >
+                    Generate List
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </Modal>
+        )}
       </main>
     </section>
   );

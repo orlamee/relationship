@@ -832,3 +832,97 @@ export const planColumns: ColumnDef<planDataType>[] = [
     },
   },
 ];
+
+// Generate List
+export type generatelistDataType = {
+  id: string;
+  officer_img: string;
+  officer: string;
+  email: string;
+
+};
+
+export const generatelistData: generatelistDataType[] = [
+  {
+    id: "1",
+    officer_img: user,
+    officer: "Ajayi Michael",
+    email: "john@example.com",
+  },
+];
+
+export const generatelistColumns: ColumnDef<generatelistDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "officer",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <div className="flex items-center">
+            <Image
+              src={data.officer_img}
+              width={30}
+              height={30}
+              alt="user"
+              className="rounded-full mr-3"
+            />
+            <div>
+              <h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+                {data.officer}
+              </h1>
+            </div>
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+];
