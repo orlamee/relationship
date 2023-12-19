@@ -175,7 +175,7 @@ function Nuban() {
                 </TabsList>
                 <button
                   className="rounded-[6px] bg-[#240552] text-white px-7 py-4 text-[12px] font-[500] leading-[20px]"
-                  // onClick={openModal}
+                  onClick={openModal}
                 >
                   Generate List
                 </button>
@@ -205,7 +205,7 @@ function Nuban() {
                 <ModalTable data={generatelistData} columns={generatelistColumns}/>
               </div>
               <div className="text-end">
-                <Link href={'/dashboard/savings/create-vault'}>
+                <Link href={'/dashboard/nuban/list'}>
                   <button
                     className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
                   >
