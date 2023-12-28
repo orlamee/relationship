@@ -41,7 +41,7 @@ function NavBar({ children }: Props) {
                   <div className="border-t border-[#F9FAFB] my-2"></div>
                   <ul>
                     <li className="hover:bg-[#F9FAFB] py-2 px-3 mb-4">
-                      <Link href="#">
+                      <Link href="/dashboard/account">
                         <div className="flex items-center">
                           <Icon
                             icon="iconoir:profile-circle"

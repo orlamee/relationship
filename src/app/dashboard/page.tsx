@@ -1,7 +1,6 @@
 "use client";
 import NavBar from "@/components/navbar";
 import React from "react";
-import Image from "next/image";
 import Datatable from "@/components/tables/datatable";
 import { dashboardColumns, dashboardData, dashboardNotFundedData } from "@/components/dummydata";
 import {
