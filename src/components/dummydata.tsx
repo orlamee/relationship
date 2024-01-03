@@ -943,12 +943,12 @@ export const branchData: branchDataType[] = [
   {
     id: "1",
     state: "Lagos",
-    head_branch: "Ajayi Michael",
-    branch: "150,000",
+    head_branch: "Yes",
+    branch: "Ikeja",
     email: "Ardillatech",
-    address: "234567890",
-    phone_number: "234567890",
-    group: "234567890",
+    address: "29, Oladoyingbr street, Ogba,Ikeja.Lagos.",
+    phone_number: "09012345673",
+    group: "Ardilla",
   },
 ];
 
@@ -1076,38 +1076,207 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
       );
     },
   },
-  // {
-  //   id: "actions",
-  //   enableHiding: false,
-  //   cell: ({ row }) => {
-  //     const data = row.original;
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <button className="h-8 w-8 p-0 outline-none">
+              <span className="sr-only">Open menu</span>
+              <MoreVertical className="h-4 w-4 text-[#240552]" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+            >
+              <Link
+                href={`/`}
+              >
+                <div className="flex items-center cursor-pointer">
+                  <Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+                  <span className="text-[12px] font-[400] leading-[12px]">
+                    {" "}
+                    View Details
+                  </span>
+                </div>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
 
-  //     return (
-  //       <DropdownMenu modal={false}>
-  //         <DropdownMenuTrigger asChild>
-  //           <button className="h-8 w-8 p-0 outline-none">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreVertical className="h-4 w-4 text-[#240552]" />
-  //           </button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuItem
-  //           >
-  //             <Link
-  //               href={`/`}
-  //             >
-  //               <div className="flex items-center cursor-pointer">
-  //                 <Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
-  //                 <span className="text-[12px] font-[400] leading-[12px]">
-  //                   {" "}
-  //                   View More Details
-  //                 </span>
-  //               </div>
-  //             </Link>
-  //           </DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
+
+//Group
+export type groupDataType = {
+  id: string;
+  group_name: string;
+  strength: string;
+  location: string;
+  address: string;
+  date: string;
+  phone_number: string;
+};
+
+export const groupData: groupDataType[] = [
+  {
+    id: "1",
+    group_name: "Ardilla",
+    strength: "-",
+    location: "Ikeja",
+    address: "29, Oladoyingbr street, Ogba,Ikeja.Lagos.",
+    date: "10/08/2023",
+    phone_number: "09012345673",
+  },
+];
+
+export const groupColumns: ColumnDef<groupDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "group_name",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Group Name <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "strength",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Strength
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "location",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Location
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "address",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Address
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "phone_number",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Phone Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <button className="h-8 w-8 p-0 outline-none">
+              <span className="sr-only">Open menu</span>
+              <MoreVertical className="h-4 w-4 text-[#240552]" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+            >
+              <Link
+                href={`/`}
+              >
+                <div className="flex items-center cursor-pointer">
+                  <Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+                  <span className="text-[12px] font-[400] leading-[12px]">
+                    {" "}
+                    View Details
+                  </span>
+                </div>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];

@@ -2,7 +2,7 @@
 import NavBar from "@/components/navbar";
 import React from "react";
 import Datatable from "@/components/tables/datatable";
-import { branchColumns, branchData } from "@/components/dummydata";
+import { branchColumns, branchData, groupColumns, groupData } from "@/components/dummydata";
 import {
   Tabs,
   TabsContent,
@@ -169,7 +169,7 @@ function Branch() {
                 <Datatable data={branchData} columns={branchColumns} />
               </TabsContent>
               <TabsContent value="group">
-                <Datatable data={branchData} columns={branchColumns} />
+                <Datatable data={groupData} columns={groupColumns} />
               </TabsContent>
             </Tabs>
           </div>
