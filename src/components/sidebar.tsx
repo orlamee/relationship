@@ -126,7 +126,7 @@ function Sidebar() {
           />
           <Sidebaritem
             title="Branch"
-            link="/dashboard/rewards"
+            link="/dashboard/branch"
             icon={
               <Icon
                 icon="solar:branching-paths-up-linear"
@@ -159,7 +159,7 @@ function Sidebar() {
           />
           <Sidebaritem
             title="Schedule"
-            link="/dashboard/savings-rank"
+            link="/dashboard"
             icon={
               <Icon
                 icon="material-symbols-light:event-note-outline"

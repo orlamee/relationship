@@ -1,15 +1,22 @@
 "use client";
 import NavBar from "@/components/navbar";
 import React from "react";
-import Image from "next/image";
+import Datatable from "@/components/tables/datatable";
+import { branchColumns, branchData } from "@/components/dummydata";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tablines";
 
-function Members() {
+function Branch() {
   return (
     <section>
       <NavBar>
         <div className="flex items-center">
           <h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
-            Member
+            Branch
           </h1>
           <h1 className="mx-3 text-[24px] text-[#21003D] leading-[33px] font-[500]">
             -
@@ -53,7 +60,7 @@ function Members() {
                   />
                 </svg>
                 <h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
-                  Total Staffs
+                  Location
                 </h5>
               </div>
               <h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
@@ -63,30 +70,28 @@ function Members() {
             <div className="bg-[#F6FDF9] rounded-[6px] p-6">
               <div className="flex items-center">
                 <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="me-3"
                 >
                   <path
-                    d="M7.17546 7.50326C8.82674 7.50326 10.1654 6.16463 10.1654 4.51335C10.1654 2.86207 8.82674 1.52344 7.17546 1.52344C5.52417 1.52344 4.18555 2.86207 4.18555 4.51335C4.18555 6.16463 5.52417 7.50326 7.17546 7.50326Z"
-                    stroke="#EF4444"
-                    stroke-width="0.896973"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    d="M6.06219 6.76523C6.05219 6.76523 6.03719 6.76523 6.02719 6.76523C6.01219 6.76523 5.99219 6.76523 5.97719 6.76523C4.84219 6.73023 3.99219 5.84523 3.99219 4.75523C3.99219 3.64523 4.89719 2.74023 6.00719 2.74023C7.11719 2.74023 8.02219 3.64523 8.02219 4.75523C8.01719 5.85023 7.16219 6.73023 6.07719 6.76523C6.06719 6.76523 6.06719 6.76523 6.06219 6.76523ZM6.00219 3.48523C5.30219 3.48523 4.73719 4.05523 4.73719 4.75023C4.73719 5.43523 5.27219 5.99023 5.95219 6.01523C5.96719 6.01023 6.01719 6.01023 6.06719 6.01523C6.73719 5.98023 7.26219 5.43023 7.26719 4.75023C7.26719 4.05523 6.70219 3.48523 6.00219 3.48523Z"
+                    fill="#22C55E"
                   />
                   <path
-                    d="M12.3124 13.4827C12.3124 11.1686 10.0102 9.29688 7.17572 9.29688C4.34129 9.29688 2.03906 11.1686 2.03906 13.4827"
-                    stroke="#EF4444"
-                    stroke-width="0.896973"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    d="M5.9965 11.3752C4.6515 11.3752 3.3665 10.8752 2.3715 9.96516C2.2815 9.88516 2.2415 9.76516 2.2515 9.65016C2.3165 9.05516 2.6865 8.50016 3.3015 8.09016C4.7915 7.10016 7.2065 7.10016 8.6915 8.09016C9.3065 8.50516 9.6765 9.05516 9.7415 9.65016C9.7565 9.77016 9.7115 9.88516 9.6215 9.96516C8.6265 10.8752 7.3415 11.3752 5.9965 11.3752ZM3.0365 9.55016C3.8665 10.2452 4.9115 10.6252 5.9965 10.6252C7.0815 10.6252 8.1265 10.2452 8.9565 9.55016C8.8665 9.24516 8.6265 8.95016 8.2715 8.71016C7.0415 7.89016 4.9565 7.89016 3.7165 8.71016C3.3615 8.95016 3.1265 9.24516 3.0365 9.55016Z"
+                    fill="#22C55E"
+                  />
+                  <path
+                    d="M6 11.375C3.035 11.375 0.625 8.965 0.625 6C0.625 3.035 3.035 0.625 6 0.625C8.965 0.625 11.375 3.035 11.375 6C11.375 8.965 8.965 11.375 6 11.375ZM6 1.375C3.45 1.375 1.375 3.45 1.375 6C1.375 8.55 3.45 10.625 6 10.625C8.55 10.625 10.625 8.55 10.625 6C10.625 3.45 8.55 1.375 6 1.375Z"
+                    fill="#22C55E"
                   />
                 </svg>
                 <h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
-                  Total Relationship Officer
+                  Staffs
                 </h5>
               </div>
               <h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
@@ -96,30 +101,42 @@ function Members() {
             <div className="bg-[#F5F9FF] rounded-[6px] p-6">
               <div className="flex items-center">
                 <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
+                  width="14"
+                  height="13"
+                  viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="me-3"
                 >
                   <path
-                    d="M7.17546 7.50326C8.82674 7.50326 10.1654 6.16463 10.1654 4.51335C10.1654 2.86207 8.82674 1.52344 7.17546 1.52344C5.52417 1.52344 4.18555 2.86207 4.18555 4.51335C4.18555 6.16463 5.52417 7.50326 7.17546 7.50326Z"
-                    stroke="#22C55E"
-                    stroke-width="0.896973"
+                    d="M6.72179 2.15234C3.74011 2.15234 1.32299 4.16661 1.32299 6.65134C1.32299 7.88623 1.92002 9.00491 2.88667 9.81788C3.0316 9.93977 3.12259 10.1163 3.12259 10.3057V11.7502H4.32232L4.79852 11.0708C4.87242 10.9653 5.0052 10.9195 5.1299 10.9516C6.16705 11.2183 7.27652 11.2183 8.31368 10.9516C8.43837 10.9195 8.57115 10.9653 8.64505 11.0708L9.12125 11.7502H10.321V10.3198C10.321 10.1225 10.418 9.93789 10.5803 9.82593C11.2251 9.3814 13.3203 8.51175 13.3203 7.58607V6.65134C13.3203 6.29638 13.0517 6.00863 12.7204 6.00863C12.3565 6.00863 12.0595 5.86724 11.9394 5.49124C11.3254 3.56875 9.22211 2.15234 6.72179 2.15234Z"
+                    stroke="black"
+                    stroke-width="1.3406"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M5.81929 3.95228C6.19839 3.75733 6.60132 3.65234 7.01902 3.65234C7.43672 3.65234 7.83965 3.75733 8.21875 3.95228"
+                    stroke="black"
+                    stroke-width="1.3406"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
                   <path
-                    d="M12.3124 13.4827C12.3124 11.1686 10.0102 9.29688 7.17572 9.29688C4.34129 9.29688 2.03906 11.1686 2.03906 13.4827"
-                    stroke="#22C55E"
-                    stroke-width="0.896973"
+                    d="M10.0236 5.75391H10.0182"
+                    stroke="black"
+                    stroke-width="1.78747"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
+                  <path
+                    d="M1.91915 4.25391C1.61922 3.95397 1.31929 3.39188 1.31929 2.65258C1.31929 1.71484 2.12499 0.954643 3.11888 0.954643C3.32922 0.954643 3.53112 0.988689 3.71875 1.05126"
+                    stroke="black"
+                    stroke-width="1.3406"
+                    stroke-linecap="round"
+                  />
                 </svg>
                 <h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
-                  Savings Plan Created
+                  Head Branch
                 </h5>
               </div>
               <h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
@@ -130,13 +147,36 @@ function Members() {
         </div>
         <div className="bg-[#FFFFFF] rounded-[10px] p-10 mb-9 relative">
           <h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
-            Field Officers
+            Report
           </h1>
-          <div className="mt-10"></div>
+          <div className="mt-10">
+            <Tabs defaultValue="details">
+              <TabsList>
+                <TabsTrigger value="details">
+                  Details
+                </TabsTrigger>
+                <TabsTrigger value="location">
+                  Location
+                </TabsTrigger>
+                <TabsTrigger value="group">
+                  Group
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="details">
+                <Datatable data={branchData} columns={branchColumns} />
+              </TabsContent>
+              <TabsContent value="location">
+                <Datatable data={branchData} columns={branchColumns} />
+              </TabsContent>
+              <TabsContent value="group">
+                <Datatable data={branchData} columns={branchColumns} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </main>
     </section>
   );
 }
 
-export default Members;
+export default Branch;

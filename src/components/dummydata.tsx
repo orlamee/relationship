@@ -926,3 +926,188 @@ export const generatelistColumns: ColumnDef<generatelistDataType>[] = [
   },
   
 ];
+
+//Branch
+export type branchDataType = {
+  id: string;
+  state: string;
+  head_branch: string;
+  branch: string;
+  email: string;
+  address: string;
+  phone_number: string;
+  group: string;
+};
+
+export const branchData: branchDataType[] = [
+  {
+    id: "1",
+    state: "Lagos",
+    head_branch: "Ajayi Michael",
+    branch: "150,000",
+    email: "Ardillatech",
+    address: "234567890",
+    phone_number: "234567890",
+    group: "234567890",
+  },
+];
+
+export const branchColumns: ColumnDef<branchDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "state",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          State <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "head_branch",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Head Branch
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "branch",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Branch
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "address",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Address
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "phone_number",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Phone Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "group",
+    header: ({ column }) => {
+      return (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+        >
+          Group
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </button>
+      );
+    },
+  },
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     const data = row.original;
+
+  //     return (
+  //       <DropdownMenu modal={false}>
+  //         <DropdownMenuTrigger asChild>
+  //           <button className="h-8 w-8 p-0 outline-none">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreVertical className="h-4 w-4 text-[#240552]" />
+  //           </button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuItem
+  //           >
+  //             <Link
+  //               href={`/`}
+  //             >
+  //               <div className="flex items-center cursor-pointer">
+  //                 <Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+  //                 <span className="text-[12px] font-[400] leading-[12px]">
+  //                   {" "}
+  //                   View More Details
+  //                 </span>
+  //               </div>
+  //             </Link>
+  //           </DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
+];
