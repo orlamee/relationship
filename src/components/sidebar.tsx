@@ -133,7 +133,7 @@ function Sidebar() {
                 className="text-[#21003D] text-[24px]"
               />
             }
-            isActive={pathname === "/dashboard/rewards"}
+            isActive={pathname === "/dashboard/branch"}
           />
           <Sidebaritem
             title="Aditall"
