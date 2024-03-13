@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../navbar";
 import Image from "next/image";
 import Link from "next/link";
-import arrowleft from "../../assets/arrow-left-icon.svg";
+// import arrowleft from "../../assets/arrow-left-icon.svg";
 
 export default function EditDraft() {
 	return (
@@ -18,12 +18,12 @@ export default function EditDraft() {
 				<div className="bg-[#FFFFFF] rounded-[16px]">
 					<Link href={"/dashboard/product"}>
 						<div className="flex items-center border-b-[2px] border-b-[#F3F4F6] p-10">
-							<Image
+							{/* <Image
 								src={arrowleft}
 								width={10}
 								height={10}
 								alt="arrow left"
-							/>
+							/> */}
 							<h3 className="text-[16px] text-[#21003D] leading-[30px] font-[500] ml-2">
 								Edit Plan
 							</h3>
