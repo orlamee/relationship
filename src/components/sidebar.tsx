@@ -7,35 +7,35 @@ import Sidebaritem from "./sidebaritem";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
 
 function Sidebar() {
-  const pathname = usePathname();
+	const pathname = usePathname();
 
-  return (
-    <aside className="hidden xl:block h-screen w-[330px] fixed left-0 z-[100] aside bg-[#fff] box-shadow shadow-[0_4px_30px_0_#9494941A]">
-      <ScrollArea className="h-full">
-        <div className="flex h-[110px] items-center pl-[40px]">
-          <Image src={logo} alt="ardilla logo" width={95} height={32} />
-        </div>
-        <div className="mx-[20px] mt-6">
-          <Sidebaritem
-            title="Dashboard"
-            link="/dashboard"
-            icon={
-              <Icon
-                icon="iwwa:dashboard"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard"}
-          />
-          {/* <Sidebaritem
+	return (
+		<aside className="hidden xl:block h-screen w-[330px] fixed left-0 z-[100] aside bg-[#fff] box-shadow shadow-[0_4px_30px_0_#9494941A]">
+			<ScrollArea className="h-full">
+				<div className="flex h-[110px] items-center pl-[40px]">
+					<Image src={logo} alt="ardilla logo" width={95} height={32} />
+				</div>
+				<div className="mx-[20px] mt-6">
+					<Sidebaritem
+						title="Dashboard"
+						link="/dashboard"
+						icon={
+							<Icon
+								icon="iwwa:dashboard"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard"}
+					/>
+					{/* <Sidebaritem
             title="User Management"
             link="/dashboard/user-management"
             icon={
@@ -46,129 +46,136 @@ function Sidebar() {
             }
             isActive={pathname === "/dashboard/user-management"}
           /> */}
-          <Accordion type="single" collapsible className="w-full outline-none">
-            <AccordionItem value="item-1" className="border-b-0">
-              <AccordionTrigger className="text-[#9CA3AF] text-[12px] font-[500] hover:bg-[#F9FAFB] py-4 px-6 hover:no-underline">
-                <div className="flex gap-4">
-                  <Icon
-                    icon="heroicons:users"
-                    className="text-[#21003D] text-[24px]"
-                  />
-                  <p>User Management</p>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <Link
-                  href={"/dashboard/user-management"}
-                  className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500] hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
-                    pathname === "/dashboard/user-management" ||
-                    pathname.startsWith("/dashboard/user-management")
-                      ? "bg-[#F9FAFB] text-[#21003D]"
-                      : "text-[#a9b1bc]"
-                  }`}
-                >
-                  Create Profile
-                </Link>
-                <Link
-                  href={"/dashboard/nuban"}
-                  className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500]  hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
-                    pathname === "/dashboard/nuban" ||
-                    pathname.startsWith("/dashboard/nuban")
-                      ? "bg-[#F9FAFB] text-[#21003D]"
-                      : "text-[#a9b1bc]"
-                  }`}
-                >
-                  Nuban
-                </Link>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <Sidebaritem
-            title="Member"
-            link="/dashboard/members"
-            icon={
-              <Icon icon="bx:user" className="text-[#21003D] text-[24px]" />
-            }
-            isActive={pathname === "/dashboard/members"}
-          />
-          <Sidebaritem
-            title="Savings"
-            link="/dashboard/savings"
-            icon={
-              <Icon
-                icon="clarity:savings-line"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/savings"}
-          />
-          <Sidebaritem
-            title="Loan"
-            link="/dashboard/wallet"
-            icon={
-              <Icon
-                icon="ion:wallet-outline"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/wallet"}
-          />
-          <Sidebaritem
-            title="Payment"
-            link="/dashboard/payment"
-            icon={
-              <Icon
-                icon="solar:card-send-outline"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/payment"}
-          />
-          <Sidebaritem
-            title="Branch"
-            link="/dashboard/branch"
-            icon={
-              <Icon
-                icon="solar:branching-paths-up-linear"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/branch"}
-          />
-          <Sidebaritem
-            title="Aditall"
-            link=""
-            icon={
-              <Icon
-                icon="heroicons:users"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === ""}
-          />
-          <Sidebaritem
-            title="Product"
-            link="/dashboard/products"
-            icon={
-              <Icon
-                icon="la:shopping-bag"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/products"}
-          />
-          <Sidebaritem
-            title="Schedule"
-            link="/dashboard"
-            icon={
-              <Icon
-                icon="material-symbols-light:event-note-outline"
-                className="text-[#21003D] text-[24px]"
-              />
-            }
-            isActive={pathname === "/dashboard/savings-ranks"}
-          />
-          {/* <Accordion type="single" collapsible className="w-full outline-none">
+					<Accordion
+						type="single"
+						collapsible
+						className="w-full outline-none"
+					>
+						<AccordionItem value="item-1" className="border-b-0">
+							<AccordionTrigger className="text-[#9CA3AF] text-[12px] font-[500] hover:bg-[#F9FAFB] py-4 px-6 hover:no-underline">
+								<div className="flex gap-4">
+									<Icon
+										icon="heroicons:users"
+										className="text-[#21003D] text-[24px]"
+									/>
+									<p>User Management</p>
+								</div>
+							</AccordionTrigger>
+							<AccordionContent>
+								<Link
+									href={"/dashboard/user-management"}
+									className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500] hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
+										pathname === "/dashboard/user-management" ||
+										pathname.startsWith("/dashboard/user-management")
+											? "bg-[#F9FAFB] text-[#21003D]"
+											: "text-[#a9b1bc]"
+									}`}
+								>
+									Create Profile
+								</Link>
+								<Link
+									href={"/dashboard/nuban"}
+									className={`block mt-2  ml-[50px] text-[#9CA3AF] text-[12px] font-[500]  hover:text-[#21003D] hover:bg-[#F9FAFB] px-4 py-2 rounded-[5px] mb-1 ${
+										pathname === "/dashboard/nuban" ||
+										pathname.startsWith("/dashboard/nuban")
+											? "bg-[#F9FAFB] text-[#21003D]"
+											: "text-[#a9b1bc]"
+									}`}
+								>
+									Nuban
+								</Link>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+					<Sidebaritem
+						title="Member"
+						link="/dashboard/members"
+						icon={
+							<Icon
+								icon="bx:user"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/members"}
+					/>
+					<Sidebaritem
+						title="Savings"
+						link="/dashboard/savings"
+						icon={
+							<Icon
+								icon="clarity:savings-line"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/savings"}
+					/>
+					<Sidebaritem
+						title="Loan"
+						link="/dashboard/wallet"
+						icon={
+							<Icon
+								icon="ion:wallet-outline"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/wallet"}
+					/>
+					<Sidebaritem
+						title="Payment"
+						link="/dashboard/payment"
+						icon={
+							<Icon
+								icon="solar:card-send-outline"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/payment"}
+					/>
+					<Sidebaritem
+						title="Branch"
+						link="/dashboard/branch"
+						icon={
+							<Icon
+								icon="solar:branching-paths-up-linear"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/branch"}
+					/>
+					<Sidebaritem
+						title="Aditall"
+						link=""
+						icon={
+							<Icon
+								icon="heroicons:users"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === ""}
+					/>
+					<Sidebaritem
+						title="Product"
+						link="/dashboard/product"
+						icon={
+							<Icon
+								icon="la:shopping-bag"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/product"}
+					/>
+					<Sidebaritem
+						title="Schedule"
+						link="/dashboard"
+						icon={
+							<Icon
+								icon="material-symbols-light:event-note-outline"
+								className="text-[#21003D] text-[24px]"
+							/>
+						}
+						isActive={pathname === "/dashboard/savings-ranks"}
+					/>
+					{/* <Accordion type="single" collapsible className="w-full outline-none">
             <AccordionItem value="item-1" className="border-b-0">
               <AccordionTrigger className="text-[#9CA3AF] text-[12px] font-[500] hover:bg-[#F9FAFB] py-4 px-6 hover:no-underline">
                 <div className="flex gap-4">
@@ -216,10 +223,10 @@ function Sidebar() {
               </AccordionContent>
             </AccordionItem>
           </Accordion> */}
-        </div>
-      </ScrollArea>
-    </aside>
-  );
+				</div>
+			</ScrollArea>
+		</aside>
+	);
 }
 
 export default Sidebar;
