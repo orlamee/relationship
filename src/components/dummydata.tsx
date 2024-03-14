@@ -1038,6 +1038,44 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 			);
 		},
 	},
+	{
+		id: "actions",
+		header: ({ column }) => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/savings/vault/${data.id}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View More Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
 ];
 
 //Savings plan
