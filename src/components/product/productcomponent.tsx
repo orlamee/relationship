@@ -29,7 +29,7 @@ export default function Productcomponent() {
 						<h1 className="text-[20px] font-[500] leading-[20px] text-[#21003D]">
 							Statistics
 						</h1>
-						<div className="flex items-center gap-6">
+						{/* <div className="flex items-center gap-6">
 							<Link href={"/dashboard/product/draft"}>
 								<button className="border-[1.5px] bg-white text-[#240552] border-[#240552] rounded-[3px] text-[12px] font-[500] px-7 py-3">
 									Incomplete Plan
@@ -41,7 +41,7 @@ export default function Productcomponent() {
 									Create Plan
 								</button>
 							</Link>
-						</div>
+						</div> */}
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">

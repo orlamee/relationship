@@ -2,6 +2,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "./components/ui/checkbox";
 import { ArrowUpDown, MoreHorizontal, Trash2 } from "lucide-react";
 import Image from "next/image";
+import topup from "./assets/topup icon.svg";
+import withdraw from "./assets/withdrawal-Icon.svg";
+import dividends from "./assets/dividends-icon.svg";
 import {
 	DropdownMenu,
 	DropdownMenuItem,
@@ -157,7 +160,7 @@ export const productDataCol: ColumnDef<productDraftType>[] = [
 					}
 					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
 				>
-					Reletionship Officer
+					Customer Care
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
 			);
@@ -181,53 +184,53 @@ export const productDataCol: ColumnDef<productDraftType>[] = [
 		},
 	},
 
-	{
-		id: "actions",
-		enableHiding: false,
-		header: ({ column }) => {
-			return (
-				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
-					Action
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
+	// {
+	// 	id: "actions",
+	// 	enableHiding: false,
+	// 	header: ({ column }) => {
+	// 		return (
+	// 			<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+	// 				Action
+	// 			</button>
+	// 		);
+	// 	},
+	// 	cell: ({ row }) => {
+	// 		const data = row.original;
 
-			return (
-				<DropdownMenu modal={false}>
-					<DropdownMenuTrigger asChild>
-						<button className="h-8 w-8 p-0 outline-none">
-							<span className="sr-only">Open menu</span>
-							<MoreHorizontal className="h-4 w-4" />
-						</button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						{/* <DropdownMenuItem>
-							<Link href={`/dashboard/product/draft/edit/${data.id}`}>
-								<div className="flex items-center cursor-pointer">
-									<Pen className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
-									<span className="text-[12px] font-[400] leading-[12px] text-[#21003D]">
-										{" "}
-										Edit Plan
-									</span>
-								</div>
-							</Link>
-						</DropdownMenuItem> */}
-						<DropdownMenuItem>
-							<div className="flex items-center cursor-pointer">
-								<Trash2 className="w-[14px] text-[#EF4444] mr-2" />{" "}
-								<span className="text-[12px] font-[400] leading-[12px] text-[#21003D]">
-									{" "}
-									Delete Plan
-								</span>
-							</div>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			);
-		},
-	},
+	// 		return (
+	// 			<DropdownMenu modal={false}>
+	// 				<DropdownMenuTrigger asChild>
+	// 					<button className="h-8 w-8 p-0 outline-none">
+	// 						<span className="sr-only">Open menu</span>
+	// 						<MoreHorizontal className="h-4 w-4" />
+	// 					</button>
+	// 				</DropdownMenuTrigger>
+	// 				<DropdownMenuContent align="end">
+	// 					{/* <DropdownMenuItem>
+	// 						<Link href={`/dashboard/product/draft/edit/${data.id}`}>
+	// 							<div className="flex items-center cursor-pointer">
+	// 								<Pen className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+	// 								<span className="text-[12px] font-[400] leading-[12px] text-[#21003D]">
+	// 									{" "}
+	// 									Edit Plan
+	// 								</span>
+	// 							</div>
+	// 						</Link>
+	// 					</DropdownMenuItem> */}
+	// 					<DropdownMenuItem>
+	// 						<div className="flex items-center cursor-pointer bg-gray-100">
+	// 							<Trash2 className="w-[14px] text-[#EF4444] mr-2" />{" "}
+	// 							<span className="text-[12px] font-[400] leading-[12px] text-[#21003D]">
+	// 								{" "}
+	// 								Delete Plan
+	// 							</span>
+	// 						</div>
+	// 					</DropdownMenuItem>
+	// 				</DropdownMenuContent>
+	// 			</DropdownMenu>
+	// 		);
+	// 	},
+	// },
 ];
 export const productdraftData: productDraftType[] = [
 	{
@@ -251,5 +254,79 @@ export const productdraftData: productDraftType[] = [
 		relationship_officer: "Yes",
 		name: "Vault Extra",
 		profile_img: vault,
+	},
+];
+
+export type planRecentsType = {
+	id: string;
+	image: string;
+	description: string;
+	amount: string;
+	date: {
+		date: string;
+		time: string;
+	};
+};
+
+export const planRecents: planRecentsType[] = [
+	{
+		id: "1",
+		image: topup,
+		description: "Top Up",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
+	},
+	{
+		id: "2",
+		image: withdraw,
+		description: "Withdrawal",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
+	},
+	{
+		id: "3",
+		image: dividends,
+		description: "Dividends Payout",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
+	},
+	{
+		id: "4",
+		image: topup,
+		description: "Top Up",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
+	},
+	{
+		id: "5",
+		image: withdraw,
+		description: "Withdrawal",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
+	},
+	{
+		id: "6",
+		image: topup,
+		description: "Top Up",
+		amount: "₦ 150,000",
+		date: {
+			date: "10/11/2023",
+			time: "10:00am",
+		},
 	},
 ];

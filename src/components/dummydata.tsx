@@ -1444,6 +1444,13 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
+		header: ({ column }) => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+				</button>
+			);
+		},
 		cell: ({ row }) => {
 			const data = row.original;
 			return (
@@ -1456,7 +1463,183 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/`}>
+							<Link href={`/dashboard/branch/details/${data.id}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];
+export const LocationColumns: ColumnDef<branchDataType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value: boolean) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "state",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					State <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "head_branch",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Head Branch
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "branch",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Branch
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "email",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Email
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "address",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Address
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "phone_number",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Phone Number
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "group",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Group
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		id: "actions",
+		enableHiding: false,
+		header: ({ column }) => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/branch/location/${data.id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
@@ -1622,6 +1805,14 @@ export const groupColumns: ColumnDef<groupDataType>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
+		header: () => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
 		cell: ({ row }) => {
 			const data = row.original;
 			return (
@@ -1634,7 +1825,7 @@ export const groupColumns: ColumnDef<groupDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/`}>
+							<Link href={`/dashboard/branch/group/${data.id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
