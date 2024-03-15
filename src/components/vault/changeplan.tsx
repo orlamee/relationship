@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import PanelHeader from "../Accountcomponents/panelHeader";
+// import PanelHeader from "../Accountcomponents/panelHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
 	Table,
@@ -180,10 +180,10 @@ export default function ChangePlan() {
 		<div className="h-[75vh] relative">
 			{activePanel === "home" && (
 				<>
-					<PanelHeader
+					{/* <PanelHeader
 						title="Change Savings Plan"
 						subtitle="Change your savings plan settings"
-					/>
+					/> */}
 					<div className="mt-6 flex flex-col gap-6">
 						<div className="p-5 border-[1px] border-[#F3F4F6] rounded-[4px] ">
 							<select className="w-full text-[12px] text-primary outline-none">
@@ -263,12 +263,12 @@ export default function ChangePlan() {
 			)}
 			{activePanel === "estimate" && (
 				<>
-					<PanelHeader
+					{/* <PanelHeader
 						title="Estimate"
 						subtitle="A good consistency will give you this"
 						withIcon
 						onBackClick={() => setActivePanel("home")}
-					/>
+					/> */}
 					<div className="mt-6">
 						<EstimateTab />
 					</div>

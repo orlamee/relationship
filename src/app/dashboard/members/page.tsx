@@ -2,6 +2,8 @@
 import NavBar from "@/components/navbar";
 import React from "react";
 import Image from "next/image";
+import Datatable from "@/components/tables/datatable";
+import { memberData, membersCol } from "@/dummy";
 
 function Members() {
 	return (
@@ -126,7 +128,13 @@ function Members() {
 					<h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
 						Field Officers
 					</h1>
-					<div className="mt-10"></div>
+					<div className="mt-10">
+						<Datatable
+							data={memberData}
+							columns={membersCol}
+							placeholder="search for a field officer"
+						/>
+					</div>
 				</div>
 			</main>
 		</section>
