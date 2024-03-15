@@ -37,9 +37,9 @@ function NavBar({ children }: Props) {
 										<h3 className="text-[12px] text-[#000] font-[500] leading-[20px]">
 											Olabode Bola
 										</h3>
-										<span className="text-[#9CA3AF] text-[10px] font-[500] leading-[20px]">
-											Relationship Officer
-										</span>
+										<h4 className="text-[#9CA3AF] text-[11px] font-[500] leading-[20px]">
+											Customer Care
+										</h4>
 									</div>
 									<div className="border-t border-[#F9FAFB] my-2"></div>
 									<ul>
@@ -75,11 +75,11 @@ function NavBar({ children }: Props) {
 						)}
 					</div>
 					<div>
-						<h3 className="text-[#21003D] text-[13px] leading-[15px] font-[500]">
+						<h3 className="text-[#21003D] text-[13px] leading-[15px] font-[500] mb-1.5">
 							Olabode Bola
 						</h3>
 						<h6 className="text-[#9CA3AF] text-[12px] leading-[14px] font-[500]">
-							Relationship Officer
+							Customer care
 						</h6>
 					</div>
 				</div>

@@ -29,12 +29,13 @@ export default function KYC() {
 					<div className="flex flex-row gap-x-10">
 						<div className="w-1/3">
 							<h3 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-								National Identification Number (NIN Slip)
+								Valid ID Card
 							</h3>
 							<div className="relative inline-block">
 								<Image
 									src={nin}
 									alt="nin"
+									loading="eager"
 									className="my-4 w-full cursor-pointer"
 								/>
 								<button
@@ -71,7 +72,7 @@ export default function KYC() {
 							<div className="mt-5">
 								<input
 									type="text"
-									placeholder="Choose Reason"
+									placeholder="Reason"
 									className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 								/>
 							</div>
@@ -123,12 +124,13 @@ export default function KYC() {
 					<div className="flex flex-row gap-x-10">
 						<div className="w-1/3">
 							<h3 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-								International Passport
+								National Identification Number (NIN Slip)
 							</h3>
 							<div className="relative inline-block">
 								<Image
 									src={nin}
 									alt="nin"
+									loading="eager"
 									className="my-4 w-full cursor-pointer"
 								/>
 								<button
@@ -165,7 +167,7 @@ export default function KYC() {
 							<div className="mt-5">
 								<input
 									type="text"
-									placeholder="Choose Reason"
+									placeholder="Reason"
 									className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 								/>
 							</div>
@@ -223,6 +225,7 @@ export default function KYC() {
 								<Image
 									src={nin}
 									alt="nin"
+									loading="eager"
 									className="my-4 w-full cursor-pointer"
 								/>
 								<button

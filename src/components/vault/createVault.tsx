@@ -9,6 +9,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import Entername from "./entername";
 import Entertarget from "./entertarget";
 import ChoosePeriod from "./chooseperiod";
+import Image from "next/image";
+import avatar from "../../assets/avatar.svg";
 
 function CreateVault() {
 	// const step = useSearchParams().get("step") || "enter amount";
@@ -23,17 +25,29 @@ function CreateVault() {
 
 	return (
 		<section>
-			<NavBar>
-				<Link href={"/dashboard/savings"}>
-					<div className="flex items-center">
-						<ChevronLeft className="w-[24px] text-black" />
+			<header className="sticky top-0 z-[200] px-4 lg:px-8 flex items-center h-[110px] w-full bg-white">
+				<nav className="flex justify-between w-full items-center">
+					<Link href={"/dashboard/savings"}>
+						<div className="flex items-center">
+							<ChevronLeft className="w-[24px] text-black" />
 
-						<p className="text-black text-[14px] font-[500] ">
-							Create Vault Plan
-						</p>
+							<p className="text-black text-[14px] font-[500] ">
+								Create Vault Plan
+							</p>
+						</div>
+					</Link>
+					<div className="flex items-center space-x-3">
+						<Image src={avatar} alt="avatar" className="w-[30px]" />
+						<div>
+							<h1 className="text-black font-[500] text-[12px]">
+								Ajayi Michael Olaoluwa
+							</h1>
+							<p className="text-[12px] font-[400] text-[#9CA3AF]">{`<Ajayi/>`}</p>
+						</div>
 					</div>
-				</Link>
-			</NavBar>
+					<div></div>
+				</nav>
+			</header>
 			<main className="flex items-center justify-center h-[80vh]">
 				<div className=" py-4 px-4 w-full mx-4 sm:mx-[10%] lg:mx-0 lg:w-1/2 border-[1px] border-[#E5E7EB] rounded-[8px] container-gradient bg-white">
 					<ScrollArea className=" bg-white w-full py-8 rounded-[8px]">

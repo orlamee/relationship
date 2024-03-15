@@ -642,6 +642,26 @@ export type activitiesDataType = {
 	status: string;
 };
 
+export type paymentDataType = {
+	id: string;
+	badge: string;
+	description: string;
+	date: string;
+	amount: string;
+	to: string;
+	status: string;
+};
+
+export type rewardDataType = {
+	id: string;
+	reward: string;
+	title: string;
+	location: string;
+	date: string;
+	amount: string;
+	status: string;
+};
+
 export const activitiesData: activitiesDataType[] = [
 	{
 		id: "1",
@@ -649,7 +669,7 @@ export const activitiesData: activitiesDataType[] = [
 		description: "Top up",
 		date: "10/11/94",
 		amount: "₦150,000",
-		source: "DIB",
+		source: "Vault",
 		status: "successful",
 	},
 	{
@@ -658,7 +678,7 @@ export const activitiesData: activitiesDataType[] = [
 		description: "Withdrawal",
 		date: "10/11/94",
 		amount: "₦150,000",
-		source: "DIB",
+		source: "Vault Extra",
 		status: "pending",
 	},
 	{
@@ -667,7 +687,7 @@ export const activitiesData: activitiesDataType[] = [
 		description: "Withdrawal",
 		date: "10/11/94",
 		amount: "₦150,000",
-		source: "DIB",
+		source: "Vault Premium",
 		status: "failed",
 	},
 	{
@@ -676,36 +696,12 @@ export const activitiesData: activitiesDataType[] = [
 		description: "Withdrawal",
 		date: "10/11/94",
 		amount: "₦150,000",
-		source: "DIB",
+		source: "Vault",
 		status: "reversed",
 	},
 ];
 
 export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && "indeterminate")
-				}
-				onCheckedChange={(value: boolean) =>
-					table.toggleAllPageRowsSelected(!!value)
-				}
-				aria-label="Select all"
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-			/>
-		),
-		enableSorting: false,
-		enableHiding: false,
-	},
 	{
 		accessorKey: "description",
 		header: ({ column }) => {
@@ -826,6 +822,304 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 				</div>
 			);
 		},
+	},
+];
+export const paymentColumns: ColumnDef<paymentDataType>[] = [
+	{
+		accessorKey: "description",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400]"
+				>
+					Description <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<Image
+							src={data.badge}
+							width={30}
+							height={30}
+							alt="user"
+							className="rounded-full mr-3"
+						/>
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.description}
+							</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "date",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Date
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "amount",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Amount
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "to",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					To
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "status",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Status
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<div className="flex items-center">
+					{data.status === "successful" && (
+						<TransferStatus type="successful" text={data.status} />
+					)}
+					{data.status === "pending" && (
+						<TransferStatus type="pending" text={data.status} />
+					)}
+					{data.status === "reversed" && (
+						<TransferStatus type="reversed" text={data.status} />
+					)}
+					{data.status === "failed" && (
+						<TransferStatus type="failed" text={data.status} />
+					)}
+				</div>
+			);
+		},
+	},
+];
+
+export const paymentData: paymentDataType[] = [
+	{
+		id: "1",
+		badge: topup,
+		description: "Top up",
+		date: "10/11/94",
+		amount: "₦150,000",
+		to: "Ajayi Michael..",
+		status: "successful",
+	},
+	{
+		id: "2",
+		badge: widthdraw,
+		description: "Withdrawal",
+		date: "10/11/94",
+		amount: "₦150,000",
+		to: "Ajayi Michael..",
+		status: "pending",
+	},
+	{
+		id: "2",
+		badge: widthdraw,
+		description: "Withdrawal",
+		date: "10/11/94",
+		amount: "₦150,000",
+		to: "Ajayi Michael..",
+		status: "failed",
+	},
+	{
+		id: "2",
+		badge: widthdraw,
+		description: "Withdrawal",
+		date: "10/11/94",
+		amount: "₦150,000",
+		to: "Ajayi Michael..",
+		status: "reversed",
+	},
+];
+
+export const rewardColumns: ColumnDef<rewardDataType>[] = [
+	{
+		accessorKey: "reward",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Rewards <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "title",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Title <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "date",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Date
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "location",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Location
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "amount",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Amount
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "status",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Status
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<div className="flex items-center">
+					{data.status === "claimed" && (
+						<span className="px-5 py-2.5 bg-[#EFFBEF] text-[#228B22] rounded-[4px] capitalize">
+							{data.status}
+						</span>
+					)}
+					{data.status === "unclaimed" && (
+						<span className="px-5 py-2.5 bg-[#F9FAFB] text-[#9CA3AF] rounded-[4px] capitalize">
+							{data.status}
+						</span>
+					)}
+				</div>
+			);
+		},
+	},
+];
+
+export const rewardsData: rewardDataType[] = [
+	{
+		id: "1",
+		reward: "Movie",
+		title: "Miseducation",
+		date: "10/11/2023",
+		location: "Shoprite Cinema, Ikeja.",
+		status: "claimed",
+		amount: "150,000",
+	},
+	{
+		id: "1",
+		reward: "Movie",
+		title: "Miseducation",
+		date: "10/11/2023",
+		location: "Shoprite Cinema, Ikeja.",
+		status: "unclaimed",
+		amount: "150,000",
 	},
 ];
 

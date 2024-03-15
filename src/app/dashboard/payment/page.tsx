@@ -150,18 +150,12 @@ function Dashboard() {
 						All Users
 					</h1>
 					<div className="mt-10">
-						<Tabs defaultValue="completed">
+						<Tabs defaultValue="funded">
 							<TabsList>
-								<TabsTrigger value="completed">Completed</TabsTrigger>
 								<TabsTrigger value="funded">Funded</TabsTrigger>
 								<TabsTrigger value="not_funded">Not Funded</TabsTrigger>
 							</TabsList>
-							<TabsContent value="completed">
-								<Datatable
-									data={CompletedData}
-									columns={CompletedColumns}
-								/>
-							</TabsContent>
+
 							<TabsContent value="funded">
 								<Datatable
 									data={dashboardData}

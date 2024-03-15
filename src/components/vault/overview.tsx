@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import dib from "../../assets/vault.svg";
 import Image from "next/image";
 // import refresh from "../../assets/static/refresh.png";
-// import kodhex from "../../assets/static/kodxxx.svg";
+import kodhex from "../../assets/kodhex (2).svg";
 // import insufficientKodhex from "../../assets/static/insufficient kodex.svg";
 import {
 	Ban,
@@ -20,7 +20,7 @@ import {
 // import mastercard from "../../assets/static/Mastercard logo.png";
 import Modal from "../modal";
 import { AnimatePresence, motion } from "framer-motion";
-// import note from "../../assets/static/note.svg";
+import note from "../../assets/note.svg";
 import success from "../../assets/success.png";
 // import failed from "../../assets/static/failed-ks1ODQxJMt.png";
 // import CurrencyInput from "react-currency-input-field";
@@ -149,16 +149,16 @@ function OverView({ setStep }: props) {
 					</p>
 
 					<div
-						className="text-primary cursor-pointer text-[10px] justify-center text-center bg-[#F9FAFB] rounded-[8px] w-[327px] mx-auto  h-[45px] flex items-center"
+						className="text-[#3D0072] cursor-pointer text-[10px] justify-center text-center bg-[#F9FAFB] rounded-[8px] w-[327px] mx-auto  h-[45px] flex items-center"
 						// onClick={() => setModal("receipt")}
 					>
-						{/* <Image
+						<Image
 							src={note}
 							alt="note"
 							width={17}
 							height={17}
 							className="mr-[6px]"
-						/> */}
+						/>
 						View Receipt
 					</div>
 				</motion.div>
@@ -241,7 +241,7 @@ function OverView({ setStep }: props) {
 					</p>
 
 					<div
-						className="text-primary mt-5 cursor-pointer mb-5 text-[10px] mx-auto justify-center text-center bg-[#F9FAFB] rounded-[8px] w-[125px] h-[33px] flex items-center"
+						className="text-[#3D0072] mt-5 cursor-pointer mb-5 text-[10px] mx-auto justify-center text-center bg-[#F9FAFB] rounded-[8px] w-[125px] h-[33px] flex items-center"
 						// onClick={() => setModal("receipt")}
 					>
 						{/* <Image
@@ -825,11 +825,11 @@ function OverView({ setStep }: props) {
 					<p className="text-[24px] font-[700] text-primary">₦ 50,000</p>
 				</div>
 				<div className="flex items-center justify-between border-b-[1px] border-b-[#F3F4F6] py-4 rounded-[4px] ">
-					<p className="text-[12px] font-[500] text-gray400">KodHex</p>
+					<p className="text-[12px] font-[500] text-[#9CA3AF]">KodHex</p>
 					<p className="text-[12px] font-[500] text-black">Levijazz</p>
 				</div>
 				<div className="flex items-center justify-between border-b-[1px] border-b-[#F3F4F6] py-4 rounded-[4px] ">
-					<p className="text-[12px] font-[500] text-gray400">Plan</p>
+					<p className="text-[12px] font-[500] text-[#9CA3AF]">Plan</p>
 					<p className="text-[12px] font-[500] text-black">Vault</p>
 				</div>
 				<div className="flex justify-end items-center mt-2 mb-4">
@@ -838,13 +838,13 @@ function OverView({ setStep }: props) {
 						Click here to Refresh
 					</p>
 				</div>
-				<p className="text-[14px] font-[500] text-center mb-4 text-gray400">
+				<p className="text-[14px] font-[500] text-center mb-4 text-[#9CA3AF]">
 					Pay With
 				</p>
 				<div className="mb-2">
 					<div className="flex justify-between items-center p-4 border-[1px] border-primary rounded-[4px]">
 						<div className="flex items-center ">
-							{/* <Image src={kodhex} width={23} height={23} alt="kodhex" /> */}
+							<Image src={kodhex} width={23} height={23} alt="kodhex" />
 							<p className="ml-2 text-[12px] font-[500]">
 								KodHex (Wallet)
 							</p>
