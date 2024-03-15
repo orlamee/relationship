@@ -1,7 +1,6 @@
 "use client";
 import NavBar from "@/components/navbar";
 import React from "react";
-import Image from "next/image";
 import Datatable from "@/components/tables/datatable";
 import { memberData, membersCol } from "@/dummy";
 
@@ -82,7 +81,7 @@ function Members() {
 									/>
 								</svg>
 								<h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
-									Total Relationship Officer
+									Total Customer Care
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
