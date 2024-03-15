@@ -5,6 +5,7 @@ import Datatable from "@/components/tables/datatable";
 import {
 	CompletedColumns,
 	CompletedData,
+	PaymentdashboardColumns,
 	dashboardColumns,
 	dashboardData,
 	dashboardNotFundedData,
@@ -159,13 +160,13 @@ function Dashboard() {
 							<TabsContent value="funded">
 								<Datatable
 									data={dashboardData}
-									columns={dashboardColumns}
+									columns={PaymentdashboardColumns}
 								/>
 							</TabsContent>
 							<TabsContent value="not_funded">
 								<Datatable
 									data={dashboardNotFundedData}
-									columns={dashboardColumns}
+									columns={PaymentdashboardColumns}
 								/>
 							</TabsContent>
 						</Tabs>

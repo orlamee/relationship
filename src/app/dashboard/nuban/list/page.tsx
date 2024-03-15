@@ -7,7 +7,11 @@ import html2canvas from "html2canvas";
 import Image from "next/image";
 import avi from "../../../../assets/list.svg";
 
-import { dashboardColumns, dashboardData } from "@/components/dummydata";
+import {
+	dashboardColumns,
+	dashboardData,
+	nubanColumns,
+} from "@/components/dummydata";
 import Datatable from "@/components/tables/datatable";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
@@ -71,7 +75,7 @@ function NubanList() {
 						</div>
 					</div>
 					<div className="mt-10" ref={tableRef}>
-						<Datatable data={dashboardData} columns={dashboardColumns} />
+						<Datatable data={dashboardData} columns={nubanColumns} />
 					</div>
 				</div>
 			</main>

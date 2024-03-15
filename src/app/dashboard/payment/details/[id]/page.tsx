@@ -30,7 +30,7 @@ export default function UserManagementDetails() {
 				<div className="bg-[#FFFFFF] rounded-[10px] mb-9">
 					<div className="p-7">
 						<Link
-							href={"/payment"}
+							href={"/dashboard/payment"}
 							className="text-[#21003D] font-[500] leading-[30px] text-[16px] flex items-center"
 						>
 							<Icon icon="teenyicons:left-outline" className="me-2" />
