@@ -176,59 +176,87 @@ export default function MemberDetails() {
 								</div>
 							</TabsContent>
 							<TabsContent value="target">
-								<div className="border border-[#F3F4F6] rounded-[10px] p-7">
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											Loan
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+								<div className="border-[1px] border-[#F3F4F6] pt-[55px] pb-[35px] rounded-[10px]">
+									<div className="px-8">
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												Loan
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<span className="mr-2 text-[12px] ">₦</span>
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"200000"}
+												/>
+											</div>
 										</div>
-									</div>
-									<hr className="text-[#F9FAFB]" />
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											Account Opening
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												Account Opening
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"100"}
+												/>
+											</div>
 										</div>
-									</div>
-									<hr className="text-[#F9FAFB]" />
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											Savings
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												Savings
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<span className="mr-2 text-[12px]">₦</span>
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"200000"}
+												/>
+											</div>
 										</div>
-									</div>
-									<hr className="text-[#F9FAFB]" />
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											Adital
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												Adital
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"100"}
+												/>
+											</div>
 										</div>
-									</div>
-									<hr className="text-[#F9FAFB]" />
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											Mobile
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												Mobile
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"100"}
+												/>
+											</div>
 										</div>
-									</div>
-									<hr className="text-[#F9FAFB]" />
-									<div className="flex items-center justify-between my-5">
-										<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
-											ATM Card
-										</h2>
-										<div className="border border-[#E5E7EB] p-3 rounded-[6px] bg-[#F9FAFB] text-[#6B7280] text-[12px] leading-[10px]">
-											200,000
+										<div className="flex justify-between items-center border-b-[1px] border-b-[#F9FAFB] py-4">
+											<h1 className="text-[12px] font-[500] leading-[16px] text-[#9CA3AF]">
+												ATM Card
+											</h1>
+											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
+												<input
+													type="text"
+													className="outline-none h-full text-[12px] font-[500]"
+													defaultValue={"50"}
+												/>
+											</div>
 										</div>
+										{/* <div className="mt-7">
+											<button className="text-[12px] font-[500] bg-[#240552] text-white px-6 py-3 block ml-auto rounded-[2px]">
+												Set Target
+											</button>
+										</div> */}
 									</div>
 								</div>
 							</TabsContent>
