@@ -2,6 +2,7 @@
 import NavBar from "@/components/navbar";
 import React, { useState } from "react";
 import Image from "next/image";
+import avatar from "../../../assets/avatar.svg";
 import {
 	dashboardColumns,
 	dashboardData,
@@ -19,20 +20,121 @@ import {
 } from "@/components/ui/tablines";
 import Datatable from "@/components/tables/datatable";
 import Modal from "@/components/modal";
-import { XCircleIcon } from "lucide-react";
+import { ChevronDown, Search, XCircleIcon } from "lucide-react";
 import ModalTable from "@/components/tables/modaltable";
 import Link from "next/link";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Nuban() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [branchDrop, setBranchDrop] = useState(false);
 	function openModal() {
 		setIsModalOpen(true);
 	}
 	function closeModal() {
 		setIsModalOpen(false);
 	}
+
+	const ListModal = () => (
+		<Modal>
+			<div className="bg-white rounded-[16px] w-1/2">
+				<div className="flex justify-between items-center border-b-[1px] border-b-[#FAFAFA] p-8">
+					<h1 className="text-[14px] font-[700] leading-[20px]">
+						Select Relationship Officer
+					</h1>
+					<XCircleIcon
+						className="text-[#9CA3AF] cursor-pointer w-5"
+						onClick={closeModal}
+					/>
+				</div>
+				<div className="px-8 py-6">
+					<div className="flex justify-between items-center gap-5 mb-8">
+						<div className="w-full flex items-center rounded-[4px] border-[1px] border-[#F3F4F6] p-3">
+							<Search className="mr-3 text-[#21003D]" />
+							<input
+								placeholder="Search for relationship officer"
+								className="outline-none h-full  md:w-full text-[12px] text-black placeholder:text-[#D1D5DB]"
+							/>
+						</div>
+						<div className="relative">
+							<DropdownMenu modal={false}>
+								<DropdownMenuTrigger asChild>
+									<button className="w-full justify-center text-center px-6 py-3 outline-none flex items-center border-[1px] border-[#292D32] rounded-[4px]">
+										<span className="sr-only">Open menu</span>
+										<span className="text-[13px] font-[500] text-[#292D32] flex items-center gap-2">
+											Filter
+										</span>
+										<ChevronDown className="h-4 w-4 ml-3" />
+									</button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent
+									align="start"
+									className=" bg-white top-[0px] absolute z-[50000]"
+								>
+									<DropdownMenuItem>
+										<p className="text-black text-[12px]">
+											Completed
+										</p>
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<p className="text-black text-[12px]">Funded</p>
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<p className="text-black text-[12px]">
+											Not Funded
+										</p>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</div>
+					</div>
+					<div className="flex justify-between items-center w-full mb-7">
+						<div className="flex items-center">
+							<Image src={avatar} width={27} height={27} alt="avatar" />
+							<p className="text-[14px] font-[500] ml-4">
+								Adebowale Franca
+							</p>
+						</div>
+						<input
+							type="checkbox"
+							name=""
+							id=""
+							className="border-[1px] border-[#D1D5DB] w-5 h-5 accent-[#240552]"
+						/>
+					</div>
+					<div className="flex justify-between items-center w-full mb-7">
+						<div className="flex items-center">
+							<Image src={avatar} width={27} height={27} alt="avatar" />
+							<p className="text-[14px] font-[500] ml-4">
+								Adebowale Franca
+							</p>
+						</div>
+						<input
+							type="checkbox"
+							name=""
+							id=""
+							className="border-[1px] border-[#D1D5DB] w-5 h-5 accent-[#240552]"
+						/>
+					</div>
+					<div className="flex justify-end">
+						<Link href={"/dashboard/nuban/list"}>
+							<button className="mb-7 ml-auto px-6 py-3 rounded-[2px] text-white bg-[#240552] text-[14px]">
+								Generate List
+							</button>
+						</Link>
+					</div>
+				</div>
+			</div>
+		</Modal>
+	);
 	return (
 		<section>
+			{isModalOpen && <ListModal />}
 			<NavBar>
 				<div className="flex items-center">
 					<h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
@@ -194,34 +296,6 @@ function Nuban() {
 						</Tabs>
 					</div>
 				</div>
-				{isModalOpen && (
-					<Modal>
-						<div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
-							<div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
-								<h1 className="text-[14px] font-[500] leading-[18px]">
-									Select Field Officer
-								</h1>
-								<XCircleIcon
-									className="text-[#9CA3AF] cursor-pointer w-[18px]"
-									onClick={closeModal}
-								/>
-							</div>
-							<div className="my-6 relative">
-								<ModalTable
-									data={generatelistData}
-									columns={generatelistColumns}
-								/>
-							</div>
-							<div className="text-end">
-								<Link href={"/dashboard/nuban/list"}>
-									<button className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]">
-										Generate List
-									</button>
-								</Link>
-							</div>
-						</div>
-					</Modal>
-				)}
 			</main>
 		</section>
 	);

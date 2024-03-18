@@ -1,6 +1,6 @@
 "use client";
 import NavBar from "@/components/navbar";
-import React from "react";
+import React, { useRef, useState } from "react";
 import Datatable from "@/components/tables/datatable";
 import {
 	CompletedColumns,
@@ -10,13 +10,93 @@ import {
 	dashboardNotFundedData,
 } from "@/components/dummydata";
 import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/ui/tablines";
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 function Dashboard() {
+	const [pdfGenerating, setPdfGenerating] = useState(false);
+	const [tab, setTab] = useState<"completed" | "funded" | "not-funded">(
+		"completed"
+	);
+	const completedTableRef = useRef<HTMLDivElement>(null);
+	const fundedTableRef = useRef<HTMLDivElement>(null);
+	const notfundedTableRef = useRef<HTMLDivElement>(null);
+
+	const handleGenerateCompletedPDF = async () => {
+		setPdfGenerating(true);
+
+		if (completedTableRef.current) {
+			const canvas = await html2canvas(completedTableRef.current);
+			const tableImage = canvas.toDataURL("image/png");
+
+			const doc = new jsPDF();
+
+			const imgWidth = 210;
+			const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+			doc.addImage(tableImage, "PNG", 0, 0, imgWidth, imgHeight);
+
+			doc.save("completed_data.pdf");
+			setPdfGenerating(false);
+		}
+	};
+
+	const handleGenerateFundedPDF = async () => {
+		setPdfGenerating(true);
+
+		if (fundedTableRef.current) {
+			const canvas = await html2canvas(fundedTableRef.current);
+			const tableImage = canvas.toDataURL("image/png");
+
+			const doc = new jsPDF();
+
+			const imgWidth = 210;
+			const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+			doc.addImage(tableImage, "PNG", 0, 0, imgWidth, imgHeight);
+
+			doc.save("funded_data.pdf");
+			setPdfGenerating(false);
+		}
+	};
+
+	const handleGenerateNotFundedPDF = async () => {
+		setPdfGenerating(true);
+
+		if (notfundedTableRef.current) {
+			const canvas = await html2canvas(notfundedTableRef.current);
+			const tableImage = canvas.toDataURL("image/png");
+
+			const doc = new jsPDF();
+
+			const imgWidth = 210;
+			const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+			doc.addImage(tableImage, "PNG", 0, 0, imgWidth, imgHeight);
+
+			doc.save("not_funded_data.pdf");
+			setPdfGenerating(false);
+		}
+	};
+
+	const handleGeneratePdf = async () => {
+		if (tab === "completed") {
+			await handleGenerateCompletedPDF();
+		}
+		if (tab === "funded") {
+			await handleGenerateFundedPDF();
+		}
+		if (tab === "not-funded") {
+			await handleGenerateNotFundedPDF();
+		}
+	};
+
 	return (
 		<section>
 			<NavBar>
@@ -149,32 +229,137 @@ function Dashboard() {
 					<h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
 						All Users
 					</h1>
+
 					<div className="mt-10">
-						<Tabs defaultValue="completed">
-							<TabsList>
-								<TabsTrigger value="completed">Completed</TabsTrigger>
-								<TabsTrigger value="funded">Funded</TabsTrigger>
-								<TabsTrigger value="not_funded">Not Funded</TabsTrigger>
-							</TabsList>
-							<TabsContent value="completed">
-								<Datatable
-									data={CompletedData}
-									columns={CompletedColumns}
-								/>
-							</TabsContent>
-							<TabsContent value="funded">
-								<Datatable
-									data={dashboardData}
-									columns={dashboardColumns}
-								/>
-							</TabsContent>
-							<TabsContent value="not_funded">
-								<Datatable
-									data={dashboardNotFundedData}
-									columns={dashboardColumns}
-								/>
-							</TabsContent>
-						</Tabs>
+						<div className="flex justify-between items-center">
+							<div className="inline-flex items-center space-x-10 border-b-[2px] border-b-gray-200">
+								<button
+									className={`text-[14px] font-[500] text-black py-3 ${
+										tab === "completed" &&
+										"border-b-black border-b-[2px]"
+									}`}
+									onClick={() => setTab("completed")}
+								>
+									Completed
+								</button>
+								<button
+									className={`text-[14px] font-[500] text-black py-3 ${
+										tab === "funded" &&
+										"border-b-black border-b-[2px]"
+									}`}
+									onClick={() => setTab("funded")}
+								>
+									Funded
+								</button>
+								<button
+									className={`text-[14px] font-[500] text-black py-3 ${
+										tab === "not-funded" &&
+										"border-b-black border-b-[2px]"
+									}`}
+									onClick={() => setTab("not-funded")}
+								>
+									Not Funded
+								</button>
+							</div>
+
+							<div className="flex gap-5 items-center">
+								<div className="">
+									<DropdownMenu modal={false}>
+										<DropdownMenuTrigger asChild>
+											<button className="w-full justify-center text-center px-6 py-3 outline-none flex items-center border-[1px] border-[#292D32] rounded-[4px]">
+												<span className="sr-only">Open menu</span>
+												<span className="text-[12px] font-[500] text-[#292D32] flex items-center gap-2">
+													<span>
+														<svg
+															width="15"
+															height="15"
+															viewBox="0 0 15 15"
+															fill="none"
+															xmlns="http://www.w3.org/2000/svg"
+														>
+															<path
+																d="M7.5 13.8385C7.26083 13.8385 7.0625 13.6402 7.0625 13.401V12.2344C7.0625 11.9952 7.26083 11.7969 7.5 11.7969C7.73917 11.7969 7.9375 11.9952 7.9375 12.2344V13.401C7.9375 13.6402 7.73917 13.8385 7.5 13.8385Z"
+																fill="black"
+															/>
+															<path
+																d="M7.5 11.5065C7.26083 11.5065 7.0625 11.3082 7.0625 11.069V9.90234C7.0625 9.66318 7.26083 9.46484 7.5 9.46484C7.73917 9.46484 7.9375 9.66318 7.9375 9.90234V11.069C7.9375 11.3082 7.73917 11.5065 7.5 11.5065Z"
+																fill="black"
+															/>
+															<path
+																d="M7.5 9.17318C7.26083 9.17318 7.0625 8.97484 7.0625 8.73568V6.98568C7.0625 4.49484 9.0925 2.46484 11.5833 2.46484H13.3333C13.5725 2.46484 13.7708 2.66318 13.7708 2.90234C13.7708 3.14151 13.5725 3.33984 13.3333 3.33984H11.5833C9.57083 3.33984 7.9375 4.97318 7.9375 6.98568V8.73568C7.9375 8.97484 7.73917 9.17318 7.5 9.17318Z"
+																fill="black"
+															/>
+															<path
+																d="M7.49935 9.17318C7.26018 9.17318 7.06185 8.97484 7.06185 8.73568V6.98568C7.06185 4.97318 5.42852 3.33984 3.41602 3.33984H1.66602C1.42685 3.33984 1.22852 3.14151 1.22852 2.90234C1.22852 2.66318 1.42685 2.46484 1.66602 2.46484H3.41602C5.90685 2.46484 7.93685 4.49484 7.93685 6.98568V8.73568C7.93685 8.97484 7.73852 9.17318 7.49935 9.17318Z"
+																fill="black"
+															/>
+															<path
+																d="M2.83319 4.5057C2.72236 4.5057 2.61151 4.46487 2.52401 4.37737L1.35734 3.2107C1.18818 3.04154 1.18818 2.76154 1.35734 2.59237L2.52401 1.4257C2.69318 1.25654 2.97321 1.25654 3.14238 1.4257C3.31154 1.59487 3.31154 1.87487 3.14238 2.04404L2.28486 2.90154L3.14238 3.75904C3.31154 3.9282 3.31154 4.2082 3.14238 4.37737C3.05488 4.46487 2.94403 4.5057 2.83319 4.5057Z"
+																fill="black"
+															/>
+															<path
+																d="M12.1665 4.5057C12.0557 4.5057 11.9448 4.46487 11.8573 4.37737C11.6882 4.2082 11.6882 3.9282 11.8573 3.75904L12.7149 2.90154L11.8573 2.04404C11.6882 1.87487 11.6882 1.59487 11.8573 1.4257C12.0265 1.25654 12.3065 1.25654 12.4757 1.4257L13.6424 2.59237C13.8115 2.76154 13.8115 3.04154 13.6424 3.2107L12.4757 4.37737C12.3882 4.46487 12.2774 4.5057 12.1665 4.5057Z"
+																fill="black"
+															/>
+														</svg>
+													</span>
+													All Branch
+												</span>
+												<ChevronDown className="h-4 w-4 ml-3" />
+											</button>
+										</DropdownMenuTrigger>
+										<DropdownMenuContent
+											align="end"
+											className=" bg-white"
+										>
+											<DropdownMenuItem>
+												<p>Oshodi</p>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<p>Mile 12</p>
+											</DropdownMenuItem>
+										</DropdownMenuContent>
+									</DropdownMenu>
+								</div>
+								<button
+									className="rounded-[2px] bg-[#240552] text-white text-[12px] px-6 py-3"
+									onClick={handleGeneratePdf}
+								>
+									{pdfGenerating
+										? "Generating PDF..."
+										: "Generate PDF"}
+								</button>
+							</div>
+						</div>
+
+						<div className="mt-3">
+							{tab === "completed" && (
+								<div ref={completedTableRef}>
+									<Datatable
+										data={CompletedData}
+										columns={CompletedColumns}
+									/>
+								</div>
+							)}
+
+							{tab === "funded" && (
+								<div ref={fundedTableRef}>
+									<Datatable
+										data={dashboardData}
+										columns={dashboardColumns}
+									/>
+								</div>
+							)}
+
+							{tab === "not-funded" && (
+								<div ref={notfundedTableRef}>
+									<Datatable
+										data={dashboardNotFundedData}
+										columns={dashboardColumns}
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</main>
