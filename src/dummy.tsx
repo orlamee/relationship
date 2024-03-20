@@ -21,6 +21,7 @@ import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import vault from "./assets/vault.svg";
 import Link from "next/link";
 import avatar from "./assets/avatar.svg";
+import { parseDateTime } from "./lib/parsedatetime";
 
 export type productDraftType = {
 	id: string;
@@ -35,28 +36,19 @@ export type productDraftType = {
 };
 
 export type membersType = {
-	id: string;
-	profile_img: string;
-	generated_id: string;
-	name: string;
+	id: number;
+	profile_photo: string;
+	first_name: string;
+	last_name: string;
+	field_officer_id: string;
 	phone: string;
 	address: string;
-	guarantor: string[];
-	date: string;
+	first_guarantor_name: string;
+	second_guarantor_name: string;
+	date_created: string;
 };
 
-export const memberData: membersType[] = [
-	{
-		id: "1",
-		address: "29, Oladoyingbr street, Ogba,Ikeja.Lagos.",
-		name: "Adebowale Franca",
-		phone: "09012345673",
-		profile_img: avatar,
-		guarantor: ["Adetola Emmanuel", "dillon okwulu"],
-		generated_id: "1234567",
-		date: "10/08/2023",
-	},
-];
+export const memberData: membersType[] = [];
 
 export const membersCol: ColumnDef<membersType>[] = [
 	{
@@ -84,7 +76,7 @@ export const membersCol: ColumnDef<membersType>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
+		accessorKey: "first_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -102,16 +94,18 @@ export const membersCol: ColumnDef<membersType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.profile_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative w-[35px] h-[35px] mr-3">
+							<Image
+								src={data.profile_photo}
+								alt="user"
+								className="rounded-full mr-3"
+								fill
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[14px] text-black leading-[16px]">
-								{data.name}
+								{data.first_name} {data.last_name}
 							</h1>
 						</div>
 					</div>
@@ -120,7 +114,7 @@ export const membersCol: ColumnDef<membersType>[] = [
 		},
 	},
 	{
-		accessorKey: "generated_id",
+		accessorKey: "field_officer_id",
 		header: ({ column }) => {
 			return (
 				<button
@@ -169,7 +163,7 @@ export const membersCol: ColumnDef<membersType>[] = [
 		},
 	},
 	{
-		accessorKey: "date",
+		accessorKey: "date_created",
 		header: ({ column }) => {
 			return (
 				<button
@@ -182,9 +176,21 @@ export const membersCol: ColumnDef<membersType>[] = [
 				</button>
 			);
 		},
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<div>
+					<p>{parseDateTime(data.date_created, "dd/MM/yyyy")}</p>
+					<p className="text-[12px] font-[500] text-[#9aa7be]">
+						{parseDateTime(data.date_created, "h:HHaaa")}
+					</p>
+				</div>
+			);
+		},
 	},
 	{
-		accessorKey: "guarantor",
+		accessorKey: "first_guarantor_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -204,26 +210,28 @@ export const membersCol: ColumnDef<membersType>[] = [
 			return (
 				<DropdownMenu modal={false}>
 					<DropdownMenuTrigger asChild>
-						<button className="h-10  outline-none flex items-center border-[1px] py-2 px-2 w-[150px] rounded-[4px]">
+						<button className="h-10  outline-none flex items-center border-[1px] py-2 px-4 rounded-[4px] relative">
 							<span className="sr-only">Open menu</span>
-							<p className="truncate">{data.guarantor[0]}</p>
+							<p className="truncate">{data.first_guarantor_name}</p>
 							<ChevronDown className="ml-4 h-4 w-4 text-[#8807F7]" />
 						</button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
 						align="center"
-						className="bg-white px-4 w-full"
+						className="bg-white px-6 w-full border-[1px] border-gray-200 rounded-[2px]"
 					>
-						{data.guarantor.map((p) => (
-							<div key={p}>
-								<DropdownMenuItem>
-									<span className="text-[12px] font-[400] leading-[12px] border-b-[1px] border-b-[#F9FAFB] last:border-b-0 py-1 cursor-pointer ">
-										{" "}
-										{p}
-									</span>
-								</DropdownMenuItem>
-							</div>
-						))}
+						<DropdownMenuItem>
+							<span className="text-[12px] font-[400] leading-[12px] border-b-[1px] border-b-[#F9FAFB] last:border-b-0 py-1 cursor-pointer ">
+								{" "}
+								{data.first_guarantor_name}
+							</span>
+						</DropdownMenuItem>
+						<DropdownMenuItem>
+							<span className="text-[12px] font-[400] leading-[12px] border-b-[1px] border-b-[#F9FAFB] last:border-b-0 py-1 cursor-pointer ">
+								{" "}
+								{data.second_guarantor_name}
+							</span>
+						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
@@ -233,7 +241,7 @@ export const membersCol: ColumnDef<membersType>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
-		header: ({ column }) => {
+		header: () => {
 			return (
 				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
 					Action
@@ -253,7 +261,9 @@ export const membersCol: ColumnDef<membersType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/members/details/${data.id}`}>
+							<Link
+								href={`/dashboard/members/details/${data.field_officer_id}`}
+							>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px] text-[#21003D]">

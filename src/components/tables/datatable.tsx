@@ -25,11 +25,13 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	placeholder?: string;
+	searchKey?: string;
 }
 function Datatable<TData, TValue>({
 	columns,
 	data,
 	placeholder = "search for users",
+	searchKey = "name",
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -55,10 +57,13 @@ function Datatable<TData, TValue>({
 					<input
 						placeholder={placeholder}
 						value={
-							(table.getColumn("name")?.getFilterValue() as string) ?? ""
+							(table.getColumn(searchKey)?.getFilterValue() as string) ??
+							""
 						}
 						onChange={(event) =>
-							table.getColumn("name")?.setFilterValue(event.target.value)
+							table
+								.getColumn(searchKey)
+								?.setFilterValue(event.target.value)
 						}
 						className="outline-none h-full  md:w-full text-[12px] text-[#9CA3AF] placeholder:text-[#9CA3AF]"
 					/>

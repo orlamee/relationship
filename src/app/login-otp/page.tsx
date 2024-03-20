@@ -23,24 +23,31 @@ export default function LoginOTP() {
 			if (isLoading) return;
 
 			setIsloading(true);
-			const { data } = await axios.post(`${base_url}`, {
-				email: cred.cred?.email,
-				password: otp,
-			});
+			const { data } = await axios.post(
+				`${base_url}/ardilla/retail/admin/api/v1/auth/validate_login_otp`,
+				{
+					email: cred.cred?.email,
+					otp: otp,
+				}
+			);
 			console.log({ data });
 			if (data.code === 200) {
-				// toDashboard();
+				toast.success(`${data.message}`, { id: "verify" });
 				await login(
 					{
-						first_name: data.data.user_details.first_name,
-						last_name: data.data.user_details.last_name,
-						profile_photo: data.data.user_details.profile_photo,
+						first_name: data.data.User_details.first_name,
+						last_name: data.data.User_details.last_name,
+						profile_photo: data.data.User_details.profile_photo,
 					},
 					data.data.token
 				);
 			}
-		} catch (error) {
+			if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "verify" });
+			}
+		} catch (error: any) {
 			console.log(error);
+			toast.error(`${error?.message}`, { id: "verify" });
 		} finally {
 			setIsloading(false);
 		}

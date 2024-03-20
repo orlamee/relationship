@@ -30,7 +30,7 @@ export async function login(
 
 	// session.username = (formData.get("username") as string) ?? "No username";
 	session.isLoggedIn = true;
-	session.username = `${data.first_name}${data.last_name}`;
+	session.username = `${data.first_name} ${data.last_name}`;
 	session.profile_photo = data.profile_photo;
 	session.token = token;
 	await session.save();

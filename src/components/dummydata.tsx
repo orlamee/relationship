@@ -17,6 +17,23 @@ import Status from "./badges/status";
 import TransferStatus from "./badges/transfer";
 
 // Dashboard
+
+export type FundedDataType = {
+	id: string;
+	profile_photo: string;
+	officer_img: string;
+	first_name: string;
+	last_name: string;
+	officer: string;
+	kodhex: string;
+	email: string;
+	dob: string;
+	phone: string;
+	residential_address: string;
+	date_joined: string;
+	status: string;
+};
+
 export type dashboardDataType = {
 	id: string;
 	profile_img: string;
@@ -391,7 +408,7 @@ export const dashboardNotFundedData: dashboardDataType[] = [
 	},
 ];
 
-export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
+export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -417,7 +434,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
+		accessorKey: "first_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -435,16 +452,18 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.profile_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative w-[35px] h-[35px] rounded-full mr-3">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.name}
+								{data.first_name} {data.last_name}
 							</h1>
 						</div>
 					</div>
@@ -486,7 +505,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "phone_number",
+		accessorKey: "phone",
 		header: ({ column }) => {
 			return (
 				<button
@@ -503,7 +522,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 	},
 
 	{
-		accessorKey: "address",
+		accessorKey: "residential_address",
 		header: ({ column }) => {
 			return (
 				<button
@@ -615,7 +634,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/details/${data.id}`}>
+							<Link href={`/dashboard/details/${data.kodhex}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">

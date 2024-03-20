@@ -20,7 +20,8 @@ export default function Welcome() {
 			.email("invalid email"),
 		password: z
 			.string({ required_error: "password is required" })
-			.min(6, "minimum of six characters"),
+			.min(1, "password is required")
+			.min(6, "minimun of six characters"),
 	});
 
 	type formInput = {
