@@ -36,3 +36,9 @@ export async function login(
 	await session.save();
 	redirect("/dashboard");
 }
+
+export async function logout() {
+	const session = await getSession();
+	session.destroy();
+	redirect("/");
+}

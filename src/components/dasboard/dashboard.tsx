@@ -424,7 +424,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 
 							{tab === "not-funded" && (
 								<div>
-									{isLoadingFundedUsers ? (
+									{isLoadingUnFundedUsers ? (
 										<div className="w-full flex justify-center mt-10">
 											<FadeLoader
 												color={"#240552"}
