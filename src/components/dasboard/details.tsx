@@ -16,10 +16,22 @@ import Activities from "@/components/dashboardparts/activities";
 import Banks from "@/components/dashboardparts/banks";
 import Verification from "@/components/dashboardparts/verification";
 
-export default function UserManagementDetails() {
+type Props = {
+	user_name: string;
+	profile_photo: string;
+	token: string;
+	user: any;
+};
+
+export default function UserManagementDetails({
+	user_name,
+	profile_photo,
+	token,
+	user,
+}: Props) {
 	return (
 		<section>
-			<NavBar>
+			<NavBar username={user_name} profile_photo={profile_photo}>
 				<div className="flex items-center">
 					<h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
 						Dashboard
@@ -53,7 +65,7 @@ export default function UserManagementDetails() {
 								</TabsTrigger>
 							</TabsList>
 							<TabsContent value="details">
-								<PersonalDetails />
+								<PersonalDetails user={user} />
 							</TabsContent>
 							<TabsContent value="kyc">
 								<KYC />
@@ -65,7 +77,7 @@ export default function UserManagementDetails() {
 								<Activities />
 							</TabsContent>
 							<TabsContent value="bank">
-								<Banks />
+								<Banks token={token} />
 							</TabsContent>
 							<TabsContent value="verification">
 								<Verification />

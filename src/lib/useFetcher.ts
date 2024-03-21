@@ -9,9 +9,7 @@ export const useFetcher = (url: string, token?: string) => {
 			})
 			.then((res) => res.data)
 			.catch(() => {
-				const error = new Error(
-					"An error occurred while fetching the data."
-				);
+				const error = new Error("An error occurred while fetching data.");
 				throw error;
 			});
 

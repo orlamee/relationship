@@ -6,13 +6,13 @@ import { base_url } from "@/base_url";
 
 export default async function MembersPage() {
 	const session = await getSession();
-	const getFieldOfficers = async () => {
+	const getFieldOfficers = async (token: string) => {
 		try {
 			const { data } = await axios.get(
 				`${base_url}/ardilla/retail/admin/api/v1/field_officer/GetFieldOfficers`,
 				{
 					headers: {
-						Authorization: `Bearer ${session.token}`,
+						Authorization: `Bearer ${token}`,
 					},
 				}
 			);
@@ -21,13 +21,13 @@ export default async function MembersPage() {
 			console.log(error);
 		}
 	};
-	const fieldOfficers = await getFieldOfficers();
+	const fieldOfficers = await getFieldOfficers(session.token);
 	return (
 		<Members
 			username={session.username}
 			profile_photo={session.profile_photo}
 			token={session.token}
-			memberdata={fieldOfficers.data}
+			memberdata={fieldOfficers?.data}
 		/>
 	);
 }

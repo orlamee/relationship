@@ -2089,28 +2089,18 @@ export const generatelistColumns: ColumnDef<generatelistDataType>[] = [
 
 //Branch
 export type branchDataType = {
-	id: string;
+	branch_id: string;
 	state: string;
-	head_branch: string;
-	branch: string;
+	lga: string;
+	head_branch: boolean;
 	email: string;
-	address: string;
-	phone_number: string;
-	group: string;
+	street_address: string;
+	phone: string;
+	date_created: string;
+	closest_landmark: string;
 };
 
-export const branchData: branchDataType[] = [
-	{
-		id: "1",
-		state: "Lagos",
-		head_branch: "Yes",
-		branch: "Ikeja",
-		email: "Ardillatech",
-		address: "29, Oladoyingbr street, Ogba,Ikeja.Lagos.",
-		phone_number: "09012345673",
-		group: "Ardilla",
-	},
-];
+export const branchData: branchDataType[] = [];
 
 export const branchColumns: ColumnDef<branchDataType>[] = [
 	{
@@ -2167,10 +2157,14 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 				</button>
 			);
 		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return <div>{data.head_branch ? "true" : "false"}</div>;
+		},
 	},
 
 	{
-		accessorKey: "branch",
+		accessorKey: "lga",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2179,7 +2173,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 					}
 					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
 				>
-					Branch
+					Lga
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
 			);
@@ -2203,7 +2197,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "address",
+		accessorKey: "street_address",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2219,7 +2213,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "phone_number",
+		accessorKey: "phone",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2235,25 +2229,9 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "group",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Group
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-	{
 		id: "actions",
 		enableHiding: false,
-		header: ({ column }) => {
+		header: () => {
 			return (
 				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
 					Action
@@ -2270,9 +2248,9 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 							<MoreVertical className="h-4 w-4 text-[#240552]" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/branch/details/${data.id}`}>
+							<Link href={`/dashboard/branch/details/${data.branch_id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
@@ -2448,7 +2426,9 @@ export const LocationColumns: ColumnDef<branchDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/branch/location/${data.id}`}>
+							<Link
+								href={`/dashboard/branch/location/${data.branch_id}`}
+							>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">

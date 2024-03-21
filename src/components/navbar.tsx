@@ -19,33 +19,12 @@ type Props = {
 	profile_photo: string;
 };
 function NavBar({ children, username, profile_photo }: Props) {
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-	const toggleDropdown = () => {
-		setIsDropdownOpen(!isDropdownOpen);
-	};
 	return (
 		<header className="sticky top-0 z-[200] px-4 lg:px-8 flex items-center h-[110px] w-full bg-white">
 			<nav className="flex justify-between w-full items-center">
 				{children}
 				<div className="flex items-center h-full gap-4">
-					{/* <Link href="#">
-						<Image src={bell} width={30} height={30} alt="bell" />
-					</Link> */}
 					<div className="flex items-center gap-3">
-						<div className="relative mt-2 hidden">
-							<button
-								onClick={toggleDropdown}
-								className="focus:outline-none relative w-[40px] h-[40px] rounded-full"
-							>
-								<Image
-									src={profile_photo || avatar}
-									fill
-									alt="user"
-									className="rounded-full"
-								/>
-							</button>
-						</div>
 						<div className="flex items-center h-full gap-5">
 							<Image src={bell} width={32} height={32} alt="bell" />
 
