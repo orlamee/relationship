@@ -650,6 +650,249 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 		},
 	},
 ];
+export const paymentColumns: ColumnDef<FundedDataType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value: boolean) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "first_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400]"
+				>
+					Users <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative w-[35px] h-[35px] rounded-full mr-3">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						</div>
+
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.first_name} {data.last_name}
+							</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "kodhex",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Kodhex
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "email",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Email
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "phone",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Phone Number
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "residential_address",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Address
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "officer",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<Image
+							src={data.officer_img}
+							width={30}
+							height={30}
+							alt="user"
+							className="rounded-full mr-3"
+						/>
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.officer}
+							</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "date_joined",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Date Joined
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "status",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Status
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<div className="flex items-center">
+					{data.status === "funded" && (
+						<Status type="funded" text={data.status} />
+					)}
+					{data.status === "notfunded" && (
+						<Status type="notfunded" text={data.status} />
+					)}
+				</div>
+			);
+		},
+	},
+	{
+		id: "actions",
+		enableHiding: false,
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/payment/details/${data.kodhex}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View More Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];
+
 export const nubanColumns: ColumnDef<dashboardDataType>[] = [
 	{
 		accessorKey: "name",
@@ -1259,129 +1502,6 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
 				>
 					Source
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-
-	{
-		accessorKey: "status",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Status
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<div className="flex items-center">
-					{data.status === "successful" && (
-						<TransferStatus type="successful" text={data.status} />
-					)}
-					{data.status === "pending" && (
-						<TransferStatus type="pending" text={data.status} />
-					)}
-					{data.status === "reversed" && (
-						<TransferStatus type="reversed" text={data.status} />
-					)}
-					{data.status === "failed" && (
-						<TransferStatus type="failed" text={data.status} />
-					)}
-				</div>
-			);
-		},
-	},
-];
-export const paymentColumns: ColumnDef<paymentDataType>[] = [
-	{
-		accessorKey: "description",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400]"
-				>
-					Description <ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<>
-					<div className="flex items-center">
-						<Image
-							src={data.badge}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
-						<div>
-							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.description}
-							</h1>
-						</div>
-					</div>
-				</>
-			);
-		},
-	},
-	{
-		accessorKey: "date",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Date
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-
-	{
-		accessorKey: "amount",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Amount
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-	{
-		accessorKey: "to",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					To
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
 			);

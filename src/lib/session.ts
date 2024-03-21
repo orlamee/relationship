@@ -17,7 +17,7 @@ export const defaultSession: SessionData = {
 export const sessionOptions: SessionOptions = {
 	password: process.env.SECRET_KEY!,
 	cookieName: "ardilla-cc-session",
-	ttl: 24 * 60 * 60 * 1000,
+	ttl: 24 * 60 * 60,
 	cookieOptions: {
 		httpOnly: true,
 

@@ -9,17 +9,29 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/components/ui/tablines";
-import PersonalDetails from "@/components/dashboardparts/personaldetails";
-import KYC from "@/components/dashboardparts/kyc";
-import Nextofkin from "@/components/dashboardparts/nextofkin";
-import Activities from "@/components/dashboardparts/activities";
-import Banks from "@/components/dashboardparts/banks";
-import Verification from "@/components/dashboardparts/verification";
+import PersonalDetails from "@/components/paymentparts/personaldetails";
+import KYC from "@/components/paymentparts/kyc";
+import Nextofkin from "@/components/paymentparts/nextofkin";
+import Activities from "@/components/paymentparts/activities";
+import Banks from "@/components/paymentparts/banks";
+import Verification from "@/components/paymentparts/verification";
 
-export default function UserManagementDetails() {
+type Props = {
+	username: string;
+	token: string;
+	profile_photo: string;
+	user: any;
+};
+
+export default function UserManagementDetails({
+	username,
+	profile_photo,
+	token,
+	user,
+}: Props) {
 	return (
 		<section>
-			<NavBar>
+			<NavBar username={username} profile_photo={profile_photo}>
 				<div className="flex items-center">
 					<h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
 						Payment
@@ -53,7 +65,7 @@ export default function UserManagementDetails() {
 								</TabsTrigger>
 							</TabsList>
 							<TabsContent value="details">
-								<PersonalDetails />
+								<PersonalDetails user={user} />
 							</TabsContent>
 							<TabsContent value="kyc">
 								<KYC />
@@ -65,7 +77,7 @@ export default function UserManagementDetails() {
 								<Activities />
 							</TabsContent>
 							<TabsContent value="bank">
-								<Banks />
+								<Banks token={token} />
 							</TabsContent>
 							<TabsContent value="verification">
 								<Verification />
