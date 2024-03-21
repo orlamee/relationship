@@ -74,7 +74,7 @@ export default function UserManagementDetails({
 								<Nextofkin />
 							</TabsContent>
 							<TabsContent value="activities">
-								<Activities />
+								<Activities token={token} />
 							</TabsContent>
 							<TabsContent value="bank">
 								<Banks token={token} />

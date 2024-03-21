@@ -13,6 +13,7 @@ export default function Banks({ token }: { token: string }) {
 	// 	token
 	// );
 
+	// console.log({ data });
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
 			<div className="grid grid-cols-3 gap-10 justify-between">

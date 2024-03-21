@@ -7,7 +7,8 @@ import {
 	planColumns,
 	planData,
 	savingColumns,
-	savingData,
+	// savingData,
+	savingsType,
 } from "@/components/dummydata";
 import {
 	Tabs,
@@ -29,6 +30,7 @@ import { XCircleIcon } from "lucide-react";
 import ModalTable from "@/components/tables/modaltable";
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
+import FadeLoader from "react-spinners/FadeLoader";
 
 type props = {
 	username: string;
@@ -37,18 +39,8 @@ type props = {
 };
 
 function Savings({ username, profile_photo, token }: props) {
-	type vaultlite = {
-		kodhex: string;
-		first_name: string;
-		last_name: string;
-		field_officer: string;
-		profile_photo: string;
-		emal: string;
-		virtual_account_name: string;
-		virtual_account_number: string;
-	};
-
-	const [vlList, setVlList] = useState<vaultlite[]>();
+	const [vlList, setVlList] = useState<savingsType[]>();
+	const [veList, setVeList] = useState<savingsType[]>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	function openModal() {
 		setIsModalOpen(true);
@@ -66,21 +58,64 @@ function Savings({ username, profile_photo, token }: props) {
 		token
 	);
 
-	console.log({ dataVl });
+	useEffect(() => {
+		setVlList(dataVl?.data);
 
-	// useEffect(() => {
-	// 	setVlList(dataVl?.data);
-	// 	if (dataVl) {
-	// 		let fl: vaultlite[] = [];
-	// 		for (let i = 0; i < dataVl?.data?.length; i++) {
-	// 			const field_officer = dataVl?.data[i].field_officer;
-	// 			const details = dataVl?.data[i].user_details;
+		if (dataVl) {
+			let fl: savingsType[] = [];
+			for (let i = 0; i < dataVl?.data?.length; i++) {
+				const field_officer = dataVl?.data[i]?.field_officer;
+				const details = dataVl?.data[i]?.user_details[i]?.user;
+				const bank = dataVl?.data[i]?.user_details[i]?.bank;
 
-	// 			fl.push(dataVl?.data?.funded_users[i].user);
-	// 		}
-	// 		setVlList(fl);
-	// 	}
-	// }, [dataVl]);
+				fl.push({
+					email: details?.email,
+					kodhex: details?.kodhex,
+					field_officer,
+					first_name: details?.first_name,
+					last_name: details?.last_name,
+					profile_photo: details?.profile_photo,
+					virtual_account_name: bank?.virtual_account_name,
+					virtual_account_number: bank?.virtual_account_number,
+				});
+			}
+			setVlList(fl);
+		}
+	}, [dataVl]);
+
+	const {
+		data: dataVe,
+		isLoading: isLoadingVe,
+		error: errorVe,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/savings/vault_extra_users`,
+		token
+	);
+
+	useEffect(() => {
+		setVeList(dataVe?.data);
+
+		if (dataVe) {
+			let fl: savingsType[] = [];
+			for (let i = 0; i < dataVe?.data?.length; i++) {
+				const field_officer = dataVe?.data[i]?.field_officer;
+				const details = dataVe?.data[i]?.user_details[i]?.user;
+				const bank = dataVe?.data[i]?.user_details[i]?.bank;
+
+				fl.push({
+					email: details?.email,
+					kodhex: details?.kodhex,
+					field_officer,
+					first_name: details?.first_name,
+					last_name: details?.last_name,
+					profile_photo: details?.profile_photo,
+					virtual_account_name: bank?.virtual_account_name,
+					virtual_account_number: bank?.virtual_account_number,
+				});
+			}
+			setVeList(fl);
+		}
+	}, [dataVe]);
 
 	return (
 		<section>
@@ -399,13 +434,51 @@ function Savings({ username, profile_photo, token }: props) {
 								</button>
 							</div>
 							<TabsContent value="vault">
-								<Datatable data={savingData} columns={savingColumns} />
+								<div>
+									{isLoadingVl ? (
+										<div className="w-full flex justify-center">
+											<FadeLoader
+												color={"#240552"}
+												loading={true}
+												aria-label="Loading Spinner"
+												data-testid="loader"
+											/>
+										</div>
+									) : errorVl?.message ? (
+										<p className="text-center">{errorVl.message}</p>
+									) : (
+										<Datatable
+											data={vlList || []}
+											columns={savingColumns}
+											searchKey="first_name"
+										/>
+									)}
+								</div>
 							</TabsContent>
 							<TabsContent value="vault_extra">
-								<Datatable data={savingData} columns={savingColumns} />
+								<div>
+									{isLoadingVe ? (
+										<div className="w-full flex justify-center">
+											<FadeLoader
+												color={"#240552"}
+												loading={true}
+												aria-label="Loading Spinner"
+												data-testid="loader"
+											/>
+										</div>
+									) : errorVe?.message ? (
+										<p className="text-center">{errorVe.message}</p>
+									) : (
+										<Datatable
+											data={veList || []}
+											columns={savingColumns}
+											searchKey="first_name"
+										/>
+									)}
+								</div>
 							</TabsContent>
 							<TabsContent value="vault_premium">
-								<Datatable data={savingData} columns={savingColumns} />
+								{/* <Datatable data={savingData} columns={savingColumns} /> */}
 							</TabsContent>
 						</Tabs>
 					</div>

@@ -1734,22 +1734,18 @@ export type savingDataType = {
 	account_name: string;
 };
 
-export const savingData: savingDataType[] = [
-	{
-		id: "1",
-		profile_img: user,
-		name: "Ajayi Michael",
-		officer_img: user,
-		officer: "Ajayi Michael",
-		kodhex: "<Ajayi/>",
-		email: "john@example.com",
-		balance: "150,000",
-		account_name: "Ardillatech",
-		account_number: "234567890",
-	},
-];
+export type savingsType = {
+	kodhex: string;
+	first_name: string;
+	last_name: string;
+	field_officer: string;
+	profile_photo: string;
+	email: string;
+	virtual_account_name: string;
+	virtual_account_number: string;
+};
 
-export const savingColumns: ColumnDef<savingDataType>[] = [
+export const savingColumns: ColumnDef<savingsType>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -1775,7 +1771,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
+		accessorKey: "first_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1793,36 +1789,23 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.profile_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full"
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.name}
+								{data.first_name} {data.last_name}
 							</h1>
+							<h1 className="text-[#9ca3af]">{`<${data.kodhex}/>`}</h1>
 						</div>
 					</div>
 				</>
-			);
-		},
-	},
-	{
-		accessorKey: "kodhex",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Kodhex
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
 			);
 		},
 	},
@@ -1844,7 +1827,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "officer",
+		accessorKey: "field_officer",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1862,16 +1845,16 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
+						{/* <Image
 							src={data.officer_img}
 							width={30}
 							height={30}
 							alt="user"
 							className="rounded-full mr-3"
-						/>
+						/> */}
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.officer}
+								{data.field_officer}
 							</h1>
 						</div>
 					</div>
@@ -1880,7 +1863,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "account_name",
+		accessorKey: "virtual_account_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1897,7 +1880,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 	},
 
 	{
-		accessorKey: "account_number",
+		accessorKey: "virtual_account_number",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1952,7 +1935,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/savings/vault/${data.id}`}>
+							<Link href={`/dashboard/savings/vault/${data.kodhex}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
