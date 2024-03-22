@@ -1,26 +1,31 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "react-hot-toast";
 
-import './globals.css'
+import "./globals.css";
 
 const myFont = localFont({
-  src: "../fonts/Satoshi-Regular.otf",
-  display: "swap",
+	src: "../fonts/Satoshi-Regular.otf",
+	display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ardilla | Relationship",
-  description: "Have you saved today? There is no better time to kickstart your saving journey with Ardilla. Its smooth, easy, and automatic.",
+	title: "Ardilla | Relationship",
+	description:
+		"Have you saved today? There is no better time to kickstart your saving journey with Ardilla. Its smooth, easy, and automatic.",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={myFont.className}>{children}</body>
-    </html>
-  )
+	return (
+		<html lang="en">
+			<body className={myFont.className}>
+				<Toaster />
+				{children}
+			</body>
+		</html>
+	);
 }

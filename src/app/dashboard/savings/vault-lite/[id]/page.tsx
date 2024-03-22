@@ -1,15 +1,21 @@
 import React from "react";
-import Dashboard from "@/components/dasboard/dashboard";
+import SinglePlan from "@/components/singleplan";
 import { getSession } from "@/actions";
 
-export default async function DashboardPage() {
+export default async function SingleSavingsPage({
+	params: { id },
+}: {
+	params: { id: string };
+}) {
 	const session = await getSession();
+
 	return (
 		<div>
-			<Dashboard
+			<SinglePlan
 				username={session.username}
 				profile_photo={session.profile_photo}
 				token={session.token}
+				userId={id}
 			/>
 		</div>
 	);

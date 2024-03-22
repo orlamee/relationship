@@ -15,21 +15,8 @@ import {
 	rewardColumns,
 	rewardsData,
 } from "../dummydata";
-import { useFetcher } from "@/lib/useFetcher";
-import { base_url } from "@/base_url";
 
-export default function Activities({ token }: { token: string }) {
-	const {
-		data,
-		isLoading: isLoading,
-		error: error,
-	} = useFetcher(
-		`${base_url}/ardilla/retail/admin/api/v1/field_officer/GetUserDevice`,
-		token
-	);
-
-	console.log({ data });
-
+export default function Activities() {
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
 			<Tabs defaultValue="savings" className="w-full">
@@ -117,7 +104,7 @@ export default function Activities({ token }: { token: string }) {
 							</div>
 						</div>
 						<div>
-							{/* <Datatable data={paymentData} columns={paymentColumns} /> */}
+							<Datatable data={paymentData} columns={paymentColumns} />
 						</div>
 					</div>
 				</TabsContent>
@@ -156,7 +143,7 @@ export default function Activities({ token }: { token: string }) {
 							</div>
 						</div>
 						<div>
-							{/* <Datatable data={paymentData} columns={paymentColumns} /> */}
+							<Datatable data={paymentData} columns={paymentColumns} />
 						</div>
 					</div>
 				</TabsContent>

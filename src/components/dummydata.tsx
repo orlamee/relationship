@@ -17,6 +17,23 @@ import Status from "./badges/status";
 import TransferStatus from "./badges/transfer";
 
 // Dashboard
+
+export type FundedDataType = {
+	id: string;
+	profile_photo: string;
+	officer_img: string;
+	first_name: string;
+	last_name: string;
+	officer: string;
+	kodhex: string;
+	email: string;
+	dob: string;
+	phone: string;
+	residential_address: string;
+	date_joined: string;
+	status: string;
+};
+
 export type dashboardDataType = {
 	id: string;
 	profile_img: string;
@@ -391,7 +408,7 @@ export const dashboardNotFundedData: dashboardDataType[] = [
 	},
 ];
 
-export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
+export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -417,7 +434,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
+		accessorKey: "first_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -435,16 +452,18 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.profile_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative w-[35px] h-[35px] rounded-full mr-3">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.name}
+								{data.first_name} {data.last_name}
 							</h1>
 						</div>
 					</div>
@@ -486,7 +505,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "phone_number",
+		accessorKey: "phone",
 		header: ({ column }) => {
 			return (
 				<button
@@ -503,7 +522,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 	},
 
 	{
-		accessorKey: "address",
+		accessorKey: "residential_address",
 		header: ({ column }) => {
 			return (
 				<button
@@ -615,7 +634,7 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/details/${data.id}`}>
+							<Link href={`/dashboard/details/${data.kodhex}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
@@ -631,6 +650,249 @@ export const dashboardColumns: ColumnDef<dashboardDataType>[] = [
 		},
 	},
 ];
+export const paymentColumns: ColumnDef<FundedDataType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value: boolean) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "first_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400]"
+				>
+					Users <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative w-[35px] h-[35px] rounded-full mr-3">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						</div>
+
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.first_name} {data.last_name}
+							</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "kodhex",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Kodhex
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "email",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Email
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "phone",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Phone Number
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "residential_address",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Address
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "officer",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<Image
+							src={data.officer_img}
+							width={30}
+							height={30}
+							alt="user"
+							className="rounded-full mr-3"
+						/>
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.officer}
+							</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "date_joined",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Date Joined
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "status",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Status
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<div className="flex items-center">
+					{data.status === "funded" && (
+						<Status type="funded" text={data.status} />
+					)}
+					{data.status === "notfunded" && (
+						<Status type="notfunded" text={data.status} />
+					)}
+				</div>
+			);
+		},
+	},
+	{
+		id: "actions",
+		enableHiding: false,
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/payment/details/${data.kodhex}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View More Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];
+
 export const nubanColumns: ColumnDef<dashboardDataType>[] = [
 	{
 		accessorKey: "name",
@@ -1100,6 +1362,36 @@ export type activitiesDataType = {
 	status: string;
 };
 
+export type plan = {
+	amount: string;
+	auto_deposit: boolean;
+	date_created: string;
+	day_of_month: string | undefined;
+	day_of_week: string | undefined;
+	dividend_percentage: string;
+	dividend_total: string;
+	dividends_taken: boolean;
+	dividends_upfront: boolean;
+	duration_days: string;
+	end_date: string;
+	frequency: string;
+	id: number;
+	last_payment_date: string | undefined;
+	last_topup_date: string;
+	name: string;
+	next_payment_date: string | null;
+	next_topup_date: string;
+	payment_method: string;
+	start_date: string;
+	target_amount: string;
+	time: string;
+	total_dividend_received: string;
+	vault_plan_book_balance: string;
+	vault_wallet_id: string;
+	vault_wallet_plan_id: string;
+	withdrawn: boolean;
+};
+
 export type paymentDataType = {
 	id: string;
 	badge: string;
@@ -1240,129 +1532,6 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
 				>
 					Source
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-
-	{
-		accessorKey: "status",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Status
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<div className="flex items-center">
-					{data.status === "successful" && (
-						<TransferStatus type="successful" text={data.status} />
-					)}
-					{data.status === "pending" && (
-						<TransferStatus type="pending" text={data.status} />
-					)}
-					{data.status === "reversed" && (
-						<TransferStatus type="reversed" text={data.status} />
-					)}
-					{data.status === "failed" && (
-						<TransferStatus type="failed" text={data.status} />
-					)}
-				</div>
-			);
-		},
-	},
-];
-export const paymentColumns: ColumnDef<paymentDataType>[] = [
-	{
-		accessorKey: "description",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400]"
-				>
-					Description <ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<>
-					<div className="flex items-center">
-						<Image
-							src={data.badge}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
-						<div>
-							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.description}
-							</h1>
-						</div>
-					</div>
-				</>
-			);
-		},
-	},
-	{
-		accessorKey: "date",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Date
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-
-	{
-		accessorKey: "amount",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Amount
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-	{
-		accessorKey: "to",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					To
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
 			);
@@ -1595,22 +1764,24 @@ export type savingDataType = {
 	account_name: string;
 };
 
-export const savingData: savingDataType[] = [
-	{
-		id: "1",
-		profile_img: user,
-		name: "Ajayi Michael",
-		officer_img: user,
-		officer: "Ajayi Michael",
-		kodhex: "<Ajayi/>",
-		email: "john@example.com",
-		balance: "150,000",
-		account_name: "Ardillatech",
-		account_number: "234567890",
-	},
-];
+export type savingsType = {
+	id: string;
+	kodhex: string;
+	first_name: string;
+	last_name: string;
+	field_officer: {
+		first_name: string;
+		last_name: string;
+		profile_photo: string;
+	};
+	balance: string;
+	profile_photo: string;
+	email: string;
+	virtual_account_name: string;
+	virtual_account_number: string;
+};
 
-export const savingColumns: ColumnDef<savingDataType>[] = [
+export const savingColumns: ColumnDef<savingsType>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -1636,7 +1807,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
+		accessorKey: "first_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1654,36 +1825,23 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.profile_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full"
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.name}
+								{data.first_name} {data.last_name}
 							</h1>
+							<h1 className="text-[#9ca3af]">{`<${data.kodhex}/>`}</h1>
 						</div>
 					</div>
 				</>
-			);
-		},
-	},
-	{
-		accessorKey: "kodhex",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Kodhex
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
 			);
 		},
 	},
@@ -1705,7 +1863,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "officer",
+		accessorKey: "field_officer",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1723,25 +1881,26 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.officer_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
-						<div>
-							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.officer}
-							</h1>
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.field_officer.profile_photo}
+								fill
+								alt="field officer"
+								className="rounded-full"
+							/>
 						</div>
+
+						<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px] capitalize">
+							{data.field_officer.first_name}{" "}
+							{data.field_officer.last_name}
+						</h1>
 					</div>
 				</>
 			);
 		},
 	},
 	{
-		accessorKey: "account_name",
+		accessorKey: "virtual_account_name",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1758,7 +1917,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 	},
 
 	{
-		accessorKey: "account_number",
+		accessorKey: "virtual_account_number",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1792,7 +1951,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 	},
 	{
 		id: "actions",
-		header: ({ column }) => {
+		header: () => {
 			return (
 				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
 					Action
@@ -1813,7 +1972,7 @@ export const savingColumns: ColumnDef<savingDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/savings/vault/${data.id}`}>
+							<Link href={`/dashboard/savings/vault-lite/${data.id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
@@ -2070,28 +2229,18 @@ export const generatelistColumns: ColumnDef<generatelistDataType>[] = [
 
 //Branch
 export type branchDataType = {
-	id: string;
+	branch_id: string;
 	state: string;
-	head_branch: string;
-	branch: string;
+	lga: string;
+	head_branch: boolean;
 	email: string;
-	address: string;
-	phone_number: string;
-	group: string;
+	street_address: string;
+	phone: string;
+	date_created: string;
+	closest_landmark: string;
 };
 
-export const branchData: branchDataType[] = [
-	{
-		id: "1",
-		state: "Lagos",
-		head_branch: "Yes",
-		branch: "Ikeja",
-		email: "Ardillatech",
-		address: "29, Oladoyingbr street, Ogba,Ikeja.Lagos.",
-		phone_number: "09012345673",
-		group: "Ardilla",
-	},
-];
+export const branchData: branchDataType[] = [];
 
 export const branchColumns: ColumnDef<branchDataType>[] = [
 	{
@@ -2148,10 +2297,14 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 				</button>
 			);
 		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return <div>{data.head_branch ? "true" : "false"}</div>;
+		},
 	},
 
 	{
-		accessorKey: "branch",
+		accessorKey: "lga",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2160,7 +2313,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 					}
 					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
 				>
-					Branch
+					Lga
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
 			);
@@ -2184,7 +2337,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "address",
+		accessorKey: "street_address",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2200,7 +2353,7 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "phone_number",
+		accessorKey: "phone",
 		header: ({ column }) => {
 			return (
 				<button
@@ -2216,25 +2369,9 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "group",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Group
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-	{
 		id: "actions",
 		enableHiding: false,
-		header: ({ column }) => {
+		header: () => {
 			return (
 				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
 					Action
@@ -2251,9 +2388,9 @@ export const branchColumns: ColumnDef<branchDataType>[] = [
 							<MoreVertical className="h-4 w-4 text-[#240552]" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/branch/details/${data.id}`}>
+							<Link href={`/dashboard/branch/details/${data.branch_id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
@@ -2429,7 +2566,9 @@ export const LocationColumns: ColumnDef<branchDataType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/branch/location/${data.id}`}>
+							<Link
+								href={`/dashboard/branch/location/${data.branch_id}`}
+							>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
