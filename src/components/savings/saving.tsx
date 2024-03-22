@@ -68,6 +68,7 @@ function Savings({ username, profile_photo, token }: props) {
 				const bank = dataVl?.data[i]?.bank;
 
 				fl.push({
+					id: details?.user_id,
 					email: details?.email,
 					kodhex: details?.kodhex,
 					field_officer: {
@@ -107,6 +108,7 @@ function Savings({ username, profile_photo, token }: props) {
 				const bank = dataVe?.data[i]?.bank;
 
 				fl.push({
+					id: details?.user_id,
 					email: details?.email,
 					kodhex: details?.kodhex,
 					field_officer: {
@@ -146,6 +148,7 @@ function Savings({ username, profile_photo, token }: props) {
 				const bank = dataVp?.data[i]?.bank;
 
 				fl.push({
+					id: details?.user_id,
 					email: details?.email,
 					kodhex: details?.kodhex,
 					field_officer: {
@@ -368,15 +371,6 @@ function Savings({ username, profile_photo, token }: props) {
 					<div className="mt-10">
 						<div className="flex justify-between items-center">
 							<div className="inline-flex items-center space-x-10 border-b-[2px] border-b-gray-200">
-								{/* <button
-									className={`text-[14px] font-[500] text-black py-3 ${
-										tab === "completed" &&
-										"border-b-black border-b-[2px]"
-									}`}
-									onClick={() => setTab("completed")}
-								>
-									Completed
-								</button> */}
 								<button
 									className={`text-[14px] font-[500] text-black py-3 flex items-center ${
 										tab === "vault-lite" &&

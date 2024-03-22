@@ -1362,6 +1362,36 @@ export type activitiesDataType = {
 	status: string;
 };
 
+export type plan = {
+	amount: string;
+	auto_deposit: boolean;
+	date_created: string;
+	day_of_month: string | undefined;
+	day_of_week: string | undefined;
+	dividend_percentage: string;
+	dividend_total: string;
+	dividends_taken: boolean;
+	dividends_upfront: boolean;
+	duration_days: string;
+	end_date: string;
+	frequency: string;
+	id: number;
+	last_payment_date: string | undefined;
+	last_topup_date: string;
+	name: string;
+	next_payment_date: string | null;
+	next_topup_date: string;
+	payment_method: string;
+	start_date: string;
+	target_amount: string;
+	time: string;
+	total_dividend_received: string;
+	vault_plan_book_balance: string;
+	vault_wallet_id: string;
+	vault_wallet_plan_id: string;
+	withdrawn: boolean;
+};
+
 export type paymentDataType = {
 	id: string;
 	badge: string;
@@ -1735,6 +1765,7 @@ export type savingDataType = {
 };
 
 export type savingsType = {
+	id: string;
 	kodhex: string;
 	first_name: string;
 	last_name: string;
@@ -1920,7 +1951,7 @@ export const savingColumns: ColumnDef<savingsType>[] = [
 	},
 	{
 		id: "actions",
-		header: ({ column }) => {
+		header: () => {
 			return (
 				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
 					Action
@@ -1941,7 +1972,7 @@ export const savingColumns: ColumnDef<savingsType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/dashboard/savings/vault/${data.kodhex}`}>
+							<Link href={`/dashboard/savings/vault-lite/${data.id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">
