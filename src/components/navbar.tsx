@@ -42,7 +42,7 @@ function NavBar({ children, username, profile_photo }: Props) {
 									</DropdownMenuTrigger>
 									<DropdownMenuContent className="mt-4 z-[200] w-[300px] mr-8 border-[1px] border-[#E5E7EB] py-5 pb-8 rounded-[8px] bg-white">
 										<div className="px-4 pb-4">
-											<h1 className="text-[14px] font-[600] mb-1">
+											<h1 className="text-[14px] font-[600] mb-1 capitalize">
 												{username || "Olabode Bola"}
 											</h1>
 											<h3 className="text-[#9CA3AF] font-[600] text-[12px]">
@@ -81,7 +81,7 @@ function NavBar({ children, username, profile_photo }: Props) {
 							</div>
 						</div>
 						<div>
-							<h3 className="text-[#21003D] text-[13px] leading-[15px] font-[600] mb-1.5">
+							<h3 className="text-[#21003D] text-[13px] leading-[15px] font-[600] mb-1.5 capitalize">
 								{username || "Olabode Bola"}
 							</h3>
 							<h6 className="text-[#9CA3AF] text-[12px] leading-[14px] font-[500]">

@@ -1738,7 +1738,12 @@ export type savingsType = {
 	kodhex: string;
 	first_name: string;
 	last_name: string;
-	field_officer: string;
+	field_officer: {
+		first_name: string;
+		last_name: string;
+		profile_photo: string;
+	};
+	balance: string;
 	profile_photo: string;
 	email: string;
 	virtual_account_name: string;
@@ -1845,18 +1850,19 @@ export const savingColumns: ColumnDef<savingsType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						{/* <Image
-							src={data.officer_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/> */}
-						<div>
-							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.field_officer}
-							</h1>
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.field_officer.profile_photo}
+								fill
+								alt="field officer"
+								className="rounded-full"
+							/>
 						</div>
+
+						<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px] capitalize">
+							{data.field_officer.first_name}{" "}
+							{data.field_officer.last_name}
+						</h1>
 					</div>
 				</>
 			);
