@@ -336,7 +336,7 @@ function Payment({ username, profile_photo, token }: Props) {
 								) : (
 									<div ref={fundedTableRef}>
 										<Datatable
-											data={fundedLists || []}
+											data={[]}
 											columns={paymentColumns}
 											searchKey="first_name"
 										/>
@@ -363,7 +363,7 @@ function Payment({ username, profile_photo, token }: Props) {
 								) : (
 									<div ref={notfundedTableRef}>
 										<Datatable
-											data={unFundedLists || []}
+											data={[]}
 											columns={paymentColumns}
 											searchKey="first_name"
 										/>

@@ -413,7 +413,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 									) : (
 										<div ref={fundedTableRef}>
 											<Datatable
-												data={fundedLists || []}
+												data={[]}
 												columns={dashboardColumns}
 												searchKey="first_name"
 											/>
@@ -440,7 +440,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 									) : (
 										<div ref={notfundedTableRef}>
 											<Datatable
-												data={unFundedLists || []}
+												data={[]}
 												columns={dashboardColumns}
 												searchKey="first_name"
 											/>

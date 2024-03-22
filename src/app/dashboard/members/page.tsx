@@ -21,13 +21,13 @@ export default async function MembersPage() {
 			console.log(error);
 		}
 	};
-	const fieldOfficers = await getFieldOfficers(session.token);
+	// const fieldOfficers = await getFieldOfficers(session.token);
 	return (
 		<Members
 			username={session.username}
 			profile_photo={session.profile_photo}
 			token={session.token}
-			memberdata={fieldOfficers?.data}
+			memberdata={[]}
 		/>
 	);
 }
