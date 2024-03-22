@@ -282,16 +282,16 @@ function Nuban() {
 								</button>
 							</div>
 							<TabsContent value="funded">
-								<Datatable
+								{/* <Datatable
 									data={dashboardData}
 									columns={dashboardColumns}
-								/>
+								/> */}
 							</TabsContent>
 							<TabsContent value="not_funded">
-								<Datatable
+								{/* <Datatable
 									data={dashboardNotFundedData}
 									columns={dashboardColumns}
-								/>
+								/> */}
 							</TabsContent>
 						</Tabs>
 					</div>

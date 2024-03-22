@@ -72,6 +72,9 @@ export default function Welcome() {
 						<div className="mt-10">
 							<form onSubmit={handleSubmit(onSubmit)}>
 								<div className="mb-6">
+									<p className="mb-1 text-[13px] font-[600] text-black">
+										Email
+									</p>
 									<Input
 										id="email"
 										type="email"
@@ -87,6 +90,9 @@ export default function Welcome() {
 								</div>
 
 								<div className="mb-6">
+									<p className="mb-1 text-[13px] font-[600] text-black">
+										Password
+									</p>
 									<PasswordInput
 										placeholder="Enter Password"
 										className="text-black bg-[#fff] outline-none border border-[#E5E7EB]  text-[13px] rounded-[6px] focus:border-[#240552] block w-full p-4 placeholder-[#D1D5DB]"
