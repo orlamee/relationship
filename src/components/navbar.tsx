@@ -14,9 +14,9 @@ import {
 import { logout } from "@/actions";
 
 type Props = {
-	children: React.ReactNode;
-	username: string;
-	profile_photo: string;
+	children?: React.ReactNode;
+	username?: string;
+	profile_photo?: string;
 };
 function NavBar({ children, username, profile_photo }: Props) {
 	return (
