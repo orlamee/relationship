@@ -16,7 +16,7 @@ import {
 	rewardsData,
 } from "../dummydata";
 
-export default function Activities() {
+export default function Activities({ token }: { token: string }) {
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
 			<Tabs defaultValue="savings" className="w-full">
@@ -104,7 +104,7 @@ export default function Activities() {
 							</div>
 						</div>
 						<div>
-							<Datatable data={paymentData} columns={paymentColumns} />
+							{/* <Datatable data={paymentData} columns={paymentColumns} /> */}
 						</div>
 					</div>
 				</TabsContent>
@@ -143,14 +143,14 @@ export default function Activities() {
 							</div>
 						</div>
 						<div>
-							<Datatable data={paymentData} columns={paymentColumns} />
+							{/* <Datatable data={paymentData} columns={paymentColumns} /> */}
 						</div>
 					</div>
 				</TabsContent>
 				<TabsContent value="rewards">
 					<div>
 						<div>
-							<Datatable data={rewardsData} columns={rewardColumns} />
+							{/* <Datatable data={rewardsData} columns={rewardColumns} /> */}
 						</div>
 					</div>
 				</TabsContent>

@@ -23,7 +23,7 @@ export default function PersonalDetails({ user }: props) {
 				<div className="flex items-center">
 					<div className="relative w-[100px] h-[100px] rounded-full">
 						<Image
-							src={user?.profile_photo}
+							src={user?.user?.profile_photo}
 							alt="user image"
 							fill
 							className="rounded-full object-center"
@@ -32,10 +32,10 @@ export default function PersonalDetails({ user }: props) {
 
 					<div className="ms-4">
 						<h6 className="text-[#21003D] font-[500] leading-[20px] mb-3 text-[15px]">
-							{user?.last_name} {user?.first_name}
+							{user?.user?.last_name} {user?.user?.first_name}
 						</h6>
 						<p className="text-[#8807F7] font-[500] leading-[12px] text-[12px]">
-							&lt;{user?.kodhex}/&gt;
+							&lt;{user?.user?.kodhex}/&gt;
 						</p>
 					</div>
 				</div>
@@ -44,7 +44,7 @@ export default function PersonalDetails({ user }: props) {
 						Email
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.email}
+						{user?.user?.email}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -52,7 +52,7 @@ export default function PersonalDetails({ user }: props) {
 						Date of Birth
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.date_of_birth}
+						{user?.user?.date_of_birth}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -60,7 +60,7 @@ export default function PersonalDetails({ user }: props) {
 						Phone Number
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.phone}
+						{user?.user?.phone}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -68,7 +68,7 @@ export default function PersonalDetails({ user }: props) {
 						Address
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.residential_address}
+						{user?.user?.residential_address}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -84,7 +84,7 @@ export default function PersonalDetails({ user }: props) {
 						Gender
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.gender}
+						{user?.user?.gender}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -92,23 +92,25 @@ export default function PersonalDetails({ user }: props) {
 						BVN
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						{user?.bvn_hash}
+						{user?.user?.bvn_hash}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
 					<h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
 						Field Officer
 					</h4>
-					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						John Doe
+					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px] capitalize">
+						{user?.field_officer?.first_name}{" "}
+						{user?.field_officer?.last_name}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
 					<h4 className="text-[#9CA3AF] font-[400] leading-[30px] text-[12px]">
 						Customer Care
 					</h4>
-					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						John Doe
+					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px] capitalize">
+						{user?.customer_care?.first_name}{" "}
+						{user?.customer_care?.last_name}
 					</h6>
 				</div>
 				<div className="border border-[#F3F4F6] p-7 rounded-[4px] shadow-sm">
@@ -116,7 +118,7 @@ export default function PersonalDetails({ user }: props) {
 						Branch
 					</h4>
 					<h6 className="text-[#000] font-[500] leading-[30px] text-[12px]">
-						Oshodi
+						{user?.branch?.lga}
 					</h6>
 				</div>
 			</div>

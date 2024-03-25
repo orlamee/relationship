@@ -177,7 +177,7 @@ function ChoosePeriod({
 				</div>
 
 				<Tabs defaultValue="details" className="w-[400px] mx-auto mt-8">
-					<TabsList className=" grid w-[320px] mx-auto grid-cols-2 h-[46px] bg-[#e4baba]">
+					<TabsList className=" grid w-[320px] mx-auto grid-cols-2 h-[46px] bg-[#f9f9f9]">
 						<TabsTrigger
 							value="details"
 							className="h-full rounded-[8px] font-[600]"

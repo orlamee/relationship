@@ -71,7 +71,7 @@ export default function UserManagementDetails({
 								<KYC />
 							</TabsContent>
 							<TabsContent value="nextofkin">
-								<Nextofkin />
+								<Nextofkin user={user} />
 							</TabsContent>
 							<TabsContent value="activities">
 								<Activities token={token} />

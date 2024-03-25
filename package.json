@@ -30,6 +30,7 @@
     "jspdf": "^2.5.1",
     "lucide-react": "^0.294.0",
     "next": "14.0.4",
+    "next-nprogress-bar": "^2.3.9",
     "react": "^18",
     "react-currency-input-field": "^3.6.12",
     "react-day-picker": "^8.10.0",

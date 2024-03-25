@@ -13,14 +13,14 @@ export default async function UserManagementDetailsPage({
 	const getSingleUser = async (token: string) => {
 		try {
 			const { data } = await axios.get(
-				`${base_url}/ardilla/retail/admin/api/v1/field_officer/GetSingleUser/${kodhex}`,
+				`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_single_user/${kodhex}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				}
 			);
-			return data?.data?.dhata_user;
+			return data?.data?.user;
 		} catch (error) {}
 	};
 
