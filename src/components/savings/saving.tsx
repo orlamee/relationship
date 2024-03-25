@@ -4,18 +4,19 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Datatable from "@/components/tables/datatable";
 import {
-	planColumns,
-	planData,
 	savingColumns,
-	// savingData,
+	savingColumnsVe,
+	savingColumnsVp,
 	savingsType,
 } from "@/components/dummydata";
 import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/ui/tablines";
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import leaf from "../../assets/leaf.svg";
 import divi from "../../assets/dividend.svg";
 import savedib from "../../assets/save-dib.svg";
@@ -26,11 +27,12 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import Link from "next/link";
 import Modal from "@/components/modal";
-import { XCircleIcon } from "lucide-react";
+import { Search, XCircleIcon } from "lucide-react";
 import ModalTable from "@/components/tables/modaltable";
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
 import FadeLoader from "react-spinners/FadeLoader";
+import { userSlice } from "@/hook/user";
 
 type props = {
 	username: string;
@@ -39,10 +41,12 @@ type props = {
 };
 
 function Savings({ username, profile_photo, token }: props) {
+	const userState = userSlice();
 	const [vlList, setVlList] = useState<savingsType[]>();
 	const [veList, setVeList] = useState<savingsType[]>();
 	const [vpList, setVpList] = useState<savingsType[]>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [users, setUsers] = useState<savingsType[]>([]);
 	function openModal() {
 		setIsModalOpen(true);
 	}
@@ -65,7 +69,7 @@ function Savings({ username, profile_photo, token }: props) {
 			for (let i = 0; i < dataVl?.data?.length; i++) {
 				const fOfficer = dataVl?.data[i]?.field_officer;
 				const details = dataVl?.data[i]?.user;
-				const bank = dataVl?.data[i]?.bank;
+				const bank = dataVl?.data[i]?.bank_account;
 
 				fl.push({
 					id: details?.user_id,
@@ -105,7 +109,7 @@ function Savings({ username, profile_photo, token }: props) {
 			for (let i = 0; i < dataVe?.data?.length; i++) {
 				const fOfficer = dataVe?.data[i]?.field_officer;
 				const details = dataVe?.data[i]?.user;
-				const bank = dataVe?.data[i]?.bank;
+				const bank = dataVe?.data[i]?.bank_account;
 
 				fl.push({
 					id: details?.user_id,
@@ -145,7 +149,7 @@ function Savings({ username, profile_photo, token }: props) {
 			for (let i = 0; i < dataVp?.data?.length; i++) {
 				const fOfficer = dataVp?.data[i]?.field_officer;
 				const details = dataVp?.data[i]?.user;
-				const bank = dataVp?.data[i]?.bank;
+				const bank = dataVp?.data[i]?.bank_account;
 
 				fl.push({
 					id: details?.user_id,
@@ -173,6 +177,19 @@ function Savings({ username, profile_photo, token }: props) {
 	const [tab, setTab] = useState<
 		"vault-lite" | "vault-extra" | "vault-premium"
 	>("vault-lite");
+
+	useEffect(() => {
+		if (tab === "vault-lite") {
+			setUsers(vlList || []);
+		}
+		if (tab === "vault-extra") {
+			setUsers(veList || []);
+		}
+		if (tab === "vault-premium") {
+			setUsers(vpList || []);
+		}
+	}, [tab, vlList, veList, vpList]);
+
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
@@ -546,7 +563,7 @@ function Savings({ username, profile_photo, token }: props) {
 									) : (
 										<Datatable
 											data={veList || []}
-											columns={savingColumns}
+											columns={savingColumnsVe}
 											searchKey="first_name"
 										/>
 									)}
@@ -569,7 +586,7 @@ function Savings({ username, profile_photo, token }: props) {
 									) : (
 										<Datatable
 											data={vpList || []}
-											columns={savingColumns}
+											columns={savingColumnsVp}
 											searchKey="first_name"
 										/>
 									)}
@@ -580,21 +597,93 @@ function Savings({ username, profile_photo, token }: props) {
 				</div>
 				{isModalOpen && (
 					<Modal>
-						<div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
+						<div className="bg-white rounded-[16px] px-6 pb-6 w-[800px]">
 							<div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
 								<h1 className="text-[14px] font-[500] leading-[18px]">
 									Select a User
 								</h1>
 								<XCircleIcon
 									className="text-[#9CA3AF] cursor-pointer w-[18px]"
-									onClick={closeModal}
+									onClick={() => {
+										closeModal();
+										userState.removeUser();
+									}}
 								/>
 							</div>
-							<div className="my-6 relative">
-								<ModalTable data={planData} columns={planColumns} />
+							<div className="w-full flex items-center border-[1px] border-[#F3F4F6] p-4 mt-3">
+								<Search className="mr-3 text-[#21003D]" />
+								<input
+									placeholder="Search"
+									className="outline-none h-full  md:w-full text-[12px] text-[#9CA3AF] placeholder:text-[#9CA3AF]"
+								/>
+							</div>
+							<div className="my-3 relative">
+								<Table>
+									<TableHeader>
+										<TableRow className="bg-[#FAFAFA] rounded-[4px] h-[30px]">
+											<TableHead className="text-[#9CA3AF] text-[13px]">
+												Name
+											</TableHead>
+											<TableHead className="text-[#9CA3AF] text-[13px]">
+												Account Name
+											</TableHead>
+											<TableHead className="text-[#9CA3AF] text-[13px]">
+												Amount Number
+											</TableHead>
+											<TableHead className="text-[#9CA3AF] text-[13px]">
+												Account Balance
+											</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										{users.map((user) => (
+											<TableRow
+												key={user.id}
+												className="cursor-pointer"
+												onClick={() => {
+													userState.setUser(user);
+												}}
+											>
+												<TableCell className="flex items-center">
+													<div className="relative w-[30px] h-[30px] rounded-full mr-3">
+														<Image
+															src={user.profile_photo}
+															alt="user"
+															fill
+															className="rounded-full"
+														/>
+													</div>
+
+													<p className="font-[500] capitalize text-[12px]">
+														{user.first_name} {user.last_name}
+													</p>
+												</TableCell>
+												<TableCell className="">
+													<div>
+														<p>{user.virtual_account_name}</p>
+													</div>
+												</TableCell>
+												<TableCell className="">
+													<div className="flex items-center w-full justify-between ">
+														<p className="font-[500] mr-6">
+															{user.virtual_account_number}
+														</p>
+														<input
+															type="radio"
+															checked={
+																user.id === userState.user?.id
+															}
+															className="accent-[#240552]"
+														/>
+													</div>
+												</TableCell>
+											</TableRow>
+										))}
+									</TableBody>
+								</Table>
 							</div>
 							<div className="text-end">
-								<Link href={"/dashboard/savings/create-vault"}>
+								<Link href={"/dashboard/savings/create-vault-lite"}>
 									<button className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]">
 										Proceed
 									</button>

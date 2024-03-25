@@ -4,7 +4,6 @@ import NavBar from "../components/navbar";
 import arrowleft from "../assets/arrow-left-icon.svg";
 import Image from "next/image";
 import Link from "next/link";
-import user from "../assets/avatar.svg";
 import { ChevronDown, Code2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { planRecents } from "../dummy";
@@ -28,7 +27,7 @@ type props = {
 	userId: string;
 };
 
-export default function SinglePlan({
+export default function SinglePlanVp({
 	username,
 	profile_photo,
 	token,
@@ -39,11 +38,9 @@ export default function SinglePlan({
 		isLoading: isLoading,
 		error: error,
 	} = useFetcher(
-		`${base_url}/ardilla/retail/admin/api/v1/savings/single_vault_lite_user/${userId}`,
+		`${base_url}/ardilla/retail/admin/api/v1/savings/single_vault_premium_user/${userId}`,
 		token
 	);
-
-	console.log({ data });
 
 	const [plans, setPlans] = useState<plan[]>();
 	const [selectedPlan, setSelectedPlan] = useState<number | undefined>();
@@ -53,11 +50,11 @@ export default function SinglePlan({
 
 	useEffect(() => {
 		setPlans(
-			data?.data?.user.ardilla_retail_user_saving_vault_lite_wallet
+			data?.data?.user.ardilla_retail_user_saving_vault_premium_wallet
 				?.vault_plan
 		);
 		setSelectedPlan(
-			data?.data?.user.ardilla_retail_user_saving_vault_lite_wallet
+			data?.data?.user.ardilla_retail_user_saving_vault_premium_wallet
 				?.vault_plan[0]?.id
 		);
 	}, [data]);
@@ -202,12 +199,12 @@ export default function SinglePlan({
 															</defs>
 														</svg>
 													</span>
-													Vault Lite
+													Vault Premium
 												</button>
 												<div className="">
 													<DropdownMenu modal={false}>
 														<DropdownMenuTrigger asChild>
-															<button className="outline-none border-[1px] border-[#E5E7EB] px-5 py-2 flex justify-center items-center rounded-[4px] min-w-[100px]">
+															<button className="outline-none border-[1px] border-[#E5E7EB] px-5 py-2 flex justify-between items-center rounded-[4px] min-w-[100px]">
 																{selectedPlanName ||
 																	plans?.[0].name}
 																<ChevronDown className="text-[#8807F7] w-[13px] ml-2" />

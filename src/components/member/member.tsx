@@ -2,16 +2,23 @@
 import NavBar from "@/components/navbar";
 import React from "react";
 import Datatable from "@/components/tables/datatable";
-import { memberData, membersCol, membersType } from "@/dummy";
+import { membersCol, membersType } from "@/dummy";
+import { useFetcher } from "@/lib/useFetcher";
+import { base_url } from "@/base_url";
+import FadeLoader from "react-spinners/FadeLoader";
 
 type Props = {
 	username: string;
 	token: string;
 	profile_photo: string;
-	memberdata: membersType[];
 };
 
-function Members({ username, profile_photo, memberdata }: Props) {
+function Members({ username, profile_photo, token }: Props) {
+	const { data, isLoading, error } = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_field_officers`,
+		token
+	);
+
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
@@ -134,13 +141,29 @@ function Members({ username, profile_photo, memberdata }: Props) {
 					<h1 className="text-[20px] font-[500] leading-[24px] text-[#21003D] mb-6">
 						Field Officers
 					</h1>
-					<div className="mt-10">
-						<Datatable
-							data={memberdata || []}
-							columns={membersCol}
-							placeholder="search for a field officer"
-							searchKey="first_name"
-						/>
+
+					<div>
+						{isLoading ? (
+							<div className="w-full flex justify-center mt-10">
+								<FadeLoader
+									color={"#240552"}
+									loading={true}
+									aria-label="Loading Spinner"
+									data-testid="loader"
+								/>
+							</div>
+						) : error?.message ? (
+							<p className="text-center mt-10">{error.message}</p>
+						) : (
+							<div className="mt-10">
+								<Datatable
+									data={data?.data || []}
+									columns={membersCol}
+									placeholder="search for a field officer"
+									searchKey="first_name"
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 			</main>

@@ -1,10 +1,22 @@
 import React from "react";
-import SinglePlan from "@/components/singleplan";
+import { getSession } from "@/actions";
+import SinglePlanVp from "@/components/singleplanVp";
 
-export default function SingleSavingsPage() {
+export default async function SingleSavingsPage({
+	params: { id },
+}: {
+	params: { id: string };
+}) {
+	const session = await getSession();
+
 	return (
 		<div>
-			<SinglePlan />
+			<SinglePlanVp
+				username={session.username}
+				profile_photo={session.profile_photo}
+				token={session.token}
+				userId={id}
+			/>
 		</div>
 	);
 }

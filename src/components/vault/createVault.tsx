@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../navbar";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -11,9 +11,31 @@ import Entertarget from "./entertarget";
 import ChoosePeriod from "./chooseperiod";
 import Image from "next/image";
 import avatar from "../../assets/avatar.svg";
+import { useForm } from "react-hook-form";
+import { userSlice } from "@/hook/user";
+import { useRouter } from "next/navigation";
 
-function CreateVault() {
+export type vaultLiteVal = {
+	name: string;
+	target_amount: string;
+	start_date: Date;
+	end_date: string;
+	time: string;
+};
+
+function CreateVault({ token }: { token: string }) {
 	// const step = useSearchParams().get("step") || "enter amount";
+
+	const router = useRouter();
+
+	const user = userSlice();
+
+	// useEffect(() => {
+	// 	if (!user.user) {
+	// 		router.push("/dashboard/savings");
+	// 	}
+	// }, [user.user, router]);
+
 	const [step, setStep] = useState<
 		"enter name" | "how often" | "target" | "period" | "overview"
 	>("enter name");
@@ -22,6 +44,8 @@ function CreateVault() {
 	const [selectedF, setSelectedF] = useState("");
 	const [selectedD, setSelectedD] = useState("");
 	const [selectedDom, setSelectedDom] = useState("");
+	const { register, trigger, watch, control, setValue } =
+		useForm<vaultLiteVal>();
 
 	return (
 		<section>
@@ -37,12 +61,21 @@ function CreateVault() {
 						</div>
 					</Link>
 					<div className="flex items-center space-x-3">
-						<Image src={avatar} alt="avatar" className="w-[30px]" />
+						<div className="relative rounded-full w-[30px] h-[30px]">
+							<Image
+								src={user.user?.profile_photo || avatar}
+								alt="avatar"
+								className="rounded-full"
+								fill
+							/>
+						</div>
 						<div>
-							<h1 className="text-black font-[500] text-[12px]">
-								Ajayi Michael Olaoluwa
+							<h1 className="text-black font-[500] text-[12px] capitalize">
+								{user.user?.last_name} {user?.user?.first_name}
 							</h1>
-							<p className="text-[12px] font-[400] text-[#9CA3AF]">{`<Ajayi/>`}</p>
+							<p className="text-[12px] font-[400] text-[#9CA3AF]">
+								{`<${user.user?.kodhex}/>`}
+							</p>
 						</div>
 					</div>
 					<div></div>
@@ -71,14 +104,20 @@ function CreateVault() {
 						</div>
 
 						{step === "enter name" && (
-							<Entername step={step} setStep={() => setStep("target")} />
+							<Entername
+								step={step}
+								setStep={() => setStep("target")}
+								register={register}
+								watch={watch}
+							/>
 						)}
 						{step === "target" && (
 							<Entertarget
-								amount={amount}
-								setAmount={setAmount}
 								setStep={() => setStep("enter name")}
 								next={() => setStep("how often")}
+								register={register}
+								watch={watch}
+								control={control}
 							/>
 						)}
 						{step === "how often" && (
@@ -97,6 +136,12 @@ function CreateVault() {
 							<ChoosePeriod
 								setStep={() => setStep("how often")}
 								next={() => setStep("overview")}
+								register={register}
+								watch={watch}
+								selectedF={selectedF}
+								token={token}
+								control={control}
+								setValue={setValue}
 							/>
 						)}
 						{step === "overview" && (

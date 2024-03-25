@@ -556,13 +556,15 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.officer_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative mr-3 w-[30px] h-[30px]">
+							<Image
+								src={data.officer_img}
+								fill
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
 								{data.officer}
@@ -611,7 +613,7 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 					{data.status === "funded" && (
 						<Status type="funded" text={data.status} />
 					)}
-					{data.status === "notfunded" && (
+					{data.status === "not funded" && (
 						<Status type="notfunded" text={data.status} />
 					)}
 				</div>
@@ -798,13 +800,15 @@ export const paymentColumns: ColumnDef<FundedDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.officer_img}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.officer_img}
+								alt="user"
+								className="rounded-full"
+								fill
+							/>
+						</div>
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
 								{data.officer}
@@ -853,7 +857,7 @@ export const paymentColumns: ColumnDef<FundedDataType>[] = [
 					{data.status === "funded" && (
 						<Status type="funded" text={data.status} />
 					)}
-					{data.status === "notfunded" && (
+					{data.status === "not funded" && (
 						<Status type="notfunded" text={data.status} />
 					)}
 				</div>
@@ -1970,9 +1974,423 @@ export const savingColumns: ColumnDef<savingsType>[] = [
 							<MoreVertical className="h-4 w-4 text-[#240552]" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
 							<Link href={`/dashboard/savings/vault-lite/${data.id}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View More Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];
+export const savingColumnsVe: ColumnDef<savingsType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value: boolean) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "first_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400]"
+				>
+					Users <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full"
+							/>
+						</div>
+
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.first_name} {data.last_name}
+							</h1>
+							<h1 className="text-[#9ca3af]">{`<${data.kodhex}/>`}</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+
+	{
+		accessorKey: "email",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Email
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "field_officer",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.field_officer.profile_photo}
+								fill
+								alt="field officer"
+								className="rounded-full"
+							/>
+						</div>
+
+						<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px] capitalize">
+							{data.field_officer.first_name}{" "}
+							{data.field_officer.last_name}
+						</h1>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "virtual_account_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Account Name
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "virtual_account_number",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Account Number
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "balance",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Balance
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		id: "actions",
+		header: () => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="bg-white">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/savings/vault-extra/${data.id}`}>
+								<div className="flex items-center cursor-pointer">
+									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
+									<span className="text-[12px] font-[400] leading-[12px]">
+										{" "}
+										View More Details
+									</span>
+								</div>
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+		},
+	},
+];
+export const savingColumnsVp: ColumnDef<savingsType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value: boolean) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: "first_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400]"
+				>
+					Users <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.profile_photo}
+								fill
+								alt="user"
+								className="rounded-full"
+							/>
+						</div>
+
+						<div>
+							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
+								{data.first_name} {data.last_name}
+							</h1>
+							<h1 className="text-[#9ca3af]">{`<${data.kodhex}/>`}</h1>
+						</div>
+					</div>
+				</>
+			);
+		},
+	},
+
+	{
+		accessorKey: "email",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Email
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		accessorKey: "field_officer",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Field Officer <ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<>
+					<div className="flex items-center">
+						<div className="relative mr-3 rounded-full w-[30px] h-[30px]">
+							<Image
+								src={data.field_officer.profile_photo}
+								fill
+								alt="field officer"
+								className="rounded-full"
+							/>
+						</div>
+
+						<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px] capitalize">
+							{data.field_officer.first_name}{" "}
+							{data.field_officer.last_name}
+						</h1>
+					</div>
+				</>
+			);
+		},
+	},
+	{
+		accessorKey: "virtual_account_name",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Account Name
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "virtual_account_number",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Account Number
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+
+	{
+		accessorKey: "balance",
+		header: ({ column }) => {
+			return (
+				<button
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+				>
+					Balance
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+	},
+	{
+		id: "actions",
+		header: () => {
+			return (
+				<button className="flex items-center text-[12px] font-[400] text-[#9CA3AF]">
+					Action
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<button className="h-8 w-8 p-0 outline-none">
+							<span className="sr-only">Open menu</span>
+							<MoreVertical className="h-4 w-4 text-[#240552]" />
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="bg-white">
+						<DropdownMenuItem>
+							<Link href={`/dashboard/savings/vault-premium/${data.id}`}>
 								<div className="flex items-center cursor-pointer">
 									<Eye className="w-[14px] text-[#9CA3AF] mr-2" />{" "}
 									<span className="text-[12px] font-[400] leading-[12px]">

@@ -54,7 +54,25 @@ function Payment({ username, profile_photo, token }: Props) {
 		if (dataFunded) {
 			let fl: FundedDataType[] = [];
 			for (let i = 0; i < dataFunded?.data?.funded_users?.length; i++) {
-				fl.push(dataFunded?.data?.funded_users[i].user);
+				const user = dataFunded?.data?.funded_users[i]?.user;
+				const officer = dataFunded?.data?.funded_users[i]?.field_officer;
+
+				fl.push({
+					first_name: user?.first_name,
+					last_name: user?.last_name,
+					email: user?.email,
+					id: user?.user_id,
+					profile_photo: user?.profile_photo,
+					residential_address: user?.residential_address,
+					status: "funded",
+					kodhex: user?.kodhex,
+					phone: user?.phone,
+					date_joined: "",
+					dob: "",
+					officer: `${officer?.first_name} ${officer?.last_name}`,
+					officer_img: officer?.profile_photo,
+					// officer: officer?.
+				});
 			}
 			setFundedLists(fl);
 		}
@@ -74,7 +92,26 @@ function Payment({ username, profile_photo, token }: Props) {
 		if (dataUnFunded) {
 			let fl: FundedDataType[] = [];
 			for (let i = 0; i < dataUnFunded?.data?.unfunded_users?.length; i++) {
-				fl.push(dataUnFunded?.data?.unfunded_users[i].user);
+				const user = dataUnFunded?.data?.unfunded_users[i]?.user;
+				const officer =
+					dataUnFunded?.data?.unfunded_users[i]?.field_officer;
+
+				fl.push({
+					first_name: user?.first_name,
+					last_name: user?.last_name,
+					email: user?.email,
+					id: user?.user_id,
+					profile_photo: user?.profile_photo,
+					residential_address: user?.residential_address,
+					status: "not funded",
+					kodhex: user?.kodhex,
+					phone: user?.phone,
+					date_joined: "",
+					dob: "",
+					officer: `${officer?.first_name} ${officer?.last_name}`,
+					officer_img: officer?.profile_photo,
+					// officer: officer?.
+				});
 			}
 			setUnFundedLists(fl);
 		}
@@ -221,28 +258,28 @@ function Payment({ username, profile_photo, token }: Props) {
 									<path
 										d="M6.72179 2.15234C3.74011 2.15234 1.32299 4.16661 1.32299 6.65134C1.32299 7.88623 1.92002 9.00491 2.88667 9.81788C3.0316 9.93977 3.12259 10.1163 3.12259 10.3057V11.7502H4.32232L4.79852 11.0708C4.87242 10.9653 5.0052 10.9195 5.1299 10.9516C6.16705 11.2183 7.27652 11.2183 8.31368 10.9516C8.43837 10.9195 8.57115 10.9653 8.64505 11.0708L9.12125 11.7502H10.321V10.3198C10.321 10.1225 10.418 9.93789 10.5803 9.82593C11.2251 9.3814 13.3203 8.51175 13.3203 7.58607V6.65134C13.3203 6.29638 13.0517 6.00863 12.7204 6.00863C12.3565 6.00863 12.0595 5.86724 11.9394 5.49124C11.3254 3.56875 9.22211 2.15234 6.72179 2.15234Z"
 										stroke="black"
-										stroke-width="1.3406"
-										stroke-linejoin="round"
+										strokeWidth="1.3406"
+										strokeLinejoin="round"
 									/>
 									<path
 										d="M5.81929 3.95228C6.19839 3.75733 6.60132 3.65234 7.01902 3.65234C7.43672 3.65234 7.83965 3.75733 8.21875 3.95228"
 										stroke="black"
-										stroke-width="1.3406"
-										stroke-linecap="round"
-										stroke-linejoin="round"
+										strokeWidth="1.3406"
+										strokeLinecap="round"
+										strokeLinejoin="round"
 									/>
 									<path
 										d="M10.0236 5.75391H10.0182"
 										stroke="black"
-										stroke-width="1.78747"
-										stroke-linecap="round"
-										stroke-linejoin="round"
+										strokeWidth="1.78747"
+										strokeLinecap="round"
+										strokeLinejoin="round"
 									/>
 									<path
 										d="M1.91915 4.25391C1.61922 3.95397 1.31929 3.39188 1.31929 2.65258C1.31929 1.71484 2.12499 0.954643 3.11888 0.954643C3.32922 0.954643 3.53112 0.988689 3.71875 1.05126"
 										stroke="black"
-										stroke-width="1.3406"
-										stroke-linecap="round"
+										strokeWidth="1.3406"
+										strokeLinecap="round"
 									/>
 								</svg>
 								<h5 className="text-[#000] text-[12px] leading-[20px] font-[500]">
@@ -308,16 +345,6 @@ function Payment({ username, profile_photo, token }: Props) {
 						</button>
 					</div>
 					<div className="mt-3">
-						{/* {tab === "completed" && (
-								<div ref={completedTableRef}>
-									<Datatable
-										data={CompletedData}
-										columns={CompletedColumns}
-										// searchKey="first_name"
-									/>
-								</div>
-							)} */}
-
 						{tab === "funded" && (
 							<div>
 								{isLoadingFundedUsers ? (
@@ -336,7 +363,7 @@ function Payment({ username, profile_photo, token }: Props) {
 								) : (
 									<div ref={fundedTableRef}>
 										<Datatable
-											data={[]}
+											data={fundedLists || []}
 											columns={paymentColumns}
 											searchKey="first_name"
 										/>
@@ -363,7 +390,7 @@ function Payment({ username, profile_photo, token }: Props) {
 								) : (
 									<div ref={notfundedTableRef}>
 										<Datatable
-											data={[]}
+											data={unFundedLists || []}
 											columns={paymentColumns}
 											searchKey="first_name"
 										/>

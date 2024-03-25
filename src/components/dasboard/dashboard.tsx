@@ -123,7 +123,25 @@ function Dashboard({ username, profile_photo, token }: Props) {
 		if (dataFunded) {
 			let fl: FundedDataType[] = [];
 			for (let i = 0; i < dataFunded?.data?.funded_users?.length; i++) {
-				fl.push(dataFunded?.data?.funded_users[i].user);
+				const user = dataFunded?.data?.funded_users[i]?.user;
+				const officer = dataFunded?.data?.funded_users[i]?.field_officer;
+
+				fl.push({
+					first_name: user?.first_name,
+					last_name: user?.last_name,
+					email: user?.email,
+					id: user?.user_id,
+					profile_photo: user?.profile_photo,
+					residential_address: user?.residential_address,
+					status: "funded",
+					kodhex: user?.kodhex,
+					phone: user?.phone,
+					date_joined: "",
+					dob: "",
+					officer: `${officer?.first_name} ${officer?.last_name}`,
+					officer_img: officer?.profile_photo,
+					// officer: officer?.
+				});
 			}
 			setFundedLists(fl);
 		}
@@ -137,13 +155,31 @@ function Dashboard({ username, profile_photo, token }: Props) {
 		`${base_url}/ardilla/retail/admin/api/v1/payment/get_unfunded_accounts`,
 		token
 	);
-
 	useEffect(() => {
 		setUnFundedLists(dataUnFunded?.data?.unfunded_users);
 		if (dataUnFunded) {
 			let fl: FundedDataType[] = [];
 			for (let i = 0; i < dataUnFunded?.data?.unfunded_users?.length; i++) {
-				fl.push(dataUnFunded?.data?.unfunded_users[i].user);
+				const user = dataUnFunded?.data?.unfunded_users[i]?.user;
+				const officer =
+					dataUnFunded?.data?.unfunded_users[i]?.field_officer;
+
+				fl.push({
+					first_name: user?.first_name,
+					last_name: user?.last_name,
+					email: user?.email,
+					id: user?.user_id,
+					profile_photo: user?.profile_photo,
+					residential_address: user?.residential_address,
+					status: "not funded",
+					kodhex: user?.kodhex,
+					phone: user?.phone,
+					date_joined: "",
+					dob: "",
+					officer: `${officer?.first_name} ${officer?.last_name}`,
+					officer_img: officer?.profile_photo,
+					// officer: officer?.
+				});
 			}
 			setUnFundedLists(fl);
 		}
@@ -413,7 +449,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 									) : (
 										<div ref={fundedTableRef}>
 											<Datatable
-												data={[]}
+												data={fundedLists || []}
 												columns={dashboardColumns}
 												searchKey="first_name"
 											/>
@@ -440,7 +476,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 									) : (
 										<div ref={notfundedTableRef}>
 											<Datatable
-												data={[]}
+												data={unFundedLists || []}
 												columns={dashboardColumns}
 												searchKey="first_name"
 											/>

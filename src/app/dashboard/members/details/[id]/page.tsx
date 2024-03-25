@@ -186,8 +186,9 @@ export default function MemberDetails() {
 												<span className="mr-2 text-[12px] ">₦</span>
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] w-full bg-white"
 													defaultValue={"200000"}
+													disabled
 												/>
 											</div>
 										</div>
@@ -198,8 +199,9 @@ export default function MemberDetails() {
 											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] w-full bg-white"
 													defaultValue={"100"}
+													disabled
 												/>
 											</div>
 										</div>
@@ -211,8 +213,9 @@ export default function MemberDetails() {
 												<span className="mr-2 text-[12px]">₦</span>
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] w-full bg-white"
 													defaultValue={"200000"}
+													disabled
 												/>
 											</div>
 										</div>
@@ -223,8 +226,9 @@ export default function MemberDetails() {
 											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] bg-white w-full"
 													defaultValue={"100"}
+													disabled
 												/>
 											</div>
 										</div>
@@ -235,8 +239,9 @@ export default function MemberDetails() {
 											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] w-full bg-white"
 													defaultValue={"100"}
+													disabled
 												/>
 											</div>
 										</div>
@@ -247,8 +252,9 @@ export default function MemberDetails() {
 											<div className="border-[1px] rounded-[6px] px-4 py-3 flex items-center w-[230px]">
 												<input
 													type="text"
-													className="outline-none h-full text-[12px] font-[500]"
+													className="outline-none h-full text-[12px] font-[500] w-full bg-white"
 													defaultValue={"50"}
+													disabled
 												/>
 											</div>
 										</div>

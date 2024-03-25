@@ -113,10 +113,10 @@ export default function LoginOTP() {
 							<button
 								className="bg-[#240552] text-white w-full mt-4 p-5 text-center rounded-[8px] font-[500] text-[14px] disabled:bg-[#240552]/50"
 								type="submit"
-								disabled={!otp || otp.length < 7}
+								disabled={!otp || otp.length < 7 || isLoading}
 								onClick={verify_otp}
 							>
-								{isLoading ? "Signing in" : "Sign In"}
+								{isLoading ? "Signing in..." : "Sign In"}
 							</button>
 						</div>
 					</div>
