@@ -452,7 +452,7 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<div className="relative w-[35px] h-[35px] rounded-full mr-3">
+						<div className="relative w-[35px] h-[35px] rounded-full mr-3 flex-shrink-0">
 							<Image
 								src={data.profile_photo}
 								fill

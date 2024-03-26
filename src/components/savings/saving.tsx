@@ -674,6 +674,7 @@ function Savings({ username, profile_photo, token }: props) {
 																user.id === userState.user?.id
 															}
 															className="accent-[#240552]"
+															readOnly
 														/>
 													</div>
 												</TableCell>

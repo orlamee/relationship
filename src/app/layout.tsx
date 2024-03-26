@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 import "./globals.css";
+import Providers from "@/components/progress";
 
 const myFont = localFont({
 	src: "../fonts/Satoshi-Regular.otf",
@@ -24,7 +26,8 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={myFont.className}>
 				<Toaster />
-				{children}
+
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

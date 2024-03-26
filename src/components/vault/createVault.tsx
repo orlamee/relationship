@@ -13,7 +13,8 @@ import Image from "next/image";
 import avatar from "../../assets/avatar.svg";
 import { useForm } from "react-hook-form";
 import { userSlice } from "@/hook/user";
-import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type vaultLiteVal = {
 	name: string;
@@ -21,31 +22,66 @@ export type vaultLiteVal = {
 	start_date: Date;
 	end_date: string;
 	time: string;
+	trans_pin: string;
+};
+
+export type detailsType = {
+	amount: number;
+	frequency: string;
+	dividends_accrued: number;
+	dividends_rate: number;
 };
 
 function CreateVault({ token }: { token: string }) {
-	// const step = useSearchParams().get("step") || "enter amount";
-
-	const router = useRouter();
-
 	const user = userSlice();
-
-	// useEffect(() => {
-	// 	if (!user.user) {
-	// 		router.push("/dashboard/savings");
-	// 	}
-	// }, [user.user, router]);
 
 	const [step, setStep] = useState<
 		"enter name" | "how often" | "target" | "period" | "overview"
 	>("enter name");
-	const [name, setName] = useState("");
-	const [amount, setAmount] = useState("0");
 	const [selectedF, setSelectedF] = useState("");
 	const [selectedD, setSelectedD] = useState("");
 	const [selectedDom, setSelectedDom] = useState("");
-	const { register, trigger, watch, control, setValue } =
-		useForm<vaultLiteVal>();
+
+	const schema = z.object({
+		name: z
+			.string({ required_error: "Plan name is required" })
+			.min(1, "Plan name is required"),
+		target_amount: z
+			.string({ required_error: "enter target amount" })
+			.min(1, "enter target amount")
+			.refine((val) => Number(val) >= 60000, {
+				message: "minimum of 60,000",
+			})
+			.refine((val) => Number(val) <= 200000, {
+				message: "maximum of 200,000",
+			}),
+		start_date: z.string({ required_error: "Start date required" }),
+		end_date: z.string({ required_error: "Payback date required" }),
+		time: z
+			.string({ required_error: "Time required" })
+			.min(1, "Time required"),
+		trans_pin: z
+			.string({ required_error: "Your Transaction pin is required" })
+			.max(6, "Your transaction pin is incomplete"),
+	});
+
+	const {
+		register,
+		trigger,
+		watch,
+		control,
+		setValue,
+		setFocus,
+		getFieldState,
+		reset,
+		clearErrors,
+		formState: { errors },
+	} = useForm<vaultLiteVal>({
+		resolver: zodResolver(schema),
+		mode: "onChange",
+	});
+
+	const [details, setDetails] = useState<detailsType>();
 
 	return (
 		<section>
@@ -81,7 +117,7 @@ function CreateVault({ token }: { token: string }) {
 					<div></div>
 				</nav>
 			</header>
-			<main className="flex items-center justify-center h-[80vh]">
+			<main className="flex items-center justify-center h-[88vh]">
 				<div className=" py-4 px-4 w-full mx-4 sm:mx-[10%] lg:mx-0 lg:w-1/2 border-[1px] border-[#E5E7EB] rounded-[8px] container-gradient bg-white">
 					<ScrollArea className=" bg-white w-full py-8 rounded-[8px]">
 						<div className="h-[4px] w-[450px] bg-[#E5E7EB] rounded-full mx-auto mb-7">
@@ -109,6 +145,9 @@ function CreateVault({ token }: { token: string }) {
 								setStep={() => setStep("target")}
 								register={register}
 								watch={watch}
+								errors={errors}
+								trigger={trigger}
+								getFieldState={getFieldState}
 							/>
 						)}
 						{step === "target" && (
@@ -118,6 +157,9 @@ function CreateVault({ token }: { token: string }) {
 								register={register}
 								watch={watch}
 								control={control}
+								errors={errors}
+								trigger={trigger}
+								getFieldState={getFieldState}
 							/>
 						)}
 						{step === "how often" && (
@@ -140,12 +182,31 @@ function CreateVault({ token }: { token: string }) {
 								watch={watch}
 								selectedF={selectedF}
 								token={token}
-								control={control}
 								setValue={setValue}
+								details={details}
+								setDetails={setDetails}
+								selectedD={selectedD}
+								selectedDom={selectedDom}
+								errors={errors}
+								trigger={trigger}
+								getFieldState={getFieldState}
+								clearErrors={clearErrors}
 							/>
 						)}
 						{step === "overview" && (
-							<OverView setStep={() => setStep("period")} />
+							<OverView
+								setStep={() => setStep("period")}
+								details={details}
+								watch={watch}
+								token={token}
+								selectedF={selectedF}
+								selectedD={selectedD}
+								selectedDom={selectedDom}
+								register={register}
+								setFocus={setFocus}
+								resetStep={() => setStep("enter name")}
+								resetForm={reset}
+							/>
 						)}
 					</ScrollArea>
 

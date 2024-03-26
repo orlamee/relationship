@@ -15,25 +15,26 @@ import {
 import { Switch } from "../ui/switch";
 import {
 	Control,
+	FieldErrors,
+	UseFormClearErrors,
+	UseFormGetFieldState,
 	UseFormRegister,
 	UseFormSetValue,
+	UseFormTrigger,
 	UseFormWatch,
 } from "react-hook-form";
-import { vaultLiteVal } from "./createVault";
+import { detailsType, vaultLiteVal } from "./createVault";
 import axios from "axios";
 import { base_url } from "@/base_url";
 import { userSlice } from "@/hook/user";
-import { Calendar } from "../ui/calendar";
-import { Controller } from "react-hook-form";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import toast from "react-hot-toast";
 
 type props = {
 	setStep: () => void;
@@ -42,8 +43,15 @@ type props = {
 	watch: UseFormWatch<vaultLiteVal>;
 	selectedF: string;
 	token: string;
-	control: Control<vaultLiteVal>;
 	setValue: UseFormSetValue<vaultLiteVal>;
+	details: detailsType | undefined;
+	setDetails: React.Dispatch<React.SetStateAction<detailsType | undefined>>;
+	selectedD: string;
+	selectedDom: string;
+	errors: FieldErrors<vaultLiteVal>;
+	trigger: UseFormTrigger<vaultLiteVal>;
+	getFieldState: UseFormGetFieldState<vaultLiteVal>;
+	clearErrors: UseFormClearErrors<vaultLiteVal>;
 };
 
 function ChoosePeriod({
@@ -53,72 +61,30 @@ function ChoosePeriod({
 	watch,
 	selectedF,
 	token,
-	control,
 	setValue,
+	details,
+	setDetails,
+	selectedD,
+	selectedDom,
+	errors,
+	trigger,
+	getFieldState,
+	clearErrors,
 }: props) {
 	const user = userSlice();
 
 	const [agreed, setAgreed] = useState(false);
 	const [modal, setModal] = useState<"estimate" | "">("");
+	const [isLoading, setIsLoading] = useState(false);
 
-	type breakdown = {
+	type scheduleType = {
 		date: string;
-		amount: string;
-		dividends: string;
-		amounts: string;
+		principal: string;
+		interest: string;
+		totalInterestPaid: string;
 	};
-	const Breakdown: breakdown[] = [
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-		{
-			date: "8/10/23",
-			amount: "N100,000",
-			dividends: "N10,000",
-			amounts: "N100,000",
-		},
-	];
 
-	const startDate = watch("start_date");
+	const [schedule, setSchedule] = useState<scheduleType[]>();
 	const payDate = watch("end_date");
 	const time = watch("time");
 	const target = watch("target_amount");
@@ -126,6 +92,8 @@ function ChoosePeriod({
 
 	const getEstimate = async () => {
 		try {
+			if (isLoading) return;
+			setIsLoading(true);
 			const { data } = await axios.post(
 				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_wallet/plan/${user?.user?.id}`,
 				{
@@ -138,6 +106,8 @@ function ChoosePeriod({
 					time: time,
 					frequency: selectedF,
 					target_amount: target,
+					day_of_week: selectedD,
+					day_of_month: selectedDom,
 				},
 				{
 					headers: {
@@ -145,12 +115,21 @@ function ChoosePeriod({
 					},
 				}
 			);
+
+			if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "estimate" });
+			}
+
 			if (data.code === 200) {
+				setDetails(data.data.details);
+				setSchedule(data.data.schedule);
 				setModal("estimate");
 			}
-			console.log({ data });
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
+			toast.error(`${error?.message}`, { id: "estimate" });
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -158,7 +137,12 @@ function ChoosePeriod({
 		setValue("start_date", new Date(Date.now()));
 	}, [setValue]);
 
-	console.log();
+	useEffect(() => {
+		if (payDate) {
+			clearErrors("end_date");
+		}
+	}, [payDate, clearErrors]);
+
 	const EstimateModal = () => (
 		<Modal>
 			<div className="w-[439px] rounded-t-[30px] bg-white  relative pb-7">
@@ -196,7 +180,7 @@ function ChoosePeriod({
 								</p>
 
 								<p className="text-[14px] font-[600] text-black">
-									₦{watch("target_amount")}
+									₦ {details?.amount.toFixed(2)}
 								</p>
 							</div>
 
@@ -208,7 +192,7 @@ function ChoosePeriod({
 								</div>
 
 								<p className="text-[14px] font-[600] text-black">
-									{selectedF}
+									{details?.frequency}
 								</p>
 							</div>
 
@@ -221,7 +205,7 @@ function ChoosePeriod({
 								</div>
 
 								<p className="text-[14px] font-[600] text-black">
-									6-10% per annum
+									{details?.dividends_rate}% per annum
 								</p>
 							</div>
 
@@ -234,7 +218,7 @@ function ChoosePeriod({
 								</div>
 
 								<p className="text-[14px] font-[600] text-black">
-									₦100,000
+									₦{details?.dividends_accrued.toFixed(2)}
 								</p>
 							</div>
 
@@ -246,7 +230,7 @@ function ChoosePeriod({
 									<span className="mr-[-50px] hidden"></span>
 								</div>
 
-								<Switch />
+								<Switch defaultChecked={true} />
 							</div>
 
 							<p className="text-center my-6 text-[13px] font-[500] px-[15%]">
@@ -290,41 +274,41 @@ function ChoosePeriod({
 						</div>
 					</TabsContent>
 					<TabsContent value="breakdown">
-						<div className="mt-5 bg-[#F9F9F9] w-[328px] mx-auto">
+						<div className="mt-5 bg-[#F9F9F9] mx-auto">
 							<Table className="mx-auto">
 								<TableHeader>
 									<TableRow>
-										<TableHead className="text-[10px] font-[500]">
+										<TableHead className="text-[12px] font-[500] text-center">
 											Date
 										</TableHead>
-										<TableHead className="text-[10px] font-[500]">
-											Amount
+										<TableHead className="text-[12px] font-[500] text-center">
+											Principal
 										</TableHead>
-										<TableHead className="text-[10px] font-[500]">
-											Dividends
+										<TableHead className="text-[12px] font-[500] text-center">
+											Interest
 										</TableHead>
-										<TableHead className="text-[10px] font-[500]">
-											Amounts
+										<TableHead className="text-[12px] font-[500] text-center">
+											Total Interest Paid
 										</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody className="bg-[#F9F9F9] rounded-t-[8px] mx-auto">
-									{Breakdown.map((b, i) => (
+									{schedule?.map((s, i) => (
 										<TableRow
 											key={i}
-											className="border-0 cursor-pointer"
+											className="border-0 cursor-pointer text-center"
 										>
-											<TableCell className="text-[10px] font-[500]">
-												{b.date}
+											<TableCell className="text-[11px] font-[500]">
+												{s.date}
 											</TableCell>
-											<TableCell className="text-[10px] font-[500]">
-												{b.amount}
+											<TableCell className="text-[11px] font-[500]">
+												₦{s.principal}
 											</TableCell>
-											<TableCell className="text-[10px] font-[500]">
-												{b.dividends}
+											<TableCell className="text-[11px] font-[500]">
+												₦{s.interest}
 											</TableCell>
-											<TableCell className="text-[10px] font-[500] text-[#23A323]">
-												{b.amounts}
+											<TableCell className="text-[11px] font-[500] text-[#23A323]">
+												₦{s.totalInterestPaid}
 											</TableCell>
 										</TableRow>
 									))}
@@ -346,34 +330,7 @@ function ChoosePeriod({
 			</div>
 		</Modal>
 	);
-	const [inputType, setInputType] = useState("text");
-	const [inputType2, setInputType2] = useState("text");
 
-	const [inputTypeDate, setInputTypeDate] = useState("text");
-
-	const handleFocus = () => {
-		setInputType("date");
-	};
-	const handleFocus2 = () => {
-		setInputType2("date");
-	};
-
-	const handleBlurDate = () => {
-		setInputTypeDate("time");
-	};
-
-	const handleDate = () => {
-		setInputTypeDate("time");
-	};
-
-	const handleBlur = () => {
-		setInputType("text");
-	};
-	const handleBlur2 = () => {
-		setInputType2("text");
-	};
-
-	const oneEighhty = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
 	const payback_dates = [
 		{
 			text: "180 days",
@@ -425,6 +382,11 @@ function ChoosePeriod({
 							</div>
 						</span>
 					</button>
+					{errors?.start_date && (
+						<span className="text-red-500 mt-1 text-left block text-[13px]">
+							{errors.start_date.message}
+						</span>
+					)}
 				</div>
 				<div className="mb-4">
 					<DropdownMenu modal={false}>
@@ -473,6 +435,11 @@ function ChoosePeriod({
 							))}
 						</DropdownMenuContent>
 					</DropdownMenu>
+					{errors?.end_date && (
+						<span className="text-red-500 mt-1 text-left block text-[13px]">
+							{errors.end_date.message}
+						</span>
+					)}
 				</div>
 
 				<div className="mb-3">
@@ -483,23 +450,54 @@ function ChoosePeriod({
 						type={"time"}
 						placeholder="Select Time"
 						{...register("time")}
-						// onFocus={handleDate}
-						// onBlur={handleBlurDate}
 						className="w-full border-[1px] p-4 rounded-[4px] border-[#3D0072] outline-none"
 					/>
+					{errors?.time && (
+						<span className="text-red-500 mt-1 text-left block text-[13px]">
+							{errors.time.message}
+						</span>
+					)}
 				</div>
 
 				<button
 					className="bg-[#3D0072] text-white w-full text-[14px] font-[500] rounded-[8px] p-5 mt-5"
 					onClick={() => {
-						if (!startDate) return;
-						if (!payDate) return;
-						if (!time) return;
+						if (!payDate || !time) {
+							return trigger(["end_date", "time"]);
+						}
+						// const endState = getFieldState("end_date");
+						// const timeState = getFieldState("time");
+						// if (endState.invalid || !endState.isDirty) return;
+						// if (timeState.invalid || !timeState.isDirty) return;
 						getEstimate();
-						// setModal("estimate");
 					}}
 				>
-					Continue
+					{isLoading ? (
+						<div className="flex justify-center">
+							<svg
+								className="animate-spin h-5 w-5 text-white"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+							>
+								<circle
+									className="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									strokeWidth="2"
+								></circle>
+								<path
+									className="opacity-75"
+									fill="currentColor"
+									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+								></path>
+							</svg>
+						</div>
+					) : (
+						"Continue"
+					)}
 				</button>
 			</div>
 		</div>

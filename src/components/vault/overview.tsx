@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Steptitle from "./steptitle";
 import { useRouter } from "next/navigation";
 import dib from "../../assets/vault.svg";
@@ -22,6 +22,7 @@ import Modal from "../modal";
 import { AnimatePresence, motion } from "framer-motion";
 import note from "../../assets/note.svg";
 import success from "../../assets/success.png";
+import { detailsType, vaultLiteVal } from "./createVault";
 // import failed from "../../assets/static/failed-ks1ODQxJMt.png";
 // import CurrencyInput from "react-currency-input-field";
 // import bank from "../../assets/static/bank.svg";
@@ -30,16 +31,54 @@ import success from "../../assets/success.png";
 // import master from "../../assets/static/Mastercard logo.png";
 // import wema from "../../assets/static/wema bank.png";
 // import clock from "../../assets/static/clock.png";
+import { userSlice } from "@/hook/user";
+import { base_url } from "@/base_url";
+import axios from "axios";
+import toast from "react-hot-toast";
+import {
+	UseFormRegister,
+	UseFormReset,
+	UseFormSetFocus,
+	UseFormWatch,
+} from "react-hook-form";
+import { PasswordInput } from "../ui/passwordinput";
 
 type props = {
 	setStep: () => void;
+	details: detailsType | undefined;
+	watch: UseFormWatch<vaultLiteVal>;
+	token: string;
+	selectedD: string;
+	selectedDom: string;
+	selectedF: string;
+	register: UseFormRegister<vaultLiteVal>;
+	setFocus: UseFormSetFocus<vaultLiteVal>;
+	resetStep: () => void;
+	resetForm: UseFormReset<vaultLiteVal>;
 };
-function OverView({ setStep }: props) {
+function OverView({
+	setStep,
+	details,
+	watch,
+	token,
+	selectedD,
+	selectedDom,
+	selectedF,
+	register,
+	setFocus,
+	resetStep,
+	resetForm,
+}: props) {
+	const [isLoading, setIsLoading] = useState(false);
+	const user = userSlice();
 	const router = useRouter();
+
+	const pinRef = useRef<HTMLInputElement>(null);
 
 	const [overviewStep, setOverviewStep] = useState<"enter pin" | "">(
 		"enter pin"
 	);
+	const [pin, setPin] = useState("");
 	const [modal, setModal] = useState<
 		| "overview"
 		| "receipt"
@@ -49,6 +88,7 @@ function OverView({ setStep }: props) {
 		| "topup"
 		| "topup failed"
 		| "in progress"
+		| "pay"
 		| ""
 	>("");
 
@@ -128,6 +168,14 @@ function OverView({ setStep }: props) {
 							className="w-[18px] h-[18px] text-[#9CA3AF] cursor-pointer"
 							onClick={() => {
 								setModal("");
+								resetForm({
+									end_date: "",
+									name: "",
+									target_amount: "",
+									time: "",
+									trans_pin: "",
+								});
+								resetStep();
 							}}
 						/>
 					</div>
@@ -795,6 +843,162 @@ function OverView({ setStep }: props) {
 		</Modal>
 	);
 
+	const payDate = watch("end_date");
+	const time = watch("time");
+	const target = watch("target_amount");
+	const name = watch("name");
+	const transPin = watch("trans_pin");
+
+	const createPlan = async () => {
+		try {
+			if (isLoading) return;
+			setIsLoading(true);
+			const { data } = await axios.post(
+				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_wallet/plan/${user?.user?.id}`,
+				{
+					show_estimate: false,
+					auto_deposit: true,
+					name: name,
+					start_date: new Date(Date.now()).toISOString(),
+					end_date: new Date(
+						Date.now() + Number(payDate) * 24 * 60 * 60 * 1000
+					).toISOString(),
+					time: time,
+					payment_method: "kodhex",
+					trans_pin: transPin,
+					frequency: selectedF,
+					target_amount: target,
+					day_of_week: selectedD,
+					day_of_month: selectedDom,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			if (data.code === 200) {
+				setModal("payment sent");
+			}
+			if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "estimate" });
+			}
+			console.log(data);
+		} catch (error: any) {
+			console.log(error);
+			toast.error(`${error?.message}`, { id: "estimate" });
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		setFocus("trans_pin");
+	}, [transPin, setFocus]);
+
+	const Pin = () => (
+		<Modal>
+			<div className="w-[439px] bg-white rounded-t-[30px] pt-[20px] px-[30px] relative">
+				<div className="flex justify-center  items-center">
+					<div></div>
+					<div>
+						<h1 className="font-[600] text-[20px] text-center text-[#240552]">
+							Enter PIN
+						</h1>
+						<p className="text-[12px] font-[500] text-[#9ca3af] text-center">
+							Enter six (6) digit transaction pin
+						</p>
+					</div>
+					<XCircleIcon
+						className="w-[17px] text-[#9ca3af] cursor-pointer absolute right-[30px] top-[30px]"
+						onClick={() => setModal("")}
+					/>
+				</div>
+
+				<div className="w-full pb-7 mt-10">
+					<p className="text-black font-[600] text-[13px] mb-1">PIN</p>
+					<PasswordInput
+						placeholder="Enter pin"
+						type="tel"
+						// value={pin}
+						// ref={pinRef}
+						// onChange={(e) => setPin(e.target.value)}
+						{...register("trans_pin")}
+					/>
+					<button
+						className="p-5 rounded-[10px] w-full text-white bg-[#240552] text-[14px] font-[500] mt-10 disabled:bg-[#240552]/50"
+						onClick={() => {
+							createPlan();
+							// setModal("topup success");
+							// settopupStep("choose method");
+						}}
+						disabled={!transPin}
+					>
+						{isLoading ? (
+							<div className="flex justify-center">
+								<svg
+									className="animate-spin h-5 w-5 text-white"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+								>
+									<circle
+										className="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										strokeWidth="2"
+									></circle>
+									<path
+										className="opacity-75"
+										fill="currentColor"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									></path>
+								</svg>
+							</div>
+						) : (
+							"Continue"
+						)}
+					</button>
+				</div>
+			</div>
+		</Modal>
+	);
+
+	// 	amount
+	// :
+	// 333.3333333333333
+	// association_id
+	// :
+	// "cb712861-7b81-4674-bf34-2052e9ebadda"
+	// cashback
+	// :
+	// 0
+	// status
+	// :
+	// "successful"
+	// transaction_category
+	// :
+	// "kodhex"
+	// transaction_description
+	// :
+	// "Payment to vault-lite"
+	// transaction_details
+	// :
+	// {sender_details: 'ardilla kodhex wallet', remark: 'ardilla', credited_to: 'ardilla savings vault-lite wallet'}
+	// transaction_fee
+	// :
+	// 0
+	// transaction_ref
+	// :
+	// "fb753fbb-df85-446b-962f-5fa31f33a1f1"
+	// transaction_type
+	// :
+	// "debit"
+
+	// "trans_pin":"252525",
+
 	return (
 		<div className="mt-10">
 			{modal == "overview" && <OverViewModal />}
@@ -804,6 +1008,7 @@ function OverView({ setStep }: props) {
 			{modal == "topup success" && <TopupSuccessModal />}
 			{modal == "topup failed" && <TopupFailedModal />}
 			{modal == "in progress" && <InprogressModal />}
+			{modal === "pay" && <Pin />}
 			<Steptitle
 				title="Overview"
 				subtitle="Summary of your transaction"
@@ -822,15 +1027,19 @@ function OverView({ setStep }: props) {
 					<p className="text-[12px] font-[500] text-[#9CA3AF]">
 						Amount to pay
 					</p>
-					<p className="text-[24px] font-[700] text-primary">₦ 50,000</p>
+					<p className="text-[24px] font-[700] text-primary">
+						₦ {details?.amount.toFixed(2)}
+					</p>
 				</div>
 				<div className="flex items-center justify-between border-b-[1px] border-b-[#F3F4F6] py-4 rounded-[4px] ">
 					<p className="text-[12px] font-[500] text-[#9CA3AF]">KodHex</p>
-					<p className="text-[12px] font-[500] text-black">Levijazz</p>
+					<p className="text-[12px] font-[500] text-black">
+						{user.user?.kodhex}
+					</p>
 				</div>
 				<div className="flex items-center justify-between border-b-[1px] border-b-[#F3F4F6] py-4 rounded-[4px] ">
 					<p className="text-[12px] font-[500] text-[#9CA3AF]">Plan</p>
-					<p className="text-[12px] font-[500] text-black">Vault</p>
+					<p className="text-[12px] font-[500] text-black">Vault Lite</p>
 				</div>
 				<div className="flex justify-end items-center mt-2 mb-4">
 					{/* <Image src={refresh} width={11} height={11} alt="refresh" /> */}
@@ -853,11 +1062,11 @@ function OverView({ setStep }: props) {
 							<p className="text-[10px] font-[500] text-gray400 mr-2">
 								Total Balance:
 							</p>
-							<p className="text-[16px] font-[500]">N40,000 </p>
+							<p className="text-[14px] font-[500]">N40,000 </p>
 						</div>
 					</div>
 					<div className=" justify-end items-center hidden">
-						<CheckCircle2 className="text-[#23A323] w-[11px] " />
+						<CheckCircle2 className="text-[#23A323] w-[11px]" />
 						<p className="text-[10px] font-[500] text-[#23A323] ml-2">
 							Sufficient Balance
 						</p>
@@ -880,7 +1089,7 @@ function OverView({ setStep }: props) {
 							<p className="text-[10px] font-[500] text-gray400 mr-2">
 								Total Balance:
 							</p>
-							<p className="text-[16px] font-[500]">N40,000 </p>
+							<p className="text-[14px] font-[500]">N40,000 </p>
 						</div>
 					</div>
 					<div
@@ -933,7 +1142,7 @@ function OverView({ setStep }: props) {
 
 				<button
 					className="bg-[#240552] mt-8 text-white w-full text-[14px] font-[500] p-5 rounded-[8px]"
-					onClick={() => setModal("payment sent")}
+					onClick={() => setModal("pay")}
 				>
 					Pay
 				</button>

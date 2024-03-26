@@ -30,7 +30,6 @@ export default function LoginOTP() {
 					otp: otp,
 				}
 			);
-			console.log({ data });
 			if (data.code === 200) {
 				toast.success(`${data.message}`, { id: "verify" });
 				await login(
@@ -113,7 +112,7 @@ export default function LoginOTP() {
 							<button
 								className="bg-[#240552] text-white w-full mt-4 p-5 text-center rounded-[8px] font-[500] text-[14px] disabled:bg-[#240552]/50"
 								type="submit"
-								disabled={!otp || otp.length < 7 || isLoading}
+								disabled={!otp || isLoading}
 								onClick={verify_otp}
 							>
 								{isLoading ? "Signing in..." : "Sign In"}

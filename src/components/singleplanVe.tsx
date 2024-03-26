@@ -19,6 +19,7 @@ import { useFetcher } from "@/lib/useFetcher";
 import FadeLoader from "react-spinners/FadeLoader";
 import { plan } from "./dummydata";
 import { parseDateTime } from "@/lib/parsedatetime";
+import { differenceInDays } from "date-fns";
 
 type props = {
 	username: string;
@@ -317,10 +318,19 @@ export default function SinglePlanVe({
 																</div>
 																<div className="flex justify-between items-center py-2 mb-3">
 																	<p className="text-[13px] font-[500] leading-[20px] text-[#9CA3AF]">
-																		Date Left
+																		Days Left
 																	</p>
 																	<p className="text-[13px] font-[600] leading-[20px]">
-																		100 Days
+																		{differenceInDays(
+																			p.end_date,
+																			Date.now()
+																		)}{" "}
+																		{differenceInDays(
+																			p.end_date,
+																			Date.now()
+																		) > 2
+																			? "Days"
+																			: "Day"}{" "}
 																	</p>
 																</div>
 																<div className="flex justify-between items-center py-2 mb-3">
@@ -330,7 +340,7 @@ export default function SinglePlanVe({
 																	<p className="text-[13px] font-[600] leading-[20px]">
 																		{parseDateTime(
 																			p.start_date,
-																			"qo MMM, yyyy"
+																			"do MMM, yyyy"
 																		)}
 																	</p>
 																</div>
@@ -339,10 +349,15 @@ export default function SinglePlanVe({
 																		Payback Date
 																	</p>
 																	<p className="text-[13px] font-[600] leading-[20px]">
-																		{/* 15th Nov, 2023 */}
+																		<p className="text-[13px] font-[600] leading-[20px]">
+																			{parseDateTime(
+																				p.end_date,
+																				"do MMM, yyyy"
+																			)}
+																		</p>
 																	</p>
 																</div>
-																<div className="flex justify-between items-center py-2 mb-3">
+																<div className="hidden justify-between items-center py-2 mb-3">
 																	<p className="text-[13px] font-[500] leading-[20px] text-[#9CA3AF]">
 																		Savings Rank
 																	</p>

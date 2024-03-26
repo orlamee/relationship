@@ -4,7 +4,6 @@ import NavBar from "../components/navbar";
 import arrowleft from "../assets/arrow-left-icon.svg";
 import Image from "next/image";
 import Link from "next/link";
-import user from "../assets/avatar.svg";
 import { ChevronDown, Code2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { planRecents } from "../dummy";
@@ -20,6 +19,7 @@ import { useFetcher } from "@/lib/useFetcher";
 import FadeLoader from "react-spinners/FadeLoader";
 import { plan } from "./dummydata";
 import { parseDateTime } from "@/lib/parsedatetime";
+import { differenceInDays, format } from "date-fns";
 
 type props = {
 	username: string;
@@ -42,8 +42,6 @@ export default function SinglePlan({
 		`${base_url}/ardilla/retail/admin/api/v1/savings/single_vault_lite_user/${userId}`,
 		token
 	);
-
-	console.log({ data });
 
 	const [plans, setPlans] = useState<plan[]>();
 	const [selectedPlan, setSelectedPlan] = useState<number | undefined>();
@@ -320,10 +318,19 @@ export default function SinglePlan({
 																</div>
 																<div className="flex justify-between items-center py-2 mb-3">
 																	<p className="text-[13px] font-[500] leading-[20px] text-[#9CA3AF]">
-																		Date Left
+																		Days Left
 																	</p>
 																	<p className="text-[13px] font-[600] leading-[20px]">
-																		100 Days
+																		{differenceInDays(
+																			p.end_date,
+																			Date.now()
+																		)}{" "}
+																		{differenceInDays(
+																			p.end_date,
+																			Date.now()
+																		) > 2
+																			? "Days"
+																			: "Day"}{" "}
 																	</p>
 																</div>
 																<div className="flex justify-between items-center py-2 mb-3">
@@ -333,7 +340,7 @@ export default function SinglePlan({
 																	<p className="text-[13px] font-[600] leading-[20px]">
 																		{parseDateTime(
 																			p.start_date,
-																			"qo MMM, yyyy"
+																			"do MMM, yyyy"
 																		)}
 																	</p>
 																</div>
@@ -342,11 +349,14 @@ export default function SinglePlan({
 																		Payback Date
 																	</p>
 																	<p className="text-[13px] font-[600] leading-[20px]">
-																		{/* 15th Nov, 2023 */}
+																		{parseDateTime(
+																			p.end_date,
+																			"do MMM, yyyy"
+																		)}
 																	</p>
 																</div>
-																<div className="flex justify-between items-center py-2 mb-3">
-																	<p className="text-[13px] font-[500] leading-[20px] text-[#9CA3AF]">
+																<div className="hidden justify-between items-center py-2 mb-3">
+																	<p className="text-[13px] font-[500] leading-[20px] text-[#9CA3AF] ">
 																		Savings Rank
 																	</p>
 																	<p className="text-[13px] font-[600] leading-[20px]">

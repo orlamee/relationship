@@ -8,6 +8,9 @@ import {
 	UseFormWatch,
 	Controller,
 	Control,
+	FieldErrors,
+	UseFormTrigger,
+	UseFormGetFieldState,
 } from "react-hook-form";
 import { vaultLiteVal } from "./createVault";
 
@@ -17,10 +20,21 @@ type props = {
 	register: UseFormRegister<vaultLiteVal>;
 	watch: UseFormWatch<vaultLiteVal>;
 	control: Control<vaultLiteVal>;
+	errors: FieldErrors<vaultLiteVal>;
+	trigger: UseFormTrigger<vaultLiteVal>;
+	getFieldState: UseFormGetFieldState<vaultLiteVal>;
 };
 
-function Entertarget({ setStep, next, watch, control }: props) {
-	const target = watch("target_amount");
+function Entertarget({
+	setStep,
+	next,
+	watch,
+	control,
+	errors,
+	getFieldState,
+	trigger,
+}: props) {
+	// const target = watch("target_amount");
 	return (
 		<div className="mt-10">
 			<Steptitle
@@ -36,7 +50,7 @@ function Entertarget({ setStep, next, watch, control }: props) {
 					render={({ field: { onChange, value } }) => (
 						<CurrencyInput
 							prefix="₦"
-							className="border-b-[1px] border-b-black outline-none w-[290px] mx-auto flex justify-center mt-5 text-center text-[41px] font-[500] text-primary"
+							className="border-b-[1px] border-b-black outline-none w-[300px] mx-auto flex justify-center mt-5 text-center text-[41px] font-[500] text-primary"
 							decimalsLimit={2}
 							// defaultValue={"0"}
 							onValueChange={onChange}
@@ -44,9 +58,14 @@ function Entertarget({ setStep, next, watch, control }: props) {
 						/>
 					)}
 				/>
+				{errors?.target_amount && (
+					<span className="text-red-500 mt-1 text-center block text-[13px]">
+						{errors.target_amount.message}
+					</span>
+				)}
 
 				<p className="text-center text-[11px] font-[500] text-[#9CA3AF] mt-1.5">
-					N30,000 -N999,999
+					N60,000 -N200,000
 				</p>
 
 				<div className="flex justify-between items-center mt-8">
@@ -62,8 +81,9 @@ function Entertarget({ setStep, next, watch, control }: props) {
 				<button
 					className="bg-[#240552] text-white w-full text-[14px] font-[500] rounded-[8px] p-5 mt-14"
 					onClick={() => {
-						if (!target) return;
-						if (target === "0") return;
+						trigger("target_amount");
+						const amountState = getFieldState("target_amount");
+						if (!amountState.isDirty || amountState.invalid) return;
 						next();
 					}}
 				>
