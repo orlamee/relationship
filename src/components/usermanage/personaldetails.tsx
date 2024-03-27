@@ -1,7 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../modal";
 import { XCircle, XCircleIcon } from "lucide-react";
+import {
+	FieldErrors,
+	FormState,
+	UseFormClearErrors,
+	UseFormGetFieldState,
+	UseFormRegister,
+	UseFormSetValue,
+	UseFormTrigger,
+	UseFormWatch,
+} from "react-hook-form";
+import { userType } from "./main";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { base_url } from "@/base_url";
 
 type HandleNextFunction = (
 	event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -9,10 +23,95 @@ type HandleNextFunction = (
 
 interface StepOneProps {
 	handleNext: HandleNextFunction;
+	register: UseFormRegister<userType>;
+	errors: FieldErrors<userType>;
+	watch: UseFormWatch<userType>;
+	trigger: UseFormTrigger<userType>;
+	setValue: UseFormSetValue<userType>;
+	token: string;
+	getFieldState: UseFormGetFieldState<userType>;
+	clearErrors: UseFormClearErrors<userType>;
 }
 
-const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
+const StepOne: React.FC<StepOneProps> = ({
+	handleNext,
+	register,
+	errors,
+	watch,
+	trigger,
+	setValue,
+	token,
+	getFieldState,
+	clearErrors,
+}) => {
+	const bvn = watch("bvn");
+	const email = watch("email");
+	const firstName = watch("first_name");
+	const lastName = watch("last_name");
+	const kodhex = watch("kodhex");
+	const status = watch("marital_status");
+	const nationality = watch("nationality");
+	const state = watch("state_of_origin");
+	const dob = watch("date_of_birth");
+
+	const [generating, setGenerating] = useState(false);
 	const [modal, setModal] = useState<"verify" | "">("");
+	const [isEmailVerified, setIsEmailVerified] = useState(false);
+	const [isVerifying, setIsVerifying] = useState(false);
+
+	useEffect(() => {
+		if (firstName) {
+			clearErrors("first_name");
+		}
+		if (lastName) {
+			clearErrors("last_name");
+		}
+		if (kodhex) {
+			clearErrors("kodhex");
+		}
+		if (status) {
+			clearErrors("marital_status");
+		}
+		if (nationality) {
+			clearErrors("nationality");
+		}
+		if (state) {
+			clearErrors("state_of_origin");
+		}
+		if (dob) {
+			clearErrors("date_of_birth");
+		}
+	}, [
+		firstName,
+		lastName,
+		kodhex,
+		status,
+		nationality,
+		state,
+		dob,
+		clearErrors,
+	]);
+
+	const verify_email = async () => {
+		try {
+			if (isVerifying) return;
+			setIsVerifying(true);
+			const { data } = await axios.get(
+				`${base_url}/ardilla/retail/admin/api/v1/user/easy_on_board/${bvn}/${email}`
+			);
+			if (data.code === 200) {
+				toast.success(`${data.message}`, { id: "verify-email" });
+				setModal("verify");
+			} else if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "verify-email" });
+			}
+		} catch (error: any) {
+			console.log(error);
+			toast.error(`${error?.message},`, { id: "verify-email" });
+		} finally {
+			setIsVerifying(false);
+		}
+	};
 
 	const VerifyEmailModal = () => (
 		<Modal>
@@ -29,15 +128,10 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 				</div>
 				<p className="text-[#9CA3AF] text-[13px] font-[500] mt-2">
 					Please enter OTP code sent to{" "}
-					<span className="text-black font-[500]">
-						davidoshodi@gmail.com
-					</span>
+					<span className="text-black font-[500]">{email}</span>
 				</p>
 
 				<div className="mt-[20px]">
-					<p className="text-black font-[600] text-[14px] mb-2">
-						Enter OTP Code
-					</p>
 					<input
 						type="tel"
 						className="w-full p-3 rounded-[4px] border-[1px] border-[#E8EAEE] outline-none"
@@ -45,7 +139,7 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 					/>
 					<p className="text-[#9CA3AF] text-[12px] mt-2">
 						Didn’t get OTP?{" "}
-						<span className="text-[#240552]"> Resend in 40 secs</span>
+						<span className="text-[#240552]"> Resend</span>
 					</p>
 				</div>
 
@@ -55,6 +149,45 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 			</div>
 		</Modal>
 	);
+
+	const verify_bvn = async () => {
+		if (!bvn) {
+			toast.error("bvn is required");
+			return;
+		}
+		if (generating) return;
+
+		setGenerating(true);
+
+		try {
+			const { data } = await axios.get(
+				`${base_url}/ardilla/retail/admin/api/v1/user/easy_on_board/${bvn}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			if (data.code === 200) {
+				setValue("first_name", data.data.first_name);
+				setValue("last_name", data.data.last_name);
+				setValue("date_of_birth", data.data.date_of_birth);
+				setValue("kodhex", data.data.kodhex);
+				setValue("nationality", data.data.nationality);
+				setValue("state_of_origin", data.data.state_of_origin);
+				setValue("marital_status", data.data.marital_status);
+				toast.success("success");
+			}
+			if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "verify-bvn" });
+			}
+		} catch (error: any) {
+			console.log(error?.message);
+			toast.error(`${error?.messsage}`);
+		} finally {
+			setGenerating(false);
+		}
+	};
 
 	return (
 		<>
@@ -71,13 +204,25 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							BVN
 						</label>
 						<input
-							type="number"
+							type="tel"
 							placeholder="Enter Bank Verification Number"
 							className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+							{...register("bvn", { required: true })}
 						/>
+						{errors?.bvn && (
+							<span className="text-red-500 text-[13px]">
+								{errors.bvn.message}
+							</span>
+						)}
+
 						<div className="mt-5">
-							<button className="px-6 py-4 text-[#000] text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#F3F4F6]">
-								Generate Details
+							<button
+								className="px-6 py-4 text-[#000] text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#F3F4F6]"
+								onClick={verify_bvn}
+							>
+								{generating
+									? "Generating Details..."
+									: "Generate Details"}
 							</button>
 						</div>
 					</div>
@@ -99,7 +244,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 								type="text"
 								placeholder="John"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("first_name", { required: true })}
+								disabled
 							/>
+							{errors?.first_name && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.first_name.message}
+								</span>
+							)}
 						</div>
 						<div className="w-1/2 pl-2">
 							<label className="block mb-2 text-[12px] font-[500] text-[#21003D]">
@@ -109,7 +261,15 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 								type="text"
 								placeholder="Doe"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("last_name", { required: true })}
+								disabled
 							/>
+
+							{errors?.last_name && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.last_name.message}
+								</span>
+							)}
 						</div>
 					</div>
 					<div className="mb-6">
@@ -119,9 +279,15 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							</label>
 							<input
 								type="tel"
-								placeholder="0803203232"
+								placeholder="e.g +2340803203232"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("phone", { required: true })}
 							/>
+							{errors?.phone && (
+								<span className="text-red-500 text-[13px]">
+									{errors.phone.message}
+								</span>
+							)}
 						</div>
 					</div>
 				</div>
@@ -133,26 +299,55 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 					</h3>
 				</div>
 				<div className="bg-[#FFFFFF] rounded-b-[16px] p-10">
-					<div className="relative">
+					<div className="">
 						<label className="block mb-2 text-[12px] font-[500] text-[#21003D]">
 							Email
 						</label>
-						<input
-							type="email"
-							placeholder="name@example.com"
-							className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-						/>
-						<div className="absolute right-2 bottom-4">
-							<span
-								className="bg-[#F59E0B] cursor-pointer text-white rounded-[3px] px-5 py-2 text-[12px] outline-none z-[10]"
-								onClick={() => setModal("verify")}
-							>
-								Verify
-							</span>
-							<span className="bg-[#23A323] text-white rounded-[3px] px-5 py-2 text-[12px] hidden cursor-pointer">
-								Verified
-							</span>
+						<div className="relative">
+							<input
+								type="email"
+								placeholder="name@example.com"
+								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("email", { required: true })}
+							/>
+							<div className="absolute right-2 bottom-4">
+								{isEmailVerified ? (
+									<span className="bg-[#23A323] text-white rounded-[3px] px-5 py-2 text-[12px] cursor-pointer">
+										Verified
+									</span>
+								) : (
+									<span
+										className="bg-[#F59E0B] cursor-pointer text-white rounded-[3px] px-5 py-2 text-[12px] outline-none z-[10]  text-center"
+										onClick={() => {
+											trigger("email");
+											const emailState = getFieldState("email");
+											if (
+												emailState.invalid ||
+												!emailState.isDirty
+											) {
+												return;
+											}
+											if (!bvn) {
+												toast.error("bvn required", {
+													id: "verify-email",
+												});
+												return;
+											}
+
+											verify_email();
+										}}
+									>
+										{isVerifying ? "Verifying.." : "Verify"}
+									</span>
+								)}
+							</div>
 						</div>
+
+						{errors?.email && (
+							<span className="text-red-500 text-[13px]">
+								{errors.email.message}
+							</span>
+						)}
 					</div>
 				</div>
 			</div>
@@ -171,7 +366,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							type="text"
 							placeholder="Enter KodHex Name"
 							className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+							{...register("kodhex", { required: true })}
+							disabled
 						/>
+						{errors?.kodhex && (
+							<span className="text-red-500 text-[13px]">
+								{errors?.kodhex.message}
+							</span>
+						)}
 					</div>
 				</div>
 			</div>
@@ -190,7 +392,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							<input
 								type="text"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("marital_status", { required: true })}
+								disabled
 							/>
+							{errors?.marital_status && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.marital_status.message}
+								</span>
+							)}
 						</div>
 						<div className="w-1/2 pl-2">
 							<label className="block mb-2 text-[12px] font-[500] text-[#21003D]">
@@ -199,7 +408,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							<input
 								type="text"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("nationality", { required: true })}
+								disabled
 							/>
+							{errors?.nationality && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.nationality.message}
+								</span>
+							)}
 						</div>
 					</div>
 					<div className="mb-6 flex flex-wrap">
@@ -210,7 +426,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							<input
 								type="text"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("state_of_origin", { required: true })}
+								disabled
 							/>
+							{errors?.state_of_origin && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.state_of_origin.message}
+								</span>
+							)}
 						</div>
 						<div className="w-1/2 pl-2">
 							<label className="block mb-2 text-[12px] font-[500] text-[#21003D]">
@@ -219,7 +442,14 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							<input
 								type="date"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("date_of_birth", { required: true })}
+								disabled
 							/>
+							{errors?.date_of_birth && (
+								<span className="text-red-500 text-[13px]">
+									{errors?.date_of_birth.message}
+								</span>
+							)}
 						</div>
 					</div>
 					<div className="mb-6 flex flex-wrap">
@@ -230,22 +460,62 @@ const StepOne: React.FC<StepOneProps> = ({ handleNext }) => {
 							<input
 								type="text"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+								{...register("inserted_address", { required: true })}
 							/>
-						</div>
-						<div className="w-1/2 pl-2">
-							<label className="block mb-2 text-[12px] font-[500] text-[#21003D]">
-								Utility Bill
-							</label>
-							<input
-								type="file"
-								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-							/>
+							{errors?.inserted_address && (
+								<span className="text-red-500 text-[13px]">
+									{errors.inserted_address.message}
+								</span>
+							)}
 						</div>
 					</div>
 					<div className="text-end mt-6">
 						<button
 							className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
-							onClick={handleNext}
+							onClick={(e) => {
+								trigger([
+									"bvn",
+									"first_name",
+									"last_name",
+									"phone",
+									"email",
+									"kodhex",
+									"marital_status",
+									"nationality",
+									"state_of_origin",
+									"date_of_birth",
+									"inserted_address",
+								]);
+								const bvnState = getFieldState("bvn");
+								const firstNameState = getFieldState("first_name");
+								const lastNameState = getFieldState("last_name");
+								const phoneState = getFieldState("phone");
+								const emailState = getFieldState("email");
+								const kodhexState = getFieldState("kodhex");
+								const StateState = getFieldState("marital_status");
+								const nationState = getFieldState("nationality");
+								const originState = getFieldState("state_of_origin");
+								const dateState = getFieldState("date_of_birth");
+								const addressState = getFieldState("inserted_address");
+
+								// if (bvnState.invalid || !bvnState.isDirty) return;
+								// if (firstNameState.invalid) return;
+								// if (lastNameState.invalid) return;
+								// if (phoneState.invalid || !phoneState.isDirty) return;
+								// if (emailState.invalid || !emailState.isDirty) return;
+								// if (kodhexState.invalid) return;
+								// if (StateState.invalid) return;
+								// if (nationState.invalid) return;
+								// if (originState.invalid) return;
+								// if (dateState.invalid) return;
+								// if (addressState.invalid) return;
+
+								// if (!isEmailVerified) {
+								// 	return toast.error("verify email address");
+								// }
+
+								handleNext(e);
+							}}
 						>
 							Next
 						</button>
