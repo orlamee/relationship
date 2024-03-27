@@ -75,9 +75,10 @@ const userSchema = z.object({
 			.email("invalid email"),
 		phone: z
 			.string({ required_error: "phone number required" })
-			.startsWith("+234", "invalid phone format e.g +234")
+			.min(1, "phone number is required")
 			.min(14, "invalid phone number")
-			.max(14, "invalid phone number"),
+			.max(14, "invalid phone number")
+			.startsWith("+234", "invalid phone format e.g +234"),
 		address: z
 			.string({
 				required_error: "next of kin residential address is required",
@@ -113,6 +114,9 @@ function UserManagementComponent({ username, profile_photo, token }: Props) {
 		setValue,
 		getFieldState,
 		clearErrors,
+		handleSubmit,
+		reset,
+		getValues,
 		formState: { errors },
 	} = useForm<userType>({
 		resolver: zodResolver(userSchema),
@@ -170,7 +174,17 @@ function UserManagementComponent({ username, profile_photo, token }: Props) {
 						getFieldState={getFieldState}
 					/>
 				)}
-				{activeStep === 3 && <StepFour handleNext={handleNext} />}
+				{activeStep === 3 && (
+					<StepFour
+						handleNext={handleNext}
+						handleBack={handleBack}
+						token={token}
+						doc={doc}
+						handleSubmit={handleSubmit}
+						getValues={getValues}
+						reset={reset}
+					/>
+				)}
 			</main>
 		</section>
 	);

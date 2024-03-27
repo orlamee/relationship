@@ -52,7 +52,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
 							</label>
 							<div className="py-[14px] px-1.5 border border-[#F0F0F0] rounded-[4px]">
 								<select
-									className="w-full outline-none select"
+									className="w-full outline-none select text-[13px]"
 									{...register("identity_document_type", {
 										required: true,
 									})}

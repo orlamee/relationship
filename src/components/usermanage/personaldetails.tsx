@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "../modal";
 import { XCircle, XCircleIcon } from "lucide-react";
 import {
 	FieldErrors,
-	FormState,
 	UseFormClearErrors,
 	UseFormGetFieldState,
 	UseFormRegister,
@@ -58,6 +57,7 @@ const StepOne: React.FC<StepOneProps> = ({
 	const [modal, setModal] = useState<"verify" | "">("");
 	const [isEmailVerified, setIsEmailVerified] = useState(false);
 	const [isVerifying, setIsVerifying] = useState(false);
+	const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
 
 	useEffect(() => {
 		if (firstName) {
@@ -113,17 +113,56 @@ const StepOne: React.FC<StepOneProps> = ({
 		}
 	};
 
+	const verify_email_otp = async () => {
+		try {
+			if (isVerifyingOtp) return;
+			if (!otp) {
+				toast.error("enter otp", { id: "verify-email-otp" });
+				return;
+			}
+			setIsVerifyingOtp(true);
+			const { data } = await axios.post(
+				`${base_url}/ardilla/retail/admin/api/v1/user/easy_on_board/${bvn}/${email}`,
+				{ otp }
+			);
+			if (data.code === 200) {
+				toast.success(`${data.message}`, { id: "verify-email-top" });
+				setIsEmailVerified(true);
+				setModal("");
+			} else if (data.code !== 200) {
+				toast.error(`${data.message}`, { id: "verify-email-otp" });
+			}
+		} catch (error: any) {
+			console.log(error);
+			toast.error(`${error?.message},`, { id: "verify-email-otp" });
+		} finally {
+			setIsVerifyingOtp(false);
+		}
+	};
+
+	const otpRef = useRef<HTMLInputElement>(null);
+	const [otp, setOtp] = useState("");
+
+	useEffect(() => {
+		if (otpRef) {
+			otpRef.current?.focus();
+		}
+	}, [otp]);
+
 	const VerifyEmailModal = () => (
 		<Modal>
 			<div className="bg-white rounded-[8px] p-7 w-[430px] pb-10">
 				<div className="flex items-center justify-between">
-					<h1 className="text-black text-[22px] font-[600]">
+					<h1 className="text-black text-[20px] font-[600]">
 						Enter OTP Code
 					</h1>
 					<XCircleIcon
 						size={18}
 						className="text-[#9CA3AF] cursor-pointer"
-						onClick={() => setModal("")}
+						onClick={() => {
+							setModal("");
+							setOtp("");
+						}}
 					/>
 				</div>
 				<p className="text-[#9CA3AF] text-[13px] font-[500] mt-2">
@@ -135,16 +174,25 @@ const StepOne: React.FC<StepOneProps> = ({
 					<input
 						type="tel"
 						className="w-full p-3 rounded-[4px] border-[1px] border-[#E8EAEE] outline-none"
-						maxLength={4}
+						maxLength={7}
+						ref={otpRef}
+						value={otp}
+						onChange={(e) => setOtp(e.target.value)}
 					/>
-					<p className="text-[#9CA3AF] text-[12px] mt-2">
+					<p
+						className="text-[#9CA3AF] text-[12px] mt-2 cursor-pointer"
+						onClick={verify_email}
+					>
 						Didn’t get OTP?{" "}
 						<span className="text-[#240552]"> Resend</span>
 					</p>
 				</div>
 
-				<button className="rounded-[8px] w-full p-4 text-[14px] text-white bg-[#3D0072] mt-8">
-					Verify Email
+				<button
+					className="rounded-[8px] w-full p-4 text-[14px] text-white bg-[#3D0072] mt-8"
+					onClick={verify_email_otp}
+				>
+					{isVerifyingOtp ? "Verifying Email..." : "Verify Email"}
 				</button>
 			</div>
 		</Modal>
@@ -440,7 +488,7 @@ const StepOne: React.FC<StepOneProps> = ({
 								Date of Birth
 							</label>
 							<input
-								type="date"
+								type="text"
 								className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 								{...register("date_of_birth", { required: true })}
 								disabled
@@ -498,21 +546,21 @@ const StepOne: React.FC<StepOneProps> = ({
 								const dateState = getFieldState("date_of_birth");
 								const addressState = getFieldState("inserted_address");
 
-								// if (bvnState.invalid || !bvnState.isDirty) return;
-								// if (firstNameState.invalid) return;
-								// if (lastNameState.invalid) return;
-								// if (phoneState.invalid || !phoneState.isDirty) return;
-								// if (emailState.invalid || !emailState.isDirty) return;
-								// if (kodhexState.invalid) return;
-								// if (StateState.invalid) return;
-								// if (nationState.invalid) return;
-								// if (originState.invalid) return;
-								// if (dateState.invalid) return;
-								// if (addressState.invalid) return;
+								if (bvnState.invalid || !bvnState.isDirty) return;
+								if (firstNameState.invalid) return;
+								if (lastNameState.invalid) return;
+								if (phoneState.invalid || !phoneState.isDirty) return;
+								if (emailState.invalid || !emailState.isDirty) return;
+								if (kodhexState.invalid) return;
+								if (StateState.invalid) return;
+								if (nationState.invalid) return;
+								if (originState.invalid) return;
+								if (dateState.invalid) return;
+								if (addressState.invalid) return;
 
-								// if (!isEmailVerified) {
-								// 	return toast.error("verify email address");
-								// }
+								if (!isEmailVerified) {
+									return toast.error("verify email address");
+								}
 
 								handleNext(e);
 							}}
