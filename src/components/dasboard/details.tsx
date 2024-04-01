@@ -29,7 +29,6 @@ export default function UserManagementDetails({
 	token,
 	user,
 }: Props) {
-	console.log({ user });
 	return (
 		<section>
 			<NavBar username={user_name} profile_photo={profile_photo}>

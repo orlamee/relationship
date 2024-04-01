@@ -22,6 +22,11 @@ body {
 	height: 100%;
 }
 
+.back {
+	background-image: url("../assets/transaction\ details\ back.png");
+	background-size: cover;
+}
+
 /* .bg-pattern {
   background: url("../assets/bg-patern.svg");
   background-repeat: no-repeat;

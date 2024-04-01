@@ -7,12 +7,15 @@ import Image from "next/image";
 // import refresh from "../../assets/static/refresh.png";
 import kodhex from "../../assets/kodhex (2).svg";
 // import insufficientKodhex from "../../assets/static/insufficient kodex.svg";
+import withdraw from "../../assets/withdraw.svg";
 import {
 	Ban,
 	CheckCircle2,
 	ChevronDown,
 	ChevronLeftCircle,
 	ChevronRight,
+	Code2,
+	Download,
 	Files,
 	XCircleIcon,
 } from "lucide-react";
@@ -74,6 +77,21 @@ function OverView({
 	const router = useRouter();
 
 	const pinRef = useRef<HTMLInputElement>(null);
+
+	type transDetailsType = {
+		amount: number;
+		transaction_type: string;
+		transaction_details: {
+			credited_to: string;
+			remark: string;
+			sender_details: string;
+		};
+		transaction_ref: string;
+		transaction_description: string;
+		transaction_fee: number;
+		status: string;
+	};
+	const [transDetails, setTransDetails] = useState<transDetailsType>();
 
 	const [overviewStep, setOverviewStep] = useState<"enter pin" | "">(
 		"enter pin"
@@ -193,12 +211,12 @@ function OverView({
 						Success
 					</h1>
 					<p className="text-center text-[12px] font-[500] text-[#9CA3AF] max-w-[329px] mx-auto mb-5">
-						Vault savings plan have been successfully created.
+						Vault Lite savings plan have been successfully created.
 					</p>
 
 					<div
 						className="text-[#3D0072] cursor-pointer text-[10px] justify-center text-center bg-[#F9FAFB] rounded-[8px] w-[327px] mx-auto  h-[45px] flex items-center"
-						// onClick={() => setModal("receipt")}
+						onClick={() => setModal("receipt")}
 					>
 						<Image
 							src={note}
@@ -878,12 +896,12 @@ function OverView({
 				}
 			);
 			if (data.code === 200) {
+				setTransDetails(data.data);
 				setModal("payment sent");
 			}
 			if (data.code !== 200) {
 				toast.error(`${data.message}`, { id: "estimate" });
 			}
-			console.log(data);
 		} catch (error: any) {
 			console.log(error);
 			toast.error(`${error?.message}`, { id: "estimate" });
@@ -966,38 +984,162 @@ function OverView({
 		</Modal>
 	);
 
-	// 	amount
-	// :
-	// 333.3333333333333
-	// association_id
-	// :
-	// "cb712861-7b81-4674-bf34-2052e9ebadda"
-	// cashback
-	// :
-	// 0
-	// status
-	// :
-	// "successful"
-	// transaction_category
-	// :
-	// "kodhex"
-	// transaction_description
-	// :
-	// "Payment to vault-lite"
-	// transaction_details
-	// :
-	// {sender_details: 'ardilla kodhex wallet', remark: 'ardilla', credited_to: 'ardilla savings vault-lite wallet'}
-	// transaction_fee
-	// :
-	// 0
-	// transaction_ref
-	// :
-	// "fb753fbb-df85-446b-962f-5fa31f33a1f1"
-	// transaction_type
-	// :
-	// "debit"
+	const ReceiptModal = () => (
+		<Modal>
+			<AnimatePresence>
+				<motion.div
+					className="rounded-t-[30px] bg-white pt-[25px] w-[439px] px-[30px] pb-12"
+					initial={{ scale: 0.7, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					transition={{ type: "tween", ease: "backOut" }}
+				>
+					<div className="flex justify-between w-full items-center">
+						<div></div>
+						<div>
+							<h1 className="font-[500] text-[26px] text-center text-[#240552] font-[founder]">
+								Transaction Details
+							</h1>
+							<p className="text-[12px] font-[500] text-[#9ca3af] text-center">
+								Here is the summary of all your transactions
+							</p>
+						</div>
+						<XCircleIcon
+							className="w-[17px] text-[#9ca3af] cursor-pointer"
+							onClick={(e) => {
+								setModal("");
+								resetForm({
+									end_date: "",
+									name: "",
+									target_amount: "",
+									time: "",
+									trans_pin: "",
+								});
+								resetStep();
 
-	// "trans_pin":"252525",
+								e.stopPropagation();
+							}}
+						/>
+					</div>
+
+					<div className="mt-5 mb-7">
+						<div className="mx-auto">
+							<Image
+								src={withdraw}
+								alt="transaction"
+								className="w-[45px] mx-auto mb-3"
+							/>
+							<h1 className="text-[24px] font-[600] text-center mb-1 text-primary">
+								-₦{transDetails?.amount.toFixed(2)}
+							</h1>
+							<p
+								className={`text-[10px] flex justify-center rounded-[4px] mx-auto items-center text-center w-[74px] h-[26px] font-[500] mb-3 shadow-[3px_3px_#240552] ${
+									transDetails?.status.toLocaleLowerCase() ===
+									"successful"
+										? "bg-[#22C55E] text-primary"
+										: transDetails?.status.toLocaleLowerCase() ===
+										  "pending"
+										? "bg-[#FCB40C] text-primary"
+										: transDetails?.status.toLocaleLowerCase() ===
+										  "failed"
+										? "bg-[#EF4444] text-primary"
+										: "bg-[#3B82F6] text-primary"
+								}`}
+							>
+								{transDetails?.status}
+							</p>
+							<p className="text-[11px] text-center font-[500] mb-3 text-primary">
+								{transDetails?.transaction_description}
+							</p>
+							<div className="flex justify-center mx-auto mt-7 mb-4">
+								<div className="flex flex-col items-center border-r-[1px] pr-16 border-r-[#E5E7EB] pt-2">
+									<h1 className="text-[10px] font-[500] text-[#9CA3AF] mb-2">
+										AMOUNT
+									</h1>
+									<p className="text-[10px] font-[500] text-primary">
+										₦{transDetails?.amount.toFixed(2)}
+									</p>
+								</div>
+								<div className="flex flex-col items-center pl-16 pt-2 ">
+									<h1 className="text-[10px] font-[500] text-[#9CA3AF] mb-2">
+										FEE
+									</h1>
+									<p className="text-[10px] font-[500] text-primary">
+										₦{transDetails?.transaction_fee}
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div className="px-5 pt-5 pb-7 rounded-[11px] bg-primary back">
+							<p className="border-b-[1px] text-white border-dashed border-gray400 pb-4 pt-1 text-center text-[12px] font-[500] mb-4">
+								Transaction Summary
+							</p>
+							<div className="flex justify-between items-center py-2">
+								<p className="text-[12px] font-[400] text-white">
+									Transaction Type
+								</p>
+								<p className="text-[12px] font-[500] text-white">
+									{transDetails?.transaction_type}
+								</p>
+							</div>
+							<div className="flex justify-between items-center py-2">
+								<p className="text-[12px] font-[400] text-white">
+									Sender Details
+								</p>
+								<div className="text-[12px] font-[500] text-white justify-center flex items-center">
+									{/* <span className="w-[17px] h-[17px] rounded-full  justify-center items-center bg-white mr-2 hidden">
+										<Code2 className="w-[10px] text-primary" />
+									</span> */}
+									<span>
+										{transDetails?.transaction_details.sender_details}
+									</span>
+								</div>
+							</div>
+							<div className="flex justify-between items-center py-2">
+								<p className="text-[12px] font-[400] text-white">
+									Remark
+								</p>
+								<p className="text-[12px] font-[500] text-white">
+									{transDetails?.transaction_details.remark}
+								</p>
+							</div>
+
+							<div className="flex justify-between items-center py-2">
+								<p className="text-[12px] font-[400] text-white">
+									Credited to
+								</p>
+								<div className="text-[12px] font-[500] text-white justify-center flex items-center">
+									{transDetails?.transaction_details.credited_to}
+								</div>
+							</div>
+							<div className="flex justify-between items-center py-2 gap-5 ">
+								<p className="text-[12px] font-[400] text-white">
+									Transaction Number
+								</p>
+								<p className="text-[12px] font-[500] text-white text-right">
+									{transDetails?.transaction_ref}
+								</p>
+							</div>
+							<div className=" justify-between items-center py-2 hidden">
+								<p className="text-[12px] font-[400] text-gray400">
+									Transaction Date
+								</p>
+								<p className="text-[12px] font-[500] text-white">
+									10:23am | 12th December, 2023
+								</p>
+							</div>
+						</div>
+						{/* {categoryDetails()} */}
+					</div>
+					<button className="flex items-center justify-center p-4 rounded-[10px] text-white bg-[#240552] text-[14px] font-[500] w-full mb-4">
+						{/* <Image src={share} width={24} height={24} alt="download" /> */}
+						<Download />
+						<span className="ml-[10px]">Download Receipt</span>
+					</button>
+				</motion.div>
+			</AnimatePresence>
+		</Modal>
+	);
 
 	return (
 		<div className="mt-10">
@@ -1009,6 +1151,7 @@ function OverView({
 			{modal == "topup failed" && <TopupFailedModal />}
 			{modal == "in progress" && <InprogressModal />}
 			{modal === "pay" && <Pin />}
+			{modal === "receipt" && <ReceiptModal />}
 			<Steptitle
 				title="Overview"
 				subtitle="Summary of your transaction"

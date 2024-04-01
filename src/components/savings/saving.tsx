@@ -63,6 +63,17 @@ function Savings({ username, profile_photo, token }: props) {
 		token
 	);
 
+	const {
+		data: dataDash,
+		isLoading: isLoadingDash,
+		error: errorDash,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/savings/dashboard`,
+		token
+	);
+
+	console.log({ dataDash });
+
 	useEffect(() => {
 		if (dataVl) {
 			let fl: savingsType[] = [];
