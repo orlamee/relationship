@@ -15,8 +15,25 @@ import {
 	rewardColumns,
 	rewardsData,
 } from "../dummydata";
+import { base_url } from "@/base_url";
+import { useFetcher } from "@/lib/useFetcher";
 
-export default function Activities({ token }: { token: string }) {
+export default function Activities({
+	token,
+	user,
+}: {
+	token: string;
+	user: any;
+}) {
+	const {
+		data: device,
+		isLoading: isLoading,
+		error: error,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_user_device/${user?.user?.user_id}`,
+		token
+	);
+
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
 			<Tabs defaultValue="savings" className="w-full">
@@ -164,7 +181,8 @@ export default function Activities({ token }: { token: string }) {
 							<Image src={samsung} alt="samsung" className="me-3" />
 							<div>
 								<h2 className="text-[#000000] text-[13px] leading-[23px] font-[500]">
-									Samsung s23 | Andriod 13
+									{device?.data?.device_name} |{" "}
+									{device?.data?.device_os}
 								</h2>
 								<p className="text-[#9CA3AF] text-[10px] leading-[23px] font-[500]">
 									Currently active

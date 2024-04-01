@@ -397,12 +397,6 @@ function Payment({ username, profile_photo, token }: Props) {
 									</div>
 								)}
 							</div>
-							// <div ref={notfundedTableRef}>
-							// 	{/* <Datatable
-							// 		data={dashboardNotFundedData}
-							// 		columns={dashboardColumns}
-							// 	/> */}
-							// </div>
 						)}
 					</div>
 				</div>

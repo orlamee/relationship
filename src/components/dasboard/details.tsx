@@ -29,6 +29,7 @@ export default function UserManagementDetails({
 	token,
 	user,
 }: Props) {
+	console.log({ user });
 	return (
 		<section>
 			<NavBar username={user_name} profile_photo={profile_photo}>
@@ -74,10 +75,10 @@ export default function UserManagementDetails({
 								<Nextofkin user={user} />
 							</TabsContent>
 							<TabsContent value="activities">
-								<Activities token={token} />
+								<Activities token={token} user={user} />
 							</TabsContent>
 							<TabsContent value="bank">
-								<Banks token={token} />
+								<Banks user={user} />
 							</TabsContent>
 							<TabsContent value="verification">
 								<Verification />

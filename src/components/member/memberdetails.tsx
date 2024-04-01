@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import acc from "../../assets/acc.svg";
 import {
 	Tabs,
 	TabsContent,
@@ -42,8 +41,6 @@ export default function MemberDetails({
 		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_target/${officer_id}`,
 		token
 	);
-
-	console.log({ Target });
 
 	return (
 		<section>

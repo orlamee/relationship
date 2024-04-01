@@ -20,7 +20,9 @@ export default async function DetailsPage({
 				}
 			);
 			return data?.data?.user;
-		} catch (error) {}
+		} catch (error) {
+			throw new Error("server error");
+		}
 	};
 
 	const singleUserData = await getSingleUser(session.token);

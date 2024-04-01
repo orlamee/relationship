@@ -18,17 +18,21 @@ import {
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
 
-export default function Activities({ token }: { token: string }) {
+export default function Activities({
+	token,
+	user,
+}: {
+	token: string;
+	user: any;
+}) {
 	const {
-		data,
+		data: device,
 		isLoading: isLoading,
 		error: error,
 	} = useFetcher(
-		`${base_url}/ardilla/retail/admin/api/v1/field_officer/GetUserDevice`,
+		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_user_device/${user?.user?.user_id}`,
 		token
 	);
-
-	console.log({ data });
 
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
@@ -177,7 +181,8 @@ export default function Activities({ token }: { token: string }) {
 							<Image src={samsung} alt="samsung" className="me-3" />
 							<div>
 								<h2 className="text-[#000000] text-[13px] leading-[23px] font-[500]">
-									Samsung s23 | Andriod 13
+									{device?.data?.device_name} |{" "}
+									{device?.data?.device_os}
 								</h2>
 								<p className="text-[#9CA3AF] text-[10px] leading-[23px] font-[500]">
 									Currently active

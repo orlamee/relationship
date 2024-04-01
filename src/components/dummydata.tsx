@@ -634,7 +634,7 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 							<MoreVertical className="h-4 w-4 text-[#240552]" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
 							<Link href={`/dashboard/details/${data.kodhex}`}>
 								<div className="flex items-center cursor-pointer">
@@ -878,7 +878,7 @@ export const paymentColumns: ColumnDef<FundedDataType>[] = [
 							<MoreVertical className="h-4 w-4 text-[#240552]" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					<DropdownMenuContent align="end" className="bg-white">
 						<DropdownMenuItem>
 							<Link href={`/dashboard/payment/details/${data.kodhex}`}>
 								<div className="flex items-center cursor-pointer">
