@@ -72,8 +72,6 @@ function Savings({ username, profile_photo, token }: props) {
 		token
 	);
 
-	console.log({ dataDash });
-
 	useEffect(() => {
 		if (dataVl) {
 			let fl: savingsType[] = [];
@@ -276,7 +274,7 @@ function Savings({ username, profile_photo, token }: props) {
 													alt="dib"
 												/>
 												<h2 className="text-[13px] font-[500] leading-[20px]">
-													Total Vault
+													Total Vault Lite
 												</h2>
 											</div>
 											<div className="flex items-center space-x-1">
@@ -288,7 +286,10 @@ function Savings({ username, profile_photo, token }: props) {
 
 										<div className="flex justify-between items-center">
 											<h3 className="text-[24px] font-[500] leading-[33px]">
-												N0.00
+												₦
+												{Number(
+													dataDash?.Book_Balance?.vault_lite
+												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
@@ -329,7 +330,10 @@ function Savings({ username, profile_photo, token }: props) {
 
 										<div className="flex justify-between items-center">
 											<h3 className="text-[24px] font-[500] leading-[33px]">
-												N0.00
+												₦
+												{Number(
+													dataDash?.Book_Balance?.vault_extra
+												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
@@ -370,7 +374,10 @@ function Savings({ username, profile_photo, token }: props) {
 
 										<div className="flex justify-between items-center">
 											<h3 className="text-[24px] font-[500] leading-[33px]">
-												N0.00
+												₦
+												{Number(
+													dataDash?.Book_Balance?.vault_premium
+												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
