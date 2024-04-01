@@ -30,7 +30,6 @@ function Branch({ username, profile_photo, token }: props) {
 		`${base_url}/ardilla/retail/admin/api/v1/branch`,
 		token
 	);
-	console.log({ data });
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
