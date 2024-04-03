@@ -15,6 +15,9 @@ import Link from "next/link";
 import { Checkbox } from "./ui/checkbox";
 import Status from "./badges/status";
 import TransferStatus from "./badges/transfer";
+import { parseDateTime } from "@/lib/parsedatetime";
+import credit from "../assets/credit.svg";
+import debit from "../assets/withdraw.svg";
 
 // Dashboard
 
@@ -1359,10 +1362,11 @@ export const PaymentdashboardColumns: ColumnDef<dashboardDataType>[] = [
 export type activitiesDataType = {
 	id: string;
 	badge: string;
-	description: string;
-	date: string;
+	transaction_description: string;
+	date_created: string;
 	amount: string;
-	source: string;
+	transaction_category: string;
+	transaction_type: string;
 	status: string;
 };
 
@@ -1416,48 +1420,9 @@ export type rewardDataType = {
 	status: string;
 };
 
-export const activitiesData: activitiesDataType[] = [
-	{
-		id: "1",
-		badge: topup,
-		description: "Top up",
-		date: "10/11/94",
-		amount: "₦150,000",
-		source: "Vault",
-		status: "successful",
-	},
-	{
-		id: "2",
-		badge: widthdraw,
-		description: "Withdrawal",
-		date: "10/11/94",
-		amount: "₦150,000",
-		source: "Vault Extra",
-		status: "pending",
-	},
-	{
-		id: "2",
-		badge: widthdraw,
-		description: "Withdrawal",
-		date: "10/11/94",
-		amount: "₦150,000",
-		source: "Vault Premium",
-		status: "failed",
-	},
-	{
-		id: "2",
-		badge: widthdraw,
-		description: "Withdrawal",
-		date: "10/11/94",
-		amount: "₦150,000",
-		source: "Vault",
-		status: "reversed",
-	},
-];
-
 export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 	{
-		accessorKey: "description",
+		accessorKey: "transaction_category",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1475,16 +1440,27 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 			return (
 				<>
 					<div className="flex items-center">
-						<Image
-							src={data.badge}
-							width={30}
-							height={30}
-							alt="user"
-							className="rounded-full mr-3"
-						/>
+						{data.transaction_type.toLowerCase() === "credit" ? (
+							<Image
+								src={credit}
+								width={30}
+								height={30}
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						) : (
+							<Image
+								src={widthdraw}
+								width={30}
+								height={30}
+								alt="user"
+								className="rounded-full mr-3"
+							/>
+						)}
+
 						<div>
 							<h1 className="text-[12px] font-[500] text-[#21003D] leading-[16px]">
-								{data.description}
+								{data.transaction_description}
 							</h1>
 						</div>
 					</div>
@@ -1493,7 +1469,7 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 		},
 	},
 	{
-		accessorKey: "date",
+		accessorKey: "date_created",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1505,6 +1481,17 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 					Date
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</button>
+			);
+		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return (
+				<div>
+					<div>{parseDateTime(data.date_created, "d/L/yyyy")}</div>
+					<div className="text-[#9ca3af]">
+						{parseDateTime(data.date_created, "p")}
+					</div>
+				</div>
 			);
 		},
 	},
@@ -1524,9 +1511,13 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 				</button>
 			);
 		},
+		cell: ({ row }) => {
+			const data = row.original;
+			return <div>₦{Number(data.amount).toFixed(2)}</div>;
+		},
 	},
 	{
-		accessorKey: "source",
+		accessorKey: "transaction_category",
 		header: ({ column }) => {
 			return (
 				<button
@@ -1561,16 +1552,16 @@ export const activitiesColumns: ColumnDef<activitiesDataType>[] = [
 			const data = row.original;
 			return (
 				<div className="flex items-center">
-					{data.status === "successful" && (
+					{data.status.toLowerCase() === "successful" && (
 						<TransferStatus type="successful" text={data.status} />
 					)}
-					{data.status === "pending" && (
+					{data.status.toLowerCase() === "pending" && (
 						<TransferStatus type="pending" text={data.status} />
 					)}
-					{data.status === "reversed" && (
+					{data.status.toLowerCase() === "reversed" && (
 						<TransferStatus type="reversed" text={data.status} />
 					)}
-					{data.status === "failed" && (
+					{data.status.toLowerCase() === "failed" && (
 						<TransferStatus type="failed" text={data.status} />
 					)}
 				</div>

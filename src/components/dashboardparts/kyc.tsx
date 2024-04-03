@@ -4,8 +4,15 @@ import Image from "next/image";
 import nin from "../../assets/nin.svg";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
+import { useFetcher } from "@/lib/useFetcher";
+import { base_url } from "@/base_url";
 
-export default function KYC() {
+type props = {
+	kodhex: string;
+	token: string;
+};
+
+export default function KYC({ kodhex, token }: props) {
 	const [showPopup, setShowPopup] = useState(false);
 	const [popupImageSrc, setPopupImageSrc] = useState("");
 
@@ -17,6 +24,18 @@ export default function KYC() {
 	const handleClosePopup = () => {
 		setShowPopup(false);
 	};
+
+	const {
+		data: dataNin,
+		isLoading: isLoadingNin,
+		error: errorNin,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/api/v1/user/get_nin/${kodhex}`,
+		token
+	);
+
+	console.log({ dataNin });
+
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
 			<Tabs defaultValue="tier-one" className="w-full">

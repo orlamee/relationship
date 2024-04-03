@@ -19,7 +19,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Search } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Search } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -125,6 +125,24 @@ function Datatable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
+				<div className="flex mt-5 items-center justify-center space-x-4 py-2">
+					<button
+						className="bg-[#240552] text-white flex items-center rounded-[6px] p-1.5 cursor-pointer text-[12px]"
+						onClick={() => table.previousPage()}
+						disabled={!table.getCanPreviousPage()}
+					>
+						<ChevronLeftIcon className="w-4 h-4" />
+						Previous
+					</button>
+					<button
+						className="bg-[#240552] text-white flex items-center rounded-[6px] p-1.5 cursor-pointer text-[12px]"
+						onClick={() => table.nextPage()}
+						disabled={!table.getCanNextPage()}
+					>
+						Next
+						<ChevronRightIcon className="w-4 h-4" />
+					</button>
+				</div>
 			</div>
 		</div>
 	);

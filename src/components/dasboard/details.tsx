@@ -21,6 +21,7 @@ type Props = {
 	profile_photo: string;
 	token: string;
 	user: any;
+	kodhex: string;
 };
 
 export default function UserManagementDetails({
@@ -28,6 +29,7 @@ export default function UserManagementDetails({
 	profile_photo,
 	token,
 	user,
+	kodhex,
 }: Props) {
 	return (
 		<section>
@@ -68,7 +70,7 @@ export default function UserManagementDetails({
 								<PersonalDetails user={user} />
 							</TabsContent>
 							<TabsContent value="kyc">
-								<KYC />
+								<KYC token={token} kodhex={kodhex} />
 							</TabsContent>
 							<TabsContent value="nextofkin">
 								<Nextofkin user={user} />

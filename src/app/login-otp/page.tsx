@@ -46,7 +46,9 @@ export default function LoginOTP() {
 			}
 		} catch (error: any) {
 			console.log(error);
-			toast.error(`${error?.message}`, { id: "verify" });
+			toast.error(`${error?.response?.data?.message || error?.message}`, {
+				id: "verify",
+			});
 		} finally {
 			setIsloading(false);
 		}

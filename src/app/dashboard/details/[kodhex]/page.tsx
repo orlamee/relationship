@@ -33,6 +33,7 @@ export default async function DetailsPage({
 			profile_photo={session.profile_photo}
 			token={session.token}
 			user={singleUserData}
+			kodhex={kodhex}
 		/>
 	);
 }
