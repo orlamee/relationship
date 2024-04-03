@@ -3,9 +3,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import nin from "../../assets/nin.svg";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
+import axios from "axios";
+import success from "../../assets/ep_success-filled.svg";
+import failed from "../../assets/failed-ks1ODQxJMt.svg";
+import toast from "react-hot-toast";
 
 type props = {
 	kodhex: string;
@@ -13,8 +17,11 @@ type props = {
 };
 
 export default function KYC({ kodhex, token }: props) {
+	const [Ninapproved, setNinApproved] = useState(false);
+	const [NinRejected, setNinRejected] = useState(false);
 	const [showPopup, setShowPopup] = useState(false);
 	const [popupImageSrc, setPopupImageSrc] = useState("");
+	const [isApprovingNin, setIsApprovingNin] = useState(false);
 
 	const handleImageClick = (imageSrc: string) => {
 		setPopupImageSrc(imageSrc);
@@ -26,15 +33,81 @@ export default function KYC({ kodhex, token }: props) {
 	};
 
 	const {
-		data: dataNin,
+		data: NinData,
 		isLoading: isLoadingNin,
 		error: errorNin,
 	} = useFetcher(
-		`${base_url}/ardilla/retail/api/v1/user/get_nin/${kodhex}`,
+		`${base_url}/ardilla/retail/admin/api/v1/user/get_nin/${kodhex}`,
 		token
 	);
 
-	console.log({ dataNin });
+	const approve_nin = async () => {
+		if (!NinData?.data?.user_id) {
+			toast.error("NIN required", { id: "approve" });
+			return;
+		}
+		if (isApprovingNin) {
+			return;
+		}
+		setIsApprovingNin(true);
+		toast.loading("approving NIN", { id: "approve" });
+		const { data } = await axios.patch(
+			`${base_url}/ardilla/retail/admin/api/v1/user/approve_nin`,
+			{
+				user_id: NinData?.data?.user_id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (data.code === 200) {
+			setNinApproved(true);
+		}
+		try {
+		} catch (error: any) {
+			console.log(error);
+			toast.error(`${error?.message}`, { id: "approve" });
+		} finally {
+			setIsApprovingNin(false);
+			toast.dismiss("approve");
+		}
+	};
+
+	const reject_nin = async () => {
+		if (!NinData?.data?.user_id) {
+			toast.error("NIN required", { id: "reject" });
+			return;
+		}
+		if (isApprovingNin) {
+			return;
+		}
+		setIsApprovingNin(true);
+		toast.loading("rejecting NIN", { id: "reject" });
+		const { data } = await axios.patch(
+			`${base_url}/ardilla/retail/admin/api/v1/user/reject_nin`,
+			{
+				user_id: NinData?.data?.user_id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (data.code === 200) {
+			setNinRejected(true);
+		}
+		try {
+		} catch (error: any) {
+			console.log(error);
+			toast.error(`${error?.message}`, { id: "reject" });
+		} finally {
+			setIsApprovingNin(false);
+			toast.dismiss("reject");
+		}
+	};
 
 	return (
 		<div className="bg-white p-10 rounded-[10px] border border-[#F3F4F6]">
@@ -162,10 +235,10 @@ export default function KYC({ kodhex, token }: props) {
 							<div className="flex flex-row gap-10">
 								<div className="w-2/3">
 									<div className="border border-[#F3F4F6] p-[18px] rounded-[2px]">
-										<h3>221657768903</h3>
+										<h3>{NinData?.data?.nin}</h3>
 									</div>
 								</div>
-								<div className="w-1/3">
+								<div className="w-1/3 hidden">
 									<button className="border border-[#16A34A] rounded-[2px] text-[#16A34A] font-[500] leading-[20px] text-[12px] p-5 w-full flex items-center justify-center">
 										<Icon
 											icon="mdi:tick-circle-outline"
@@ -176,10 +249,18 @@ export default function KYC({ kodhex, token }: props) {
 								</div>
 							</div>
 							<div className="mt-9 flex flex-row gap-x-5">
-								<button className="bg-[#13A046] p-5 rounded-[6px] font-[500] leading-[20px] text-[14px] text-white w-full">
+								<button
+									className="bg-[#13A046] p-5 rounded-[6px] font-[500] leading-[20px] text-[14px] text-white w-full"
+									disabled={isApprovingNin}
+									onClick={approve_nin}
+								>
 									Approve
 								</button>
-								<button className="bg-[#F43F5E] p-5 rounded-[6px] font-[500] leading-[20px] text-[14px] text-white w-full">
+								<button
+									className="bg-[#F43F5E] p-5 rounded-[6px] font-[500] leading-[20px] text-[14px] text-white w-full"
+									disabled={isApprovingNin}
+									onClick={reject_nin}
+								>
 									Decline
 								</button>
 							</div>
@@ -233,6 +314,58 @@ export default function KYC({ kodhex, token }: props) {
 							</div>
 						</div>
 					</div>
+					{Ninapproved && (
+						<div className="overlay">
+							<div className="w-[450px] bg-white relative rounded-[12px] h-[220px]">
+								<span
+									className="close-btn cursor-pointer bg-white px-[9px] py-[4px] rounded-full absolute right-4 top-2"
+									onClick={() => setNinApproved(false)}
+								>
+									&times;
+								</span>
+								<Image
+									src={success}
+									alt="success image"
+									className="w-[60px] h-[60px] mx-auto mb-5 mt-7"
+								/>
+
+								<h1 className="text-center font-[500] text-[20px] mb-2">
+									Nin Approved
+								</h1>
+								<p className="text-[#9ca3af] text-[12px] text-center mb-5">
+									Nin Approved Successfully
+									<span className="text-black hidden">
+										Ayodeji Michael
+									</span>
+								</p>
+							</div>
+						</div>
+					)}
+					{NinRejected && (
+						<div className="overlay">
+							<div className="w-[450px] bg-white relative rounded-[12px] h-[220px]">
+								<span
+									className="close-btn cursor-pointer bg-white px-[9px] py-[4px] rounded-full absolute right-4 top-2"
+									onClick={() => setNinRejected(false)}
+								>
+									&times;
+								</span>
+								<Image
+									src={failed}
+									alt="success image"
+									className="w-[80px] h-[80px] mx-auto mb-5 mt-7"
+								/>
+
+								<h1 className="text-center font-[500] text-[20px] mb-2">
+									Nin Rejected
+								</h1>
+								<p className="text-[#9ca3af] text-[12px] text-center mb-5">
+									NIN rejected successfully.
+									{/* <span className="text-black">Ayodeji Michael</span> */}
+								</p>
+							</div>
+						</div>
+					)}
 				</TabsContent>
 				<TabsContent value="tier-three">
 					<div className="flex flex-row gap-x-10">

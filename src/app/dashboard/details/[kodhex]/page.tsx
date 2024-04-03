@@ -21,7 +21,8 @@ export default async function DetailsPage({
 			);
 			return data?.data?.user;
 		} catch (error) {
-			throw new Error("server error");
+			// throw new Error("server error");
+			console.log(error);
 		}
 	};
 
