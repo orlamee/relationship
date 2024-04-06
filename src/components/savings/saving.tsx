@@ -255,9 +255,9 @@ function Savings({ username, profile_photo, token }: props) {
 							</div>
 							<h3 className="text-[24px] font-[500] leading-[33px]">
 								₦
-								{Number(dataDash?.data?.Total_Amount_Saved).toFixed(
-									2
-								) || 0.0}{" "}
+								{Number(
+									dataDash?.data?.Total_Amount_Saved || 0
+								).toFixed(2)}{" "}
 							</h3>
 						</div>
 						<div className="rounded-[6px] bg-[#F6FDF9] p-5 h-[130px] flex flex-col justify-between">
@@ -269,8 +269,9 @@ function Savings({ username, profile_photo, token }: props) {
 							</div>
 							<h3 className="text-[24px] font-[500] leading-[33px]">
 								₦
-								{Number(dataDash?.data?.Total_Dividends).toFixed(2) ||
-									0.0}{" "}
+								{Number(dataDash?.data?.Total_Dividends || 0).toFixed(
+									2
+								) || 0.0}{" "}
 							</h3>
 						</div>
 
@@ -309,8 +310,9 @@ function Savings({ username, profile_photo, token }: props) {
 											<h3 className="text-[24px] font-[500] leading-[33px]">
 												₦
 												{Number(
-													dataDash?.data?.Book_Balance?.vault_lite
-												).toFixed(2) || 0.0}
+													dataDash?.data?.Book_Balance
+														?.vault_lite || 0
+												).toFixed(2)}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
@@ -321,7 +323,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														{vlList?.length} savers
+														{vlList?.length || 0} savers
 													</h2>
 												</div>
 											</div>
@@ -353,8 +355,9 @@ function Savings({ username, profile_photo, token }: props) {
 											<h3 className="text-[24px] font-[500] leading-[33px]">
 												₦
 												{Number(
-													dataDash?.data?.Book_Balance?.vault_extra
-												).toFixed(2) || 0.0}
+													dataDash?.data?.Book_Balance
+														?.vault_extra || 0
+												).toFixed(2)}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
@@ -365,7 +368,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														{veList?.length} savers
+														{veList?.length || 0} savers
 													</h2>
 												</div>
 											</div>
@@ -398,8 +401,8 @@ function Savings({ username, profile_photo, token }: props) {
 												₦
 												{Number(
 													dataDash?.data?.Book_Balance
-														?.vault_premium
-												).toFixed(2) || 0.0}
+														?.vault_premium || 0
+												).toFixed(2)}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
 												<div className="flex items-center gap-3 px-1.5 py-1">
@@ -410,7 +413,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														{vpList?.length} savers
+														{vpList?.length || 0} savers
 													</h2>
 												</div>
 											</div>

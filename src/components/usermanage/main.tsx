@@ -115,7 +115,6 @@ function UserManagementComponent({ username, profile_photo, token }: Props) {
 		setValue,
 		getFieldState,
 		clearErrors,
-		handleSubmit,
 		reset,
 		getValues,
 		formState: { errors },
@@ -181,7 +180,6 @@ function UserManagementComponent({ username, profile_photo, token }: Props) {
 						handleBack={handleBack}
 						token={token}
 						doc={doc}
-						handleSubmit={handleSubmit}
 						getValues={getValues}
 						reset={reset}
 					/>

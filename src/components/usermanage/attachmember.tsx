@@ -25,7 +25,6 @@ interface StepFourProps {
 	handleBack: HandleBackFunction;
 	token: string;
 	doc: File | undefined;
-	handleSubmit: UseFormHandleSubmit<userType>;
 	reset: UseFormReset<userType>;
 	getValues: UseFormGetValues<userType>;
 }
@@ -35,7 +34,6 @@ const StepFour: React.FC<StepFourProps> = ({
 	handleBack,
 	token,
 	doc,
-	handleSubmit,
 	reset,
 	getValues,
 }) => {
