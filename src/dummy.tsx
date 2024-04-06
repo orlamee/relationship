@@ -218,15 +218,15 @@ export const membersCol: ColumnDef<membersType>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
 						align="center"
-						className="bg-white px-6 w-full border-[1px] border-gray-200 rounded-[2px]"
+						className="bg-white px-6 w-full border-[1px] border-gray-200 rounded-[2px] z-[10]"
 					>
-						<DropdownMenuItem>
+						<DropdownMenuItem className="bg-white">
 							<span className="text-[12px] font-[400] leading-[12px] border-b-[1px] border-b-[#F9FAFB] last:border-b-0 py-1 cursor-pointer ">
 								{" "}
 								{data.first_guarantor_name}
 							</span>
 						</DropdownMenuItem>
-						<DropdownMenuItem>
+						<DropdownMenuItem className="bg-white">
 							<span className="text-[12px] font-[400] leading-[12px] border-b-[1px] border-b-[#F9FAFB] last:border-b-0 py-1 cursor-pointer ">
 								{" "}
 								{data.second_guarantor_name}
@@ -259,7 +259,7 @@ export const membersCol: ColumnDef<membersType>[] = [
 							<MoreHorizontal className="h-4 w-4" />
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end" className="bg-white">
+					<DropdownMenuContent align="end" className="bg-white border">
 						<DropdownMenuItem>
 							<Link
 								href={`/dashboard/members/details/${data.field_officer_id}`}

@@ -33,6 +33,7 @@ import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
 import FadeLoader from "react-spinners/FadeLoader";
 import { userSlice } from "@/hook/user";
+import { useRouter } from "next/navigation";
 
 type props = {
 	username: string;
@@ -41,6 +42,8 @@ type props = {
 };
 
 function Savings({ username, profile_photo, token }: props) {
+	const router = useRouter();
+	const [q, SetQ] = useState("");
 	const userState = userSlice();
 	const [vlList, setVlList] = useState<savingsType[]>();
 	const [veList, setVeList] = useState<savingsType[]>();
@@ -71,6 +74,19 @@ function Savings({ username, profile_photo, token }: props) {
 		`${base_url}/ardilla/retail/admin/api/v1/savings/dashboard`,
 		token
 	);
+
+	const dsafilter = () => {
+		if (q) {
+			let data: savingsType[];
+			data = [...users];
+			data = data.filter((t) => {
+				return t.first_name
+					.toLocaleLowerCase()
+					.includes(q.toLocaleLowerCase());
+			});
+			return data;
+		} else return users;
+	};
 
 	useEffect(() => {
 		if (dataVl) {
@@ -227,7 +243,7 @@ function Savings({ username, profile_photo, token }: props) {
 								</h2>
 							</div>
 							<h3 className="text-[24px] font-[500] leading-[33px]">
-								0
+								{dataDash?.data?.Number_of_Users || 0}{" "}
 							</h3>
 						</div>
 						<div className="rounded-[6px] bg-[#FEF6F8] p-5 h-[130px] flex flex-col justify-between">
@@ -238,7 +254,10 @@ function Savings({ username, profile_photo, token }: props) {
 								</h2>
 							</div>
 							<h3 className="text-[24px] font-[500] leading-[33px]">
-								N0.00
+								₦
+								{Number(dataDash?.data?.Total_Amount_Saved).toFixed(
+									2
+								) || 0.0}{" "}
 							</h3>
 						</div>
 						<div className="rounded-[6px] bg-[#F6FDF9] p-5 h-[130px] flex flex-col justify-between">
@@ -249,7 +268,9 @@ function Savings({ username, profile_photo, token }: props) {
 								</h2>
 							</div>
 							<h3 className="text-[24px] font-[500] leading-[33px]">
-								N0.00
+								₦
+								{Number(dataDash?.data?.Total_Dividends).toFixed(2) ||
+									0.0}{" "}
 							</h3>
 						</div>
 
@@ -288,7 +309,7 @@ function Savings({ username, profile_photo, token }: props) {
 											<h3 className="text-[24px] font-[500] leading-[33px]">
 												₦
 												{Number(
-													dataDash?.Book_Balance?.vault_lite
+													dataDash?.data?.Book_Balance?.vault_lite
 												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
@@ -300,7 +321,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														50 savers
+														{vlList?.length} savers
 													</h2>
 												</div>
 											</div>
@@ -332,7 +353,7 @@ function Savings({ username, profile_photo, token }: props) {
 											<h3 className="text-[24px] font-[500] leading-[33px]">
 												₦
 												{Number(
-													dataDash?.Book_Balance?.vault_extra
+													dataDash?.data?.Book_Balance?.vault_extra
 												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
@@ -344,7 +365,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														50 savers
+														{veList?.length} savers
 													</h2>
 												</div>
 											</div>
@@ -376,7 +397,8 @@ function Savings({ username, profile_photo, token }: props) {
 											<h3 className="text-[24px] font-[500] leading-[33px]">
 												₦
 												{Number(
-													dataDash?.Book_Balance?.vault_premium
+													dataDash?.data?.Book_Balance
+														?.vault_premium
 												).toFixed(2) || 0.0}
 											</h3>
 											<div className="bg-[#DAE8FF] rounded-[3px]">
@@ -388,7 +410,7 @@ function Savings({ username, profile_photo, token }: props) {
 														alt="total"
 													/>
 													<h2 className="text-[13px] font-[500] leading-[20px]">
-														50 savers
+														{vpList?.length} savers
 													</h2>
 												</div>
 											</div>
@@ -633,9 +655,11 @@ function Savings({ username, profile_photo, token }: props) {
 								<input
 									placeholder="Search"
 									className="outline-none h-full  md:w-full text-[12px] text-[#9CA3AF] placeholder:text-[#9CA3AF]"
+									value={q}
+									onChange={(e) => SetQ(e.target.value)}
 								/>
 							</div>
-							<div className="my-3 relative">
+							<div className="my-3 relative h-[300px] overflow-y-auto">
 								<Table>
 									<TableHeader>
 										<TableRow className="bg-[#FAFAFA] rounded-[4px] h-[30px]">
@@ -654,7 +678,7 @@ function Savings({ username, profile_photo, token }: props) {
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{users.map((user) => (
+										{dsafilter().map((user) => (
 											<TableRow
 												key={user.id}
 												className="cursor-pointer"
@@ -686,6 +710,13 @@ function Savings({ username, profile_photo, token }: props) {
 														<p className="font-[500] mr-6">
 															{user.virtual_account_number}
 														</p>
+													</div>
+												</TableCell>
+												<TableCell className="">
+													<div className="flex items-center w-full justify-between ">
+														<p className="font-[500] mr-6">
+															₦{Number(user.balance).toFixed(2)}
+														</p>
 														<input
 															type="radio"
 															checked={
@@ -702,11 +733,26 @@ function Savings({ username, profile_photo, token }: props) {
 								</Table>
 							</div>
 							<div className="text-end">
-								<Link href={"/dashboard/savings/create-vault-lite"}>
-									<button className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]">
-										Proceed
-									</button>
-								</Link>
+								<button
+									className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
+									onClick={() => {
+										if (tab === "vault-lite") {
+											router.push(
+												"/dashboard/savings/create-vault-lite"
+											);
+										} else if (tab === "vault-extra") {
+											router.push(
+												"/dashboard/savings/create-vault-extra"
+											);
+										} else {
+											router.push(
+												"/dashboard/savings/create-vault-premium"
+											);
+										}
+									}}
+								>
+									Proceed
+								</button>
 							</div>
 						</div>
 					</Modal>

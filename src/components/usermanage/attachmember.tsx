@@ -14,18 +14,14 @@ import {
 	UseFormHandleSubmit,
 	UseFormReset,
 } from "react-hook-form";
-import { object } from "zod";
-import { json } from "stream/consumers";
+import { useAccState } from "../../hook/useAccState";
 
-type HandleNextFunction = (
-	event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-) => void;
 type HandleBackFunction = (
 	event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 ) => void;
 
 interface StepFourProps {
-	handleNext: HandleNextFunction;
+	handleNext: () => void;
 	handleBack: HandleBackFunction;
 	token: string;
 	doc: File | undefined;
@@ -47,7 +43,10 @@ const StepFour: React.FC<StepFourProps> = ({
 		"idle"
 	);
 
+	const setDetails = useAccState((state) => state.setDetails);
+
 	const [q, setQ] = useState("");
+
 	type DsaType = {
 		field_officer_id: string;
 		first_name: string;
@@ -74,7 +73,6 @@ const StepFour: React.FC<StepFourProps> = ({
 				if (data.code === 200) {
 					setFilteredData(data.data);
 				}
-				console.log(data);
 			} catch (error) {
 				setLoadingDsa("error");
 				console.log(error);
@@ -167,7 +165,14 @@ const StepFour: React.FC<StepFourProps> = ({
 			);
 			if (data.code === 200) {
 				toast.success(`${data.message}`, { id: "onboarding" });
+				reset();
+				setDetails({
+					account_bank: data.data.account_bank,
+					account_name: data.data.account_name,
+					account_number: data.data.account_number,
+				});
 				setFieldOfficerPhone(data.dsa_phone);
+				handleNext();
 				// otpModal.onOpen();
 			}
 			console.log(data);
@@ -204,7 +209,7 @@ const StepFour: React.FC<StepFourProps> = ({
 							}}
 						/>
 					</div>
-					<div className="flex flex-col gap-4 overflow-y-auto h-[350px]">
+					<div className="flex flex-col gap-2 overflow-y-auto h-[350px]">
 						{loadingDsa === "loading" && (
 							<p className="text-center">Loading...</p>
 						)}
@@ -212,7 +217,7 @@ const StepFour: React.FC<StepFourProps> = ({
 						{dsafilter()?.map((d: DsaType) => (
 							<div
 								key={d.field_officer_id}
-								className="flex items-center justify-between bg-neutral-100/50 py-3 px-2 rounded-[2px] cursor-pointer mb-3"
+								className="flex items-center justify-between bg-neutral-100/50 py-3 px-2 rounded-[2px] cursor-pointer mb-1.5"
 								onClick={() => setFieldOfficerId(d.field_officer_id)}
 							>
 								<div className="flex items-center">

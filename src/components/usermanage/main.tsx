@@ -8,6 +8,7 @@ import StepFour from "@/components/usermanage/attachmember";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Accountdetails from "./screenshot";
 
 const userSchema = z.object({
 	bvn: z
@@ -184,6 +185,9 @@ function UserManagementComponent({ username, profile_photo, token }: Props) {
 						getValues={getValues}
 						reset={reset}
 					/>
+				)}
+				{activeStep === 4 && (
+					<Accountdetails setStep={() => setActiveStep(0)} />
 				)}
 			</main>
 		</section>
