@@ -65,7 +65,7 @@ function Entertarget({
 				)}
 
 				<p className="text-center text-[11px] font-[500] text-[#9CA3AF] mt-1.5">
-					N200,001 - N400,000
+					N600,002 - unlimited
 				</p>
 
 				<div className="flex justify-between items-center mt-8">
@@ -74,7 +74,7 @@ function Entertarget({
 						your plan to Grit for better rewards.
 					</p>
 					<button className="text-primary border-[1px] border-primary bg-[#F6F1FE] text-[12px] font-[400] p-3 rounded-[4px]">
-						Save on Vault Extra
+						Save on Vault Premium
 					</button>
 				</div>
 
