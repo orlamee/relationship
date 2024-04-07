@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import Image from "next/image";
-import avi from "../../assets/list.svg";
 
 import {
 	dashboardColumns,
@@ -33,6 +32,15 @@ function NubanList({ username, profile_photo, token, officerId }: Props) {
 		error: error,
 	} = useFetcher(
 		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_single_field_officer/${officerId}`,
+		token
+	);
+
+	const {
+		data: users,
+		isLoading: isLoadingUsers,
+		error: errorUsers,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_users_by_field_officer/${officerId}`,
 		token
 	);
 

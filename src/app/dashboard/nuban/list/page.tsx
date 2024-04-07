@@ -7,7 +7,6 @@ export default async function NubanListPage({
 }: {
 	searchParams: { id: string };
 }) {
-	console.log({ id });
 	const session = await getSession();
 	return (
 		<NubanList

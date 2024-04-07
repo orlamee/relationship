@@ -34,6 +34,7 @@ import { base_url } from "@/base_url";
 import FadeLoader from "react-spinners/FadeLoader";
 import { userSlice } from "@/hook/user";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type props = {
 	username: string;
@@ -739,6 +740,10 @@ function Savings({ username, profile_photo, token }: props) {
 								<button
 									className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
 									onClick={() => {
+										if (!userState.user?.id) {
+											toast.error("select a user");
+											return;
+										}
 										if (tab === "vault-lite") {
 											router.push(
 												"/dashboard/savings/create-vault-lite"
