@@ -7,13 +7,7 @@ import samsung from "../../assets/samsung.svg";
 import globe from "../../assets/globe.svg";
 // import { activitiesColumns, activitiesData } from "@/dummy";
 import Datatable from "../tables/datatable";
-import {
-	activitiesColumns,
-	paymentColumns,
-	paymentData,
-	rewardColumns,
-	rewardsData,
-} from "../dummydata";
+import { activitiesColumns, rewardColumns, rewardsData } from "../dummydata";
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
 

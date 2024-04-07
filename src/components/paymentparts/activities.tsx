@@ -9,7 +9,6 @@ import globe from "../../assets/globe.svg";
 import Datatable from "../tables/datatable";
 import {
 	activitiesColumns,
-	activitiesData,
 	paymentColumns,
 	paymentData,
 	rewardColumns,
@@ -31,6 +30,15 @@ export default function Activities({
 		error: error,
 	} = useFetcher(
 		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_user_device/${user?.user?.user_id}`,
+		token
+	);
+
+	const {
+		data: dataHistory,
+		isLoading: isLoadingHistory,
+		error: errorHistory,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_user_history/${user?.user?.user_id}`,
 		token
 	);
 
@@ -56,7 +64,10 @@ export default function Activities({
 												Inflow
 											</h3>
 											<h3 className="text-black text-[12px] leading-[16px] font-[500]">
-												N500,000
+												₦
+												{dataHistory?.data?.total_inflow?.toFixed(
+													2
+												) || 0.0}
 											</h3>
 										</div>
 									</div>
@@ -68,10 +79,13 @@ export default function Activities({
 										<Image src={red} alt="" className="me-3" />
 										<div>
 											<h3 className="text-[#EF4444] text-[10px] leading-[13px] font-[500]">
-												Inflow
+												Outflow
 											</h3>
 											<h3 className="text-black text-[12px] leading-[16px] font-[500]">
-												N500,000
+												₦
+												{dataHistory?.data?.total_outflow?.toFixed(
+													2
+												) || 0.0}
 											</h3>
 										</div>
 									</div>
@@ -80,8 +94,9 @@ export default function Activities({
 						</div>
 						<div>
 							<Datatable
-								data={activitiesData}
+								data={dataHistory?.data?.transaction_history || []}
 								columns={activitiesColumns}
+								searchKey="transaction_category"
 							/>
 						</div>
 					</div>

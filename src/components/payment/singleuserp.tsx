@@ -56,7 +56,7 @@ export default function UserManagementDetails({
 								<TabsTrigger value="details" className="">
 									Personal Details
 								</TabsTrigger>
-								<TabsTrigger value="kyc">KYC Verfication</TabsTrigger>
+								{/* <TabsTrigger value="kyc">KYC Verfication</TabsTrigger> */}
 								<TabsTrigger value="nextofkin">Next of Kin</TabsTrigger>
 								<TabsTrigger value="activities">Activities</TabsTrigger>
 								<TabsTrigger value="bank">Bank</TabsTrigger>
