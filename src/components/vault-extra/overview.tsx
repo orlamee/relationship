@@ -260,7 +260,7 @@ function OverView({
 						Success
 					</h1>
 					<p className="text-center text-[12px] font-[500] text-[#9CA3AF] max-w-[329px] mx-auto mb-5">
-						Vault Lite savings plan have been successfully created.
+						Vault Extra savings plan have been successfully created.
 					</p>
 
 					<div
@@ -921,7 +921,7 @@ function OverView({
 			if (isLoading) return;
 			setIsLoading(true);
 			const { data } = await axios.post(
-				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_wallet/plan/${user?.user?.id}`,
+				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_extra_wallet/plan/${user?.user?.id}`,
 				{
 					show_estimate: false,
 					auto_deposit: true,
@@ -1231,7 +1231,7 @@ function OverView({
 				</div>
 				<div className="flex items-center justify-between border-b-[1px] border-b-[#F3F4F6] py-4 rounded-[4px] ">
 					<p className="text-[12px] font-[500] text-[#9CA3AF]">Plan</p>
-					<p className="text-[12px] font-[500] text-black">Vault Lite</p>
+					<p className="text-[12px] font-[500] text-black">Vault Extra</p>
 				</div>
 				<div className="flex justify-end items-center mt-2 mb-4">
 					{/* <Image src={refresh} width={11} height={11} alt="refresh" /> */}

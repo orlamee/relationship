@@ -74,7 +74,7 @@ function Entertarget({
 						your plan to Grit for better rewards.
 					</p>
 					<button className="text-primary border-[1px] border-primary bg-[#F6F1FE] text-[12px] font-[400] p-3 rounded-[4px]">
-						Save on Vault Lite
+						Save on Vault Extra
 					</button>
 				</div>
 

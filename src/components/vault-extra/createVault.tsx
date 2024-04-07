@@ -49,11 +49,11 @@ function CreateVault({ token }: { token: string }) {
 		target_amount: z
 			.string({ required_error: "enter target amount" })
 			.min(1, "enter target amount")
-			.refine((val) => Number(val) >= 60000, {
-				message: "minimum of 60,000",
+			.refine((val) => Number(val) >= 200001, {
+				message: "minimum of 200,001",
 			})
-			.refine((val) => Number(val) <= 200000, {
-				message: "maximum of 200,000",
+			.refine((val) => Number(val) <= 600000, {
+				message: "maximum of 600,000",
 			}),
 		start_date: z.string({ required_error: "Start date required" }),
 		end_date: z.string({ required_error: "Payback date required" }),
@@ -92,7 +92,7 @@ function CreateVault({ token }: { token: string }) {
 							<ChevronLeft className="w-[24px] text-black" />
 
 							<p className="text-black text-[14px] font-[500] ">
-								Create Vault Lite Plan
+								Create Vault Extra Plan
 							</p>
 						</div>
 					</Link>

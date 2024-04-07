@@ -95,7 +95,7 @@ function ChoosePeriod({
 			if (isLoading) return;
 			setIsLoading(true);
 			const { data } = await axios.post(
-				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_wallet/plan/${user?.user?.id}`,
+				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_extra_wallet/plan/${user?.user?.id}`,
 				{
 					name: name,
 					show_estimate: true,
