@@ -921,8 +921,9 @@ function OverView({
 			if (isLoading) return;
 			setIsLoading(true);
 			const { data } = await axios.post(
-				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_wallet/plan/${user?.user?.id}`,
+				`${base_url}/ardilla/retail/admin/api/v1/savings/vault_lite_plan`,
 				{
+					user_id: user?.user?.id,
 					show_estimate: false,
 					auto_deposit: true,
 					name: name,
@@ -937,6 +938,7 @@ function OverView({
 					target_amount: target,
 					day_of_week: selectedD,
 					day_of_month: selectedDom,
+					dividend_upfront: "false",
 				},
 				{
 					headers: {
@@ -945,6 +947,7 @@ function OverView({
 				}
 			);
 			if (data.code === 200) {
+				console.log({ data });
 				setTransDetails(data.data);
 				setModal("payment sent");
 			}
@@ -1078,7 +1081,7 @@ function OverView({
 								className="w-[45px] mx-auto mb-3"
 							/>
 							<h1 className="text-[24px] font-[600] text-center mb-1 text-primary">
-								-₦{transDetails?.amount.toFixed(2)}
+								-₦{transDetails?.amount?.toFixed(2)}
 							</h1>
 							<p
 								className={`text-[10px] flex justify-center rounded-[4px] mx-auto items-center text-center w-[74px] h-[26px] font-[500] mb-3 shadow-[3px_3px_#240552] ${
@@ -1105,7 +1108,7 @@ function OverView({
 										AMOUNT
 									</h1>
 									<p className="text-[10px] font-[500] text-primary">
-										₦{transDetails?.amount.toFixed(2)}
+										₦{transDetails?.amount?.toFixed(2)}
 									</p>
 								</div>
 								<div className="flex flex-col items-center pl-16 pt-2 ">
@@ -1339,9 +1342,34 @@ function OverView({
 
 				<button
 					className="bg-[#240552] mt-8 text-white w-full text-[14px] font-[500] p-5 rounded-[8px]"
-					onClick={() => setModal("pay")}
+					onClick={() => createPlan()}
 				>
-					Pay
+					{isLoading ? (
+						<div className="flex justify-center">
+							<svg
+								className="animate-spin h-5 w-5 text-white"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+							>
+								<circle
+									className="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									strokeWidth="2"
+								></circle>
+								<path
+									className="opacity-75"
+									fill="currentColor"
+									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+								></path>
+							</svg>
+						</div>
+					) : (
+						"Pay"
+					)}
 				</button>
 			</div>
 		</div>
