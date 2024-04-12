@@ -91,6 +91,15 @@ function Nuban({ username, token, profile_photo }: Props) {
 		token
 	);
 
+	const {
+		data: dataDash,
+		isLoading: isLoadingDash,
+		error: errorDash,
+	} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/savings/dashboard`,
+		token
+	);
+
 	const [loadingDsa, setLoadingDsa] = useState<"idle" | "loading" | "error">(
 		"idle"
 	);
@@ -341,7 +350,7 @@ function Nuban({ username, token, profile_photo }: Props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+								{dataDash?.data?.Number_of_Users || 0}{" "}
 							</h5>
 						</div>
 						<div className="bg-[#F6FDF9] rounded-[6px] p-6">
@@ -372,7 +381,7 @@ function Nuban({ username, token, profile_photo }: Props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+								{dataDash?.data?.accounts_credited || 0}{" "}
 							</h5>
 						</div>
 						<div className="bg-[#F5F9FF] rounded-[6px] p-6">
@@ -417,7 +426,7 @@ function Nuban({ username, token, profile_photo }: Props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+								{dataDash?.data?.Savings_plan_created || 0}{" "}
 							</h5>
 						</div>
 					</div>
