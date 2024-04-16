@@ -14,54 +14,54 @@ import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
 import FadeLoader from "react-spinners/FadeLoader";
 import { parseDateTime } from "@/lib/parsedatetime";
+import { useRouter } from "next/navigation";
 
 type Props = {
 	username: string;
 	token: string;
 	profile_photo: string;
-	officer_id: string;
 };
 
-export default function MemberDetails({
+export default function Account({
 	username,
 	token,
 	profile_photo,
-	officer_id,
 }: Props) {
 	const { data, isLoading, error } = useFetcher(
-		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_single_field_officer/${officer_id}`,
+		`${base_url}/ardilla/retail/admin/api/v1/rel_officer/get_relationship_officer`,
 		token
 	);
+  const router = useRouter()
 
 	const {
 		data: Target,
 		isLoading: loadingTarget,
 		error: errorTarget,
 	} = useFetcher(
-		`${base_url}/ardilla/retail/admin/api/v1/field_officer/get_target/${officer_id}`,
+		`${base_url}/ardilla/retail/admin/api/v1/rel_officer/get_target`,
 		token
 	);
-
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
 				<div className="flex items-center">
 					<h1 className="text-[24px] text-[#21003D] leading-[33px] font-[700]">
-						Member
+						Account
 					</h1>
 				</div>
 			</NavBar>
 			<main className="px-4 lg:px-8 mt-[50px]">
 				<div className="bg-[#FFFFFF] rounded-[10px] mb-9">
 					<div className="p-7">
-						<Link
-							href={"/dashboard/members"}
-							className="text-[#21003D] font-[500] leading-[30px] text-[16px] flex items-center"
+						<span
+						
+							className="text-[#21003D] font-[500] leading-[30px] text-[16px] flex items-center cursor-pointer"
+              onClick={()=> router.back()}
 						>
 							<Icon icon="teenyicons:left-outline" className="me-2" />
-							<span>Details</span>
-						</Link>
-					</div>
+							<span>Back</span>
+						</span>
+					</div> 
 					<hr />
 					<div className="p-7">
 						<div>
@@ -102,7 +102,7 @@ export default function MemberDetails({
 														{data?.data?.last_name}
 													</h5>
 													<p className="text-[#8807F7] bg-[#FAF5FF] p-2 rounded-[4px] text-[11px] mt-3 leading-[10px]">
-														Field Officer
+														Customer Care
 													</p>
 												</div>
 											</div>
@@ -146,14 +146,14 @@ export default function MemberDetails({
 												</h5>
 											</div>
 											<hr className="text-[#F9FAFB]" />
-											<div className="flex items-center justify-between my-5">
+											{/* <div className="flex items-center justify-between my-5">
 												<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
 													Generated ID
 												</h2>
 												<h5 className="text-[#000] text-[12px] leading-[16px] font-[500]">
 													{data?.data?.field_officer_id}
 												</h5>
-											</div>
+											</div> */}
 											<hr className="text-[#F9FAFB]" />
 											<div className="flex items-center justify-between my-5">
 												<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">

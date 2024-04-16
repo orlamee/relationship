@@ -41,8 +41,8 @@ export default function Activities({
 			<Tabs defaultValue="savings" className="w-full">
 				<TabsList>
 					<TabsTrigger value="savings">Savings</TabsTrigger>
-					<TabsTrigger value="payment">Payment</TabsTrigger>
-					<TabsTrigger value="wallet">Wallet</TabsTrigger>
+					{/* <TabsTrigger value="payment">Payment</TabsTrigger>
+					<TabsTrigger value="wallet">Wallet</TabsTrigger> */}
 					<TabsTrigger value="rewards">Rewards</TabsTrigger>
 					<TabsTrigger value="devices">Devices</TabsTrigger>
 				</TabsList>

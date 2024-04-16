@@ -111,8 +111,6 @@ function Dashboard({ username, profile_photo, token }: Props) {
 		token
 	);
 
-	// console.log({ dataFunded });
-
 	const {
 		data: dataDash,
 		isLoading: isLoadingDash,
