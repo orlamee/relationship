@@ -16,6 +16,7 @@ import {
 } from "../dummydata";
 import { base_url } from "@/base_url";
 import { useFetcher } from "@/lib/useFetcher";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function Activities({
 	token,
@@ -47,14 +48,30 @@ export default function Activities({
 			<Tabs defaultValue="savings" className="w-full">
 				<TabsList>
 					<TabsTrigger value="savings">Savings</TabsTrigger>
-					<TabsTrigger value="payment">Payment</TabsTrigger>
-					<TabsTrigger value="wallet">Wallet</TabsTrigger>
+					{/* <TabsTrigger value="payment">Payment</TabsTrigger>
+					<TabsTrigger value="wallet">Wallet</TabsTrigger> */}
 					<TabsTrigger value="rewards">Rewards</TabsTrigger>
 					<TabsTrigger value="devices">Devices</TabsTrigger>
 				</TabsList>
 				<TabsContent value="savings">
+				<div>
 					<div>
-						<div className="flex flex-row">
+									{isLoadingHistory ? (
+										<div className="w-full flex justify-center mt-10">
+											<FadeLoader
+												color={"#240552"}
+												loading={true}
+												aria-label="Loading Spinner"
+												data-testid="loader"
+											/>
+										</div>
+									) : errorHistory?.message ? (
+										<p className="text-center mt-10">
+											{errorHistory.message}
+										</p>
+									) : (
+									<div>
+											<div className="flex flex-row">
 							<div className="w-1/5 me-5">
 								<div className="border border-[#E0FBEA] bg-[#FBFEFC] p-4 rounded-[4px]">
 									<div className="flex items-center">
@@ -99,6 +116,10 @@ export default function Activities({
 								searchKey="transaction_category"
 							/>
 						</div>
+									</div>
+									)}
+								</div>
+					
 					</div>
 				</TabsContent>
 				<TabsContent value="payment">
@@ -182,7 +203,7 @@ export default function Activities({
 				<TabsContent value="rewards">
 					<div>
 						<div>
-							{/* <Datatable data={rewardsData} columns={rewardColumns} /> */}
+							<Datatable data={rewardsData} columns={rewardColumns} />
 						</div>
 					</div>
 				</TabsContent>

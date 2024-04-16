@@ -4,12 +4,49 @@ import info from "../../assets/info.svg";
 import { useState } from "react";
 import Modal from "../modal";
 import { XCircleIcon } from "lucide-react";
+import {useForm} from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import {z} from 'zod';
+import { error } from "console";
+import axios from "axios";
+import { base_url } from "@/base_url";
+import toast from "react-hot-toast";
 
 type props = {
 	user: any;
+	token:string;
+	kodhex:string;
 };
 
-export default function PersonalDetails({ user }: props) {
+export default function PersonalDetails({ user, token, kodhex }: props) {
+	const Schema = z.object({
+		email:z.string().min(1, 'new email is required').email()
+	})
+
+	type dataType = z.infer<typeof Schema>
+	const {register, formState:{errors, isSubmitting}, handleSubmit} = useForm<dataType>({resolver: zodResolver(Schema)})
+
+
+	const updateDetails = async (details:dataType)=> {
+		try {
+		const {data} = await axios.patch(`${base_url}/ardilla/retail/admin/api/v1/user/email_update`, {kodhex:kodhex, email:details.email}, {
+			headers:{
+				Authorization: `Bearer ${token}`
+			}})
+
+			if(data.code === 200) {
+				toast.success(`${data.message}`)
+			}
+			else if(data.code !== 200) {
+				toast.error(`${data.message}`)
+			}
+
+		} catch (error:any) {
+			toast.error(`${error?.message}`)
+			
+		}
+		
+	}
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	function openModal() {
 		setIsModalOpen(true);
@@ -132,7 +169,8 @@ export default function PersonalDetails({ user }: props) {
 			</div>
 			{isModalOpen && (
 				<Modal>
-					<div className="bg-white rounded-[16px] px-6 pb-6 w-[700px]">
+					<form className="bg-white rounded-[16px] px-6 pb-6 w-[700px]" onSubmit={handleSubmit(updateDetails)} >
+					<fieldset disabled={isSubmitting}>
 						<div className="flex justify-between px-4 py-6 border-b-[1px] border-b-[#F5F5F5] items-center">
 							<h1 className="text-[14px] font-[500] leading-[18px]">
 								Edit User Details
@@ -150,7 +188,7 @@ export default function PersonalDetails({ user }: props) {
 									</label>
 									<input
 										type="text"
-										placeholder="John"
+										placeholder={user?.user?.first_name}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
 								</div>
@@ -161,7 +199,7 @@ export default function PersonalDetails({ user }: props) {
 									<input
 										type="text"
 										id="last-name"
-										placeholder="Doe"
+										placeholder={user?.user?.last_name}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
 								</div>
@@ -173,7 +211,7 @@ export default function PersonalDetails({ user }: props) {
 									</label>
 									<input
 										type="tel"
-										placeholder="0810209393"
+										placeholder={user?.user?.phone}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
 								</div>
@@ -183,9 +221,12 @@ export default function PersonalDetails({ user }: props) {
 									</label>
 									<input
 										type="email"
-										placeholder="name@example.com"
+										placeholder={		user?.user?.email}
+										{...register("email", {required:true})}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
+									{errors.email && <span className="text-red-500 text-[13px]">{errors.email.message}
+										</span>}
 								</div>
 							</div>
 							<div className="mb-6 flex flex-wrap">
@@ -195,7 +236,7 @@ export default function PersonalDetails({ user }: props) {
 									</label>
 									<input
 										type="text"
-										placeholder="Male"
+										placeholder=			{user?.user?.gender}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
 								</div>
@@ -205,7 +246,7 @@ export default function PersonalDetails({ user }: props) {
 									</label>
 									<input
 										type="number"
-										placeholder="23456789"
+										placeholder=				{user?.user?.bvn_hash}
 										className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 									/>
 								</div>
@@ -216,7 +257,7 @@ export default function PersonalDetails({ user }: props) {
 								</label>
 								<input
 									type="text"
-									placeholder="Allen Ikeja, Lagos, Nigeria"
+									placeholder=	{user?.user?.residential_address}
 									className="bg-[#fff] border border-[#F0F0F0] text-[#9CA3AF] text-[13px] rounded-[4px] focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 								/>
 							</div>
@@ -232,14 +273,18 @@ export default function PersonalDetails({ user }: props) {
 							</div>
 							<div className="text-end">
 								<button
-									className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552]"
-									onClick={closeModal}
+									className="px-6 py-3 text-white text-[12px] leading-[22px] font-[500] rounded-[4px] bg-[#240552] disabled:bg-[#240552]/40"
+								type="submit"
+								disabled={isSubmitting}
 								>
-									Save
+									
+
+									{isSubmitting ? "Processing..." : "Save"}
 								</button>
 							</div>
 						</div>
-					</div>
+						</fieldset>
+					</form>
 				</Modal>
 			)}
 		</div>

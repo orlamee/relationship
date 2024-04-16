@@ -10,6 +10,7 @@ import Datatable from "../tables/datatable";
 import { activitiesColumns, rewardColumns, rewardsData } from "../dummydata";
 import { useFetcher } from "@/lib/useFetcher";
 import { base_url } from "@/base_url";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function Activities({
 	token,
@@ -48,7 +49,23 @@ export default function Activities({
 				</TabsList>
 				<TabsContent value="savings">
 					<div>
-						<div className="flex flex-row">
+					<div>
+									{isLoadingHistory ? (
+										<div className="w-full flex justify-center mt-10">
+											<FadeLoader
+												color={"#240552"}
+												loading={true}
+												aria-label="Loading Spinner"
+												data-testid="loader"
+											/>
+										</div>
+									) : errorHistory?.message ? (
+										<p className="text-center mt-10">
+											{errorHistory.message}
+										</p>
+									) : (
+									<div>
+											<div className="flex flex-row">
 							<div className="w-1/5 me-5">
 								<div className="border border-[#E0FBEA] bg-[#FBFEFC] p-4 rounded-[4px]">
 									<div className="flex items-center">
@@ -93,6 +110,10 @@ export default function Activities({
 								searchKey="transaction_category"
 							/>
 						</div>
+									</div>
+									)}
+								</div>
+					
 					</div>
 				</TabsContent>
 				<TabsContent value="payment">
