@@ -24,7 +24,6 @@ export default function KYC({ kodhex, token }: props) {
 	const [isApprovingNin, setIsApprovingNin] = useState(false);
 
 	const handleImageClick = (imageSrc: string) => {
-		setPopupImageSrc(imageSrc);
 		setShowPopup(true);
 	};
 
@@ -40,6 +39,7 @@ export default function KYC({ kodhex, token }: props) {
 		`${base_url}/ardilla/retail/admin/api/v1/user/get_nin/${kodhex}`,
 		token
 	);
+
 
 	const approve_nin = async () => {
 		if (!NinData?.data?.user_id) {
@@ -218,16 +218,24 @@ export default function KYC({ kodhex, token }: props) {
 							<h3 className="text-[#000] font-[500] leading-[20px] text-[12px]">
 								National Identification Number (NIN Slip)
 							</h3>
-							<div className="relative inline-block">
-								<Image
-									src={nin}
+							<div className="relative w-full block h-[400px]">
+								{NinData?.data?.image_upload && (
+									<Image
+									src={NinData?.data?.image_upload}
 									alt="nin"
 									loading="eager"
 									className="my-4 w-full cursor-pointer"
+									fill
 								/>
+								) }
+								
 								<button
 									className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-4 py-2 bg-[#000] text-[12px] text-white border border-[#fff] rounded-[5px] cursor-pointer z-10"
-									onClick={() => handleImageClick(nin)}
+									onClick={() => {
+										setPopupImageSrc(NinData?.data?.image_upload)
+										handleImageClick(nin)
+										
+									}}
 								>
 									View
 								</button>
@@ -282,16 +290,16 @@ export default function KYC({ kodhex, token }: props) {
 										<h2 className="text-[#9CA3AF] font-[500] leading-[20px] text-[12px]">
 											First Name
 										</h2>
-										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-											Ajayi
+										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px] capitalize">
+										{NinData?.data?.full_name?.split(" ")[1]}
 										</h2>
 									</div>
 									<div className="flex items-center justify-between mb-6">
 										<h2 className="text-[#9CA3AF] font-[500] leading-[20px] text-[12px]">
 											Last Name
 										</h2>
-										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-											Oluwadarasimi
+										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px] capitalize">
+										{NinData?.data?.full_name?.split(" ")[0]}
 										</h2>
 									</div>
 									<div className="flex items-center justify-between mb-6">
@@ -299,7 +307,7 @@ export default function KYC({ kodhex, token }: props) {
 											Date of Birth
 										</h2>
 										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-											10/11/2023
+										{NinData?.data?.date_of_birth}
 										</h2>
 									</div>
 									<div className="flex items-center justify-between mb-6">
@@ -307,7 +315,7 @@ export default function KYC({ kodhex, token }: props) {
 											Gender
 										</h2>
 										<h2 className="text-[#000] font-[500] leading-[20px] text-[12px]">
-											M
+											{NinData?.data?.gender}
 										</h2>
 									</div>
 								</div>
@@ -515,14 +523,15 @@ export default function KYC({ kodhex, token }: props) {
 			{/* Popup */}
 			{showPopup && (
 				<div className="overlay">
-					<div className="popup">
+					<div className="popup relative w-[700px] h-[400px]">
 						<Image
 							src={popupImageSrc}
 							alt="Popup Image"
 							className="popup-image mb-5"
+							fill
 						/>
 						<span
-							className="close-btn cursor-pointer bg-white px-[9px] py-[4px] rounded-full"
+							className="close-btn cursor-pointer bg-white w-[30px] h-[30px] text-[20px] flex justify-center items-center rounded-full absolute top-[410px] left-0"
 							onClick={handleClosePopup}
 						>
 							&times;
