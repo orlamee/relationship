@@ -46,8 +46,6 @@ export default function KYC({ kodhex, token }: props) {
 		token
 	);
 
-
-	console.log({NinData})
 	useEffect(() => {
 		setNinImage(NinData?.data?.image_upload)
 		
@@ -61,6 +59,8 @@ export default function KYC({ kodhex, token }: props) {
 		`${base_url}/ardilla/retail/admin/api/v1/user/get_document/${kodhex}`,
 		token
 	);
+
+	console.log({IdData})
 
 	useEffect(() => {
 		setIdImage(IdData?.data?.document)
@@ -228,7 +228,7 @@ export default function KYC({ kodhex, token }: props) {
 										</p>
 									) : (
 										<div>
-											{NinData?.data?.code === 200 && (
+											{NinData?.code === 200 && (
 												<div>
 												<div className="flex flex-row gap-x-10">
 								<div className="w-1/3">
@@ -398,14 +398,28 @@ export default function KYC({ kodhex, token }: props) {
 						)}
 											</div>
 											)}
+											{NinData?.code === 400 && <p className="text-center text-black">Document not uploaded by user</p> }
 										</div>
 									)}
 								</div>
 					
 				</TabsContent>
 				<TabsContent value="tier-two">
-					
-					<div className="flex flex-row gap-x-10">
+					<div>
+						{isLoadingId ? (	<div className="w-full flex justify-center mt-10">
+											<FadeLoader
+												color={"#240552"}
+												loading={true}
+												aria-label="Loading Spinner"
+												data-testid="loader"
+											/>
+										</div>) : errorId?.message ? (
+											<p className="text-center mt-10">
+											{errorId.message}
+										</p>
+										) : (
+											<div>
+										<div className="flex flex-row gap-x-10">
 					<div className="w-1/3">
 								<h3 className="text-[#000] font-[500] leading-[20px] text-[12px]">
 									Valid ID Card
@@ -571,6 +585,15 @@ export default function KYC({ kodhex, token }: props) {
 							</div>
 						</div>
 					)}
+										</div>
+										)
+
+										}
+
+					
+					</div>
+					
+					
 				</TabsContent>
 				<TabsContent value="tier-three">
 					<div className="flex flex-row gap-x-10">
