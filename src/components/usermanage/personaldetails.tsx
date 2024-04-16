@@ -102,7 +102,12 @@ const StepOne: React.FC<StepOneProps> = ({
 			if (data.code === 200) {
 				toast.success(`${data.message}`, { id: "verify-email" });
 				setModal("verify");
-			} else if (data.code !== 200) {
+			} 
+			if (data.code === 400 && data.responseCode == 20) {
+				setIsEmailVerified(true)
+			} 
+
+			if (data.code !== 200) {
 				toast.error(`${data.message}`, { id: "verify-email" });
 			}
 		} catch (error: any) {
