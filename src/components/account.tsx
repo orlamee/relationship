@@ -1,6 +1,6 @@
 "use client";
 import NavBar from "@/components/navbar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -31,6 +31,9 @@ export default function Account({
 		`${base_url}/ardilla/retail/admin/api/v1/rel_officer/get_relationship_officer`,
 		token
 	);
+	console.log({data})
+
+	
   const router = useRouter()
 
 	const {
@@ -41,6 +44,18 @@ export default function Account({
 		`${base_url}/ardilla/retail/admin/api/v1/rel_officer/get_target`,
 		token
 	);
+
+type branch = {
+	lga:string
+
+}
+	const [branches, setBranches] = useState<branch[]>([])
+	useEffect(() => {
+		setBranches(data?.data?.branch_details)
+
+		
+	}, [data])
+	console.log({branches})
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
@@ -110,9 +125,16 @@ export default function Account({
 												<h2 className="text-[#9CA3AF] text-[12px] leading-[16px] font-[500]">
 													Branch
 												</h2>
-												<h5 className="text-[#EAB308] text-[12px] leading-[16px] font-[500]">
-													Oshodi
-												</h5>
+												<div className="flex items-center gap-3">
+													{branches?.map((b, i)=> (
+														<h5 className="text-[#EAB308] text-[12px] leading-[16px] font-[500]" key={i}>
+														{b.lga}
+																								
+														</h5>
+													))}
+												</div>
+												
+											
 											</div>
 											<hr className="text-[#F9FAFB]" />
 											<div className="flex items-center justify-between my-5">
