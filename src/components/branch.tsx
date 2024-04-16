@@ -30,6 +30,12 @@ function Branch({ username, profile_photo, token }: props) {
 		`${base_url}/ardilla/retail/admin/api/v1/branch`,
 		token
 	);
+
+	const { data:branchDash, isLoading:LoadingBDash, error:errorBDash } = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/branch/dashboard`,
+		token
+	);
+	
 	return (
 		<section>
 			<NavBar username={username} profile_photo={profile_photo}>
@@ -77,7 +83,7 @@ function Branch({ username, profile_photo, token }: props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+								{branchDash?.data?.Total_branch || 0}
 							</h5>
 						</div>
 						<div className="bg-[#F6FDF9] rounded-[6px] p-6">
@@ -100,7 +106,7 @@ function Branch({ username, profile_photo, token }: props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+							{branchDash?.data?.Total_staff || 0}
 							</h5>
 						</div>
 						<div className="bg-[#F5F9FF] rounded-[6px] p-6">
@@ -123,7 +129,7 @@ function Branch({ username, profile_photo, token }: props) {
 								</h5>
 							</div>
 							<h5 className="mt-7 text-[#000] text-[28px] leading-[39px] font-[500]">
-								0
+							{branchDash?.data?.Total_head_branches || 0}
 							</h5>
 						</div>
 					</div>

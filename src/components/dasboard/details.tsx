@@ -67,7 +67,7 @@ export default function UserManagementDetails({
 								</TabsTrigger>
 							</TabsList>
 							<TabsContent value="details">
-								<PersonalDetails user={user} />
+								<PersonalDetails user={user} token={token} kodhex={kodhex} />
 							</TabsContent>
 							<TabsContent value="kyc">
 								<KYC token={token} kodhex={kodhex} />
