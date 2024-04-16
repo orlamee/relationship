@@ -62,9 +62,9 @@ export default function UserManagementDetails({
 								<TabsTrigger value="nextofkin">Next of Kin</TabsTrigger>
 								<TabsTrigger value="activities">Activities</TabsTrigger>
 								<TabsTrigger value="bank">Bank</TabsTrigger>
-								<TabsTrigger value="verification">
+								{/* <TabsTrigger value="verification">
 									Verification
-								</TabsTrigger>
+								</TabsTrigger> */}
 							</TabsList>
 							<TabsContent value="details">
 								<PersonalDetails user={user} token={token} kodhex={kodhex} />
