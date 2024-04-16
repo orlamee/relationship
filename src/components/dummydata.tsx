@@ -30,6 +30,7 @@ export type FundedDataType = {
 	officer: string;
 	kodhex: string;
 	email: string;
+	branch: string;
 	dob: string;
 	phone: string;
 	residential_address: string;
@@ -578,51 +579,51 @@ export const dashboardColumns: ColumnDef<FundedDataType>[] = [
 			);
 		},
 	},
-	{
-		accessorKey: "date_joined",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Date Joined
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-	},
-	{
-		accessorKey: "status",
-		header: ({ column }) => {
-			return (
-				<button
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-					className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
-				>
-					Status
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</button>
-			);
-		},
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<div className="flex items-center">
-					{data.status === "funded" && (
-						<Status type="funded" text={data.status} />
-					)}
-					{data.status === "not funded" && (
-						<Status type="notfunded" text={data.status} />
-					)}
-				</div>
-			);
-		},
-	},
+	// {
+	// 	accessorKey: "date_joined",
+	// 	header: ({ column }) => {
+	// 		return (
+	// 			<button
+	// 				onClick={() =>
+	// 					column.toggleSorting(column.getIsSorted() === "asc")
+	// 				}
+	// 				className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+	// 			>
+	// 				Date Joined
+	// 				<ArrowUpDown className="ml-2 h-4 w-4" />
+	// 			</button>
+	// 		);
+	// 	},
+	// },
+	// {
+	// 	accessorKey: "status",
+	// 	header: ({ column }) => {
+	// 		return (
+	// 			<button
+	// 				onClick={() =>
+	// 					column.toggleSorting(column.getIsSorted() === "asc")
+	// 				}
+	// 				className="flex items-center text-[12px] font-[400] text-[#9CA3AF]"
+	// 			>
+	// 				Status
+	// 				<ArrowUpDown className="ml-2 h-4 w-4" />
+	// 			</button>
+	// 		);
+	// 	},
+	// 	cell: ({ row }) => {
+	// 		const data = row.original;
+	// 		return (
+	// 			<div className="flex items-center">
+	// 				{data.status === "funded" && (
+	// 					<Status type="funded" text={data.status} />
+	// 				)}
+	// 				{data.status === "not funded" && (
+	// 					<Status type="notfunded" text={data.status} />
+	// 				)}
+	// 			</div>
+	// 		);
+	// 	},
+	// },
 	{
 		id: "actions",
 		enableHiding: false,

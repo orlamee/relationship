@@ -8,8 +8,8 @@ export const useFetcher = (url: string, token?: string) => {
 				headers: { Authorization: `Bearer ${token}` },
 			})
 			.then((res) => res.data)
-			.catch((e: any) => {
-				const error = new Error(e?.message || "An error occurred while fetching data.");
+			.catch(() => {
+				const error = new Error("An error occurred while fetching data.");
 				throw error;
 			});
 

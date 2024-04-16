@@ -7,6 +7,7 @@ import html2canvas from "html2canvas";
 import Image from "next/image";
 
 import {
+	FundedDataType,
 	dashboardColumns,
 	dashboardData,
 	nubanColumns,
@@ -26,6 +27,7 @@ type Props = {
 };
 
 function NubanList({ username, profile_photo, token, officerId }: Props) {
+	const [fundedLists, setFundedLists] = useState<FundedDataType[]>();
 	const {
 		data: fieldOfficer,
 		isLoading: isLoading,
@@ -44,6 +46,34 @@ function NubanList({ username, profile_photo, token, officerId }: Props) {
 		token
 	);
 
+	useEffect(() => {
+		setFundedLists(users?.data);
+		if (users) {
+			let fl: FundedDataType[] = [];
+			for (let i = 0; i < users?.data?.length; i++) {
+				const user = users?.data?.[i]?.user;
+				const officer = users?.data?.[i]?.field_officer;
+
+				fl.push({
+					first_name: user?.first_name,
+					last_name: user?.last_name,
+					email: user?.email,
+					id: user?.user_id,
+					profile_photo: user?.profile_photo,
+					residential_address: user?.residential_address,
+					status: "funded",
+					kodhex: user?.kodhex,
+					phone: user?.phone,
+					date_joined: "",
+					dob: "",
+					officer: `${officer?.first_name} ${officer?.last_name}`,
+					officer_img: officer?.profile_photo,
+					// officer: officer?.
+				});
+			}
+			setFundedLists(fl);
+		}
+	}, [users]);
 	const [pdfGenerating, setPdfGenerating] = useState(false);
 	const tableRef = useRef<HTMLDivElement>(null);
 
@@ -125,13 +155,30 @@ function NubanList({ username, profile_photo, token, officerId }: Props) {
 											: "Generate PDF"}
 									</button>
 								</div>
+								
+								{isLoadingUsers ? (
+							<div className="w-full flex justify-center mt-10">
+								<FadeLoader
+									color={"#240552"}
+									loading={true}
+									aria-label="Loading Spinner"
+									data-testid="loader"
+								/>
+							</div>
+						) : errorUsers?.message ? (
+							<p className="text-center mt-10">{errorUsers.message}</p>
+						) : (
+							<div className="mt-5" ref={tableRef}>
+							<Datatable data={fundedLists || []} columns={dashboardColumns} />
+						</div>
+						)}
 							</div>
 						)}
 					</div>
 
-					<div className="mt-10" ref={tableRef}>
-						<Datatable data={dashboardData} columns={nubanColumns} />
-					</div>
+				
+
+				
 				</div>
 			</main>
 		</section>

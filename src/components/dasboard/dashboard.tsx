@@ -23,8 +23,15 @@ type Props = {
 };
 
 function Dashboard({ username, profile_photo, token }: Props) {
+	type branchType = {
+	lga: string 
+	}
+	const [branch, setBranch] = useState("")
+	const [branches, setBranches] = useState<branchType[]>([])
 	const [fundedLists, setFundedLists] = useState<FundedDataType[]>();
+	const [fundedListsCopy, setFundedListsCopy] = useState<FundedDataType[]>();
 	const [unFundedLists, setUnFundedLists] = useState<FundedDataType[]>();
+	const [unFundedListsCopy, setUnFundedListsCopy] = useState<FundedDataType[]>();
 	const [pdfGenerating, setPdfGenerating] = useState(false);
 	const [tab, setTab] = useState<"completed" | "funded" | "not-funded">(
 		"funded"
@@ -120,6 +127,19 @@ function Dashboard({ username, profile_photo, token }: Props) {
 		token
 	);
 
+
+	const { data:branchData, isLoading:isLoadingBranch, error:errorBranch} = useFetcher(
+		`${base_url}/ardilla/retail/admin/api/v1/branch`,
+		token
+	);
+
+	useEffect(() => {
+
+		setBranches(branchData?.data)
+		
+	}, [branchData])
+	
+
 	useEffect(() => {
 		setFundedLists(dataFunded?.data?.funded_users);
 		if (dataFunded) {
@@ -127,6 +147,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 			for (let i = 0; i < dataFunded?.data?.funded_users?.length; i++) {
 				const user = dataFunded?.data?.funded_users[i]?.user;
 				const officer = dataFunded?.data?.funded_users[i]?.field_officer;
+				const branch = dataFunded?.data?.funded_users[i]?.branch;
 
 				fl.push({
 					first_name: user?.first_name,
@@ -136,6 +157,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 					profile_photo: user?.profile_photo,
 					residential_address: user?.residential_address,
 					status: "funded",
+					branch:branch?.lga,
 					kodhex: user?.kodhex,
 					phone: user?.phone,
 					date_joined: "",
@@ -146,8 +168,9 @@ function Dashboard({ username, profile_photo, token }: Props) {
 				});
 			}
 			setFundedLists(fl);
+			setFundedListsCopy(fl);
 		}
-	}, [dataFunded]);
+	}, [dataFunded,]);
 
 	const {
 		data: dataUnFunded,
@@ -165,6 +188,8 @@ function Dashboard({ username, profile_photo, token }: Props) {
 				const user = dataUnFunded?.data?.unfunded_users[i]?.user;
 				const officer =
 					dataUnFunded?.data?.unfunded_users[i]?.field_officer;
+				const branch =
+					dataUnFunded?.data?.unfunded_users[i]?.branch;
 
 				fl.push({
 					first_name: user?.first_name,
@@ -176,6 +201,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 					status: "not funded",
 					kodhex: user?.kodhex,
 					phone: user?.phone,
+					branch: branch?.lga,
 					date_joined: "",
 					dob: "",
 					officer: `${officer?.first_name} ${officer?.last_name}`,
@@ -184,8 +210,38 @@ function Dashboard({ username, profile_photo, token }: Props) {
 				});
 			}
 			setUnFundedLists(fl);
+			setUnFundedListsCopy(fl);
 		}
 	}, [dataUnFunded]);
+
+
+
+	useEffect(() => {
+		
+		if(tab === 'funded') {
+			if(branch && branch !== 'All Branches' && fundedLists ) {
+				const branches = fundedListsCopy?.filter((item)=> item.branch === branch)
+				setFundedLists(branches)
+			}
+			else setFundedLists(fundedListsCopy)
+
+		}
+		if(tab === 'not-funded') {
+			if(branch && branch !== 'All Branches' && unFundedLists ) {
+				const branches = unFundedListsCopy?.filter((item)=> item.branch === branch)
+				setUnFundedLists(branches)
+			}
+			else setFundedLists(unFundedListsCopy)
+
+		}
+		
+	
+	
+		
+	}, [branch, tab]) //eslint-disable-line
+
+	
+	
 
 	return (
 		<section>
@@ -201,6 +257,7 @@ function Dashboard({ username, profile_photo, token }: Props) {
 					<h3 className="text-[#21003D] text-[20px] leading-[20px] font-[500]">
 						Statistics
 					</h3>
+				
 					<div className="mt-9 grid lg:grid-cols-3 grid-cols-1 gap-10">
 						<div className="bg-[#FFF9F0] rounded-[6px] p-6">
 							<div className="flex items-center">
@@ -384,7 +441,8 @@ function Dashboard({ username, profile_photo, token }: Props) {
 															/>
 														</svg>
 													</span>
-													All Branch
+												
+													{branch || 'All Branches'}
 												</span>
 												<ChevronDown className="h-4 w-4 ml-3" />
 											</button>
@@ -393,12 +451,18 @@ function Dashboard({ username, profile_photo, token }: Props) {
 											align="end"
 											className=" bg-white"
 										>
-											<DropdownMenuItem>
-												<p>Oshodi</p>
+											{branches?.length > 0  && (
+												<DropdownMenuItem onClick={()=> setBranch('All Branches')}>
+												<p>All Branches</p>
 											</DropdownMenuItem>
-											<DropdownMenuItem>
-												<p>Mile 12</p>
-											</DropdownMenuItem>
+											)}
+											{branches?.map((b, i)=> (
+												<DropdownMenuItem key={i}  className="cursor-pointer" onClick={()=> setBranch(b.lga)}>
+												<p>{b.lga}</p>
+												</DropdownMenuItem>
+											))}
+										
+										
 										</DropdownMenuContent>
 									</DropdownMenu>
 								</div>

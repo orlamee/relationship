@@ -294,7 +294,7 @@ export default function KYC({ kodhex, token }: props) {
 											Decline
 										</button>
 									</div>
-									<div className="mt-5">
+									<div className="mt-5 hidden">
 										<input
 											type="text"
 											placeholder="Reason"
@@ -483,7 +483,7 @@ export default function KYC({ kodhex, token }: props) {
 										Decline
 									</button>
 								</div>
-								<div className="mt-5">
+								<div className="mt-5 hidden">
 									<input
 										type="text"
 										placeholder="Reason"
