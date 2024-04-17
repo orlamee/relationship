@@ -231,13 +231,12 @@ function Dashboard({ username, profile_photo, token }: Props) {
 				const branches = unFundedListsCopy?.filter((item)=> item.branch === branch)
 				setUnFundedLists(branches)
 			}
+			if (branch  === 'All Branches') {
+				setFundedLists(unFundedListsCopy)
+			}
 			else setFundedLists(unFundedListsCopy)
 
 		}
-		
-	
-	
-		
 	}, [branch, tab]) //eslint-disable-line
 
 	

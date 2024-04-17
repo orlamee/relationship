@@ -71,7 +71,7 @@ export default function UserManagementDetails({
 								<PersonalDetails user={user} token={token} kodhex={kodhex} />
 							</TabsContent>
 							<TabsContent value="kyc">
-								<KYC />
+								<KYC token={token} kodhex={kodhex} />
 							</TabsContent>
 							<TabsContent value="nextofkin">
 								<Nextofkin user={user} />
