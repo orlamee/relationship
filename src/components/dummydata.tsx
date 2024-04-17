@@ -30,7 +30,7 @@ export type FundedDataType = {
 	officer: string;
 	kodhex: string;
 	email: string;
-	branch: string;
+	branch?: string;
 	dob: string;
 	phone: string;
 	residential_address: string;
